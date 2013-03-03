@@ -20,59 +20,69 @@ defined('MOLAJO') or die;
  */
 interface SessionInterface
 {
-    /**
-     * open
-     *
-     * @param   array $credentials
-     *
-     * @return  bool
-     * @since   1.0
-     * @throws  SessionException
-     */
-    public function open($savePath, $sessionName);
 
     /**
-     * Get User
+     * Start Session
      *
-     * @return  object  UserInterface
+     * @return  object
      * @since   1.0
-     * @throws  SessionException
      */
-    public function read($id);
+    public function start();
 
     /**
-     * Get User
+     * Gets the value of Session Id
      *
-     * @return  object  UserInterface
+     * @return  mixed
      * @since   1.0
-     * @throws  SessionException
      */
-    public function write($id, $data);
+    public function getSessionId();
 
     /**
-     * Get User
+     * Does session exist?
      *
-     * @return  object  UserInterface
+     * @param   string  $key
+     *
+     * @return  mixed
      * @since   1.0
-     * @throws  SessionException
      */
-    public function remove($id);
+    public function exists($key);
 
     /**
-     * Get User
+     * Set session
      *
-     * @return  object  UserInterface
+     * @param   int    $key
+     * @param   mixed  $value
+     *
+     * @return  mixed
      * @since   1.0
-     * @throws  SessionException
      */
-    public function clean($maxlifetime);
+    public function set($key, $value);
 
     /**
-     * Close
+     * Gets the value stored in a session
      *
-     * @return  bool
+     * @param   int  $key
+     *
+     * @return  mixed
      * @since   1.0
-     * @throws  SessionException
      */
-    public function close();
+    public function get($key);
+
+    /**
+     * Delete a session
+     *
+     * @param   int  $key
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function delete($key);
+
+    /**
+     * Destroy Session
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function destroy();
 }

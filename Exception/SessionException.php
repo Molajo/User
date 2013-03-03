@@ -20,7 +20,7 @@ use RuntimeException;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-class PermissionsException extends RuntimeException
+class SessionException extends RuntimeException implements UserExceptionInterface
 {
 
 }

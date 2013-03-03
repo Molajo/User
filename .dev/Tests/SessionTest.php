@@ -1,6 +1,6 @@
 <?php
 /**
- * Test User Sessions
+ * Test User Session
  *
  * @package   Molajo
  * @copyright 2013 Amy Stephen. All rights reserved.
@@ -14,19 +14,19 @@ use RuntimeException;
 use Molajo\User\Session\Session;
 
 /**
- * Test User Sessions
+ * Test User Session
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-class UserSessionsTest extends \PHPUnit_Framework_TestCase
+class SessionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var $SessionsClass
+     * @var $SessionClass
      */
-    protected $SessionsClass;
+    protected $SessionClass;
 
     /**
      * Set up
@@ -34,7 +34,7 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $class               = 'Molajo\\User\\Session\\Session';
-        $this->SessionsClass = new $class;
+        $this->SessionClass = new $class;
 
         return;
     }
@@ -44,17 +44,17 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testStart()
     {
-        $started = $this->SessionsClass->start();
+        $started = $this->SessionClass->start();
 
         $this->assertEquals(session_id(), $started);
     }
 
     /**
-     * @covers Molajo\User\Session\Session::start
+     * @covers Molajo\User\Session\Session::testGetSessionId
      */
     public function testGetSessionId()
     {
-        $id = $this->SessionsClass->getSessionId();
+        $id = $this->SessionClass->getSessionId();
 
         $this->assertEquals(session_id(), $id);
     }
@@ -64,12 +64,12 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testExists()
     {
-        $key   = 'MolajoSessions';
+        $key   = 'MolajoSession';
         $value = 'dogfood';
 
         $_SESSION[$key] = $value;
 
-        $this->assertTrue($this->SessionsClass->exists($key));
+        $this->assertTrue($this->SessionClass->exists($key));
     }
 
     /**
@@ -77,9 +77,9 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testExistsFalse()
     {
-        $key = 'MolajoSessions';
+        $key = 'MolajoSession';
 
-        $this->assertFalse($this->SessionsClass->exists($key));
+        $this->assertFalse($this->SessionClass->exists($key));
     }
 
     /**
@@ -87,10 +87,10 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $key   = 'MolajoSessions';
+        $key   = 'MolajoSession';
         $value = 'Toothpick';
 
-        $this->SessionsClass->set($key, $value);
+        $this->SessionClass->set($key, $value);
 
         $value2 = htmlspecialchars_decode($_SESSION[$key]);
         $new    = @unserialize($value2);
@@ -102,12 +102,12 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $key   = 'MolajoSessions';
+        $key   = 'MolajoSession';
         $value = 'Toothpick';
 
-        $this->SessionsClass->set($key, $value);
+        $this->SessionClass->set($key, $value);
 
-        $get = $this->SessionsClass->get($key);
+        $get = $this->SessionClass->get($key);
 
         $value2 = htmlspecialchars_decode($_SESSION[$key]);
         $new    = @unserialize($value2);
@@ -120,9 +120,9 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFail()
     {
-        $key = 'MolajoSessionsDoesNotExist';
+        $key = 'MolajoSessionDoesNotExist';
 
-        $this->SessionsClass->get($key);
+        $this->SessionClass->get($key);
     }
 
     /**
@@ -131,12 +131,12 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testDelete()
     {
-        $this->SessionsClass->set('MolajoSessions1', 'Toothpick 1');
-        $this->SessionsClass->set('MolajoSessions2', 'Toothpick 2');
-        $this->SessionsClass->set('MolajoSessions3', 'Toothpick 3');
+        $this->SessionClass->set('MolajoSession1', 'Toothpick 1');
+        $this->SessionClass->set('MolajoSession2', 'Toothpick 2');
+        $this->SessionClass->set('MolajoSession3', 'Toothpick 3');
 
-        $this->SessionsClass->delete('MolajoSessions3');
-        $this->SessionsClass->get('MolajoSessions3');
+        $this->SessionClass->delete('MolajoSession3');
+        $this->SessionClass->get('MolajoSession3');
     }
 
     /**
@@ -144,7 +144,7 @@ class UserSessionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testDestroy()
     {
-        $this->SessionsClass->destroy();
+        $this->SessionClass->destroy();
 
         $this->assertEquals('', session_id());
     }

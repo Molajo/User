@@ -10,6 +10,9 @@ namespace Molajo\User\Authorisation;
 
 defined('MOLAJO') or die;
 
+use Molajo\Foundation\Permissions\PermissionsInterface;
+use Molajo\User\Authorisation\AuthorisationInterface as UserAuthorisationInterface;
+
 use Exception;
 use Molajo\User\Exception\AuthorisationException;
 
@@ -21,33 +24,27 @@ use Molajo\User\Exception\AuthorisationException;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class Authorisation implements AuthorisationInterface
+Class Authorisation implements UserAuthorisationInterface
 {
     /**
      * Authorisation Class Object
      *
-     * @var     object
+     * @var     object  PermissionsInterface
      * @since   1.0
      */
-    public $authorisation_class;
+    public $permissions_class;
 
     /**
      * Construct
      *
-     * @param   object  $authorisation_class
+     * @param   object  $permissions_class
      *
      * @since   1.0
      * @throws  AuthorisationException
      */
-    public function __construct($authorisation_class)
+    public function __construct(PermissionsInterface $permissions_class)
     {
-        $this->authorisation_class = $authorisation_class;
-
-        if (class_exists($this->authorisation_class)) {
-        } else {
-            throw new AuthorisationException
-            ('User Authorisation Class ' . $this->authorisation_class . ' does not exist.');
-        }
+        $this->permissions_class = $permissions_class;
 
         return $this;
     }
@@ -64,9 +61,10 @@ Class Authorisation implements AuthorisationInterface
     public function verifyLogin($user_id)
     {
         try {
-            return $this->authorisation_class->verifyLogin($user_id);
+            return $this->permissions_class->verifyLogin($user_id);
 
         } catch (Exception $e) {
+
             throw new AuthorisationException
             ('Authorisation verifyLogin Failed ' . $e->getMessage());
         }
@@ -85,9 +83,31 @@ Class Authorisation implements AuthorisationInterface
     public function verifyTask($action, $catalog_id)
     {
         try {
-            return $this->authorisation_class->verifyTask($action, $catalog_id);
+            return $this->permissions_class->verifyTask($action, $catalog_id);
 
         } catch (Exception $e) {
+
+            throw new AuthorisationException
+            ('Authorisation verifyTask Failed ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Verify Task List
+     *
+     * @param   array   $actionlist
+     * @param   int     $catalog_id
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function verifyTaskList($actionlist = array(), $catalog_id = 0)
+    {
+        try {
+            return $this->permissions_class->verifyTaskList($actionlist, $catalog_id);
+
+        } catch (Exception $e) {
+
             throw new AuthorisationException
             ('Authorisation verifyTask Failed ' . $e->getMessage());
         }
@@ -107,9 +127,10 @@ Class Authorisation implements AuthorisationInterface
     public function verifyAction($view_group_id, $request_action, $catalog_id)
     {
         try {
-            return $this->authorisation_class->verifyAction($view_group_id, $request_action, $catalog_id);
+            return $this->permissions_class->verifyAction($view_group_id, $request_action, $catalog_id);
 
         } catch (Exception $e) {
+
             throw new AuthorisationException
             ('Authorisation verifyAction Failed ' . $e->getMessage());
         }
@@ -127,12 +148,11 @@ Class Authorisation implements AuthorisationInterface
     public function setHTMLFilter($key)
     {
         try {
-            return $this->authorisation_class->setHTMLFilter($key);
+            return $this->permissions_class->setHTMLFilter($key);
 
         } catch (Exception $e) {
             throw new AuthorisationException
             ('Authorisation setHTMLFilter Failed ' . $e->getMessage());
         }
     }
-
 }

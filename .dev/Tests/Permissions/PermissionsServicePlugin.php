@@ -6,8 +6,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Permissions;
-
+namespace Molajo\User\Permissions;
 
 use Molajo\Service\Type;
 

@@ -42,6 +42,17 @@ interface AuthorisationInterface
     public function verifyTask($action, $catalog_id);
 
     /**
+     * Verify Task List
+     *
+     * @param   string  $action
+     * @param   string  $catalog_id
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function verifyTaskList($actionlist = array(), $catalog_id = 0);
+
+    /**
      * Verify Action
      *
      * @param   string  $view_group_id

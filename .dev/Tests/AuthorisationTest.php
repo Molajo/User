@@ -1,6 +1,6 @@
 <?php
 /**
- * Test User Sessions
+ * Authorisation Test
  *
  * @package   Molajo
  * @copyright 2013 Amy Stephen. All rights reserved.
@@ -8,145 +8,92 @@
  */
 namespace Molajo\Tests;
 
-defined('MOLAJO') or die;
-
 use RuntimeException;
-use Molajo\User\Session\Session;
 
 /**
- * Test User Sessions
+ * Test User Authorisation
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-class UserSessionsTest extends \PHPUnit_Framework_TestCase
+class AuthorisationTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var $SessionsClass
+     * @var $PermissionClass
      */
-    protected $SessionsClass;
+    protected $PermissionClass;
+
+    /**
+     * @var $AuthorisationClass
+     */
+    protected $AuthorisationClass;
 
     /**
      * Set up
      */
     public function setUp()
     {
-        $class               = 'Molajo\\User\\Session\\Session';
-        $this->SessionsClass = new $class;
+        $class                    = 'Molajo\\Foundation\\Permissions\\Permissions';
+        $this->PermissionClass    = new $class;
+
+        $class                    = 'Molajo\\User\\Authorisation\\Authorisation';
+        $this->AuthorisationClass = new $class($this->PermissionClass) ;
 
         return;
     }
 
     /**
-     * @covers Molajo\User\Session\Session::start
+     * @covers Molajo\User\Authorisation\Authorisation::verifyLogin
      */
-    public function testStart()
+    public function testVerifyLogin()
     {
-        $started = $this->SessionsClass->start();
+        $id = 1;
+        $login = $this->AuthorisationClass->verifyLogin($id);
 
-        $this->assertEquals(session_id(), $started);
+        $this->assertEquals(true, $login);
     }
 
     /**
-     * @covers Molajo\User\Session\Session::start
+     * @covers Molajo\User\Authorisation\Authorisation::verifyTask
      */
-    public function testGetSessionId()
+    public function testVerifyTask()
     {
-        $id = $this->SessionsClass->getSessionId();
+        $actionList = array();
+        $actionList[] = 'read';
+        $actionList[] = 'write';
+        $actionList[] = 'update';
 
-        $this->assertEquals(session_id(), $id);
+        $task = $this->AuthorisationClass->verifyTask('view', 1);
+
+        $this->assertEquals(true, $task);
     }
 
     /**
-     * @covers Molajo\User\Session\Session::exists
+     * @covers Molajo\User\Authorisation\Authorisation::verifyTask
      */
-    public function testExists()
+    public function testVerifyActionTest()
     {
-        $key   = 'MolajoSessions';
-        $value = 'dogfood';
+        $view_group_id  = 1;
+        $request_action = 'read';
+        $catalog_id     = 1;
 
-        $_SESSION[$key] = $value;
+        $action = $this->AuthorisationClass->verifyAction($view_group_id, $request_action, $catalog_id);
 
-        $this->assertTrue($this->SessionsClass->exists($key));
+        $this->assertEquals(true, $action);
     }
 
     /**
-     * @covers Molajo\User\Session\Session::exists
+     * @covers Molajo\User\Authorisation\Authorisation::setHTMLFilter
      */
-    public function testExistsFalse()
+    public function testSetHTMLFilter()
     {
-        $key = 'MolajoSessions';
+        $key = 'MolajoAuthorisation';
 
-        $this->assertFalse($this->SessionsClass->exists($key));
-    }
+        $result = $this->AuthorisationClass->setHTMLFilter($key);
 
-    /**
-     * @covers Molajo\User\Session\Session::set
-     */
-    public function testSet()
-    {
-        $key   = 'MolajoSessions';
-        $value = 'Toothpick';
-
-        $this->SessionsClass->set($key, $value);
-
-        $value2 = htmlspecialchars_decode($_SESSION[$key]);
-        $new    = @unserialize($value2);
-        $this->assertEquals($value, $new);
-    }
-
-    /**
-     * @covers Molajo\User\Session\Session::get
-     */
-    public function testGet()
-    {
-        $key   = 'MolajoSessions';
-        $value = 'Toothpick';
-
-        $this->SessionsClass->set($key, $value);
-
-        $get = $this->SessionsClass->get($key);
-
-        $value2 = htmlspecialchars_decode($_SESSION[$key]);
-        $new    = @unserialize($value2);
-        $this->assertEquals($new, $get);
-    }
-
-    /**
-     * @covers Molajo\User\Session\Session::get
-     * @expectedException  Molajo\User\Exception\SessionException
-     */
-    public function testGetFail()
-    {
-        $key = 'MolajoSessionsDoesNotExist';
-
-        $this->SessionsClass->get($key);
-    }
-
-    /**
-     * @covers Molajo\User\Session\Session::delete
-     * @expectedException  Molajo\User\Exception\SessionException
-     */
-    public function testDelete()
-    {
-        $this->SessionsClass->set('MolajoSessions1', 'Toothpick 1');
-        $this->SessionsClass->set('MolajoSessions2', 'Toothpick 2');
-        $this->SessionsClass->set('MolajoSessions3', 'Toothpick 3');
-
-        $this->SessionsClass->delete('MolajoSessions3');
-        $this->SessionsClass->get('MolajoSessions3');
-    }
-
-    /**
-     * @covers Molajo\User\Session\Session::destroy
-     */
-    public function testDestroy()
-    {
-        $this->SessionsClass->destroy();
-
-        $this->assertEquals('', session_id());
+        $this->assertEquals(true, $result);
     }
 
     /**

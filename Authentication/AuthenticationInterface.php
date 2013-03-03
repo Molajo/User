@@ -22,7 +22,6 @@ use Molajo\User\Exception\AuthenticationException;
  */
 interface AuthenticationInterface
 {
-
     /** Credential key */
     const USERNAME = 0,
         PASSWORD   = 1;

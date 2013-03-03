@@ -6,23 +6,23 @@
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @license   MIT
  */
+
 namespace Molajo\User;
 
 defined('MOLAJO') or die;
 
 use Molajo\User\Exception\UserException;
-
-use Molajo\User\Adapter\UserInterface;
-
+use Molajo\User\Authentication\Authentication;
+use Molajo\User\Authorisation\Authorisation;
 /**
- * User Adapter
+ * User Class
  *
  * @package   Molajo
  * @license   MIT
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class Adapter implements UserInterface
+Class User implements UserInterface
 {
     /**
      * User Type

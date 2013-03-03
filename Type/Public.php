@@ -29,7 +29,8 @@ Class Public implements UserInterface
      * @var     string
      * @since   1.0
      */
-    public $action;
+    public
+    $action;
 
     /**
      * User Type
@@ -37,7 +38,8 @@ Class Public implements UserInterface
      * @var     string
      * @since   1.0
      */
-    public $user_type;
+    public
+    $user_type;
 
     /**
      * Options
@@ -45,7 +47,8 @@ Class Public implements UserInterface
      * @var     array
      * @since   1.0
      */
-    public $options;
+    public
+    $options;
 
     /**
      * Construct
@@ -57,7 +60,8 @@ Class Public implements UserInterface
      * @since   1.0
      * @throws UserException
      */
-    public function __construct($action = '', $user_type, $options = array())
+    public
+    function __construct($action = '', $user_type, $options = array())
     {
         $this->setAction($action);
         $this->setUserType($user_type);
@@ -72,7 +76,8 @@ Class Public implements UserInterface
      * @return  void
      * @since   1.0
      */
-    public function initialise()
+    public
+    function initialise()
     {
         return;
     }
@@ -83,7 +88,8 @@ Class Public implements UserInterface
      * @return  void
      * @since   1.0
      */
-    public function process()
+    public
+    function process()
     {
         return;
     }
@@ -94,7 +100,8 @@ Class Public implements UserInterface
      * @return  void
      * @since   1.0
      */
-    public function close()
+    public
+    function close()
     {
         return;
     }
@@ -107,7 +114,8 @@ Class Public implements UserInterface
      * @return  void
      * @since   1.0
      */
-    public function setAction($action)
+    public
+    function setAction($action)
     {
         $this->action = $action;
 
@@ -120,7 +128,8 @@ Class Public implements UserInterface
      * @return  string
      * @since   1.0
      */
-    public function getAction()
+    public
+    function getAction()
     {
         return $this->action;
     }
@@ -133,7 +142,8 @@ Class Public implements UserInterface
      * @return  void
      * @since   1.0
      */
-    public function setUserType($user_type)
+    public
+    function setUserType($user_type)
     {
         $this->user_type = $user_type;
 
@@ -146,7 +156,8 @@ Class Public implements UserInterface
      * @return  string
      * @since   1.0
      */
-    public function getUserType()
+    public
+    function getUserType()
     {
         return $this->user_type;
     }
@@ -159,7 +170,8 @@ Class Public implements UserInterface
      * @return  void
      * @since   1.0
      */
-    public function setOptions($options)
+    public
+    function setOptions($options)
     {
         $this->options = $options;
 
@@ -172,7 +184,8 @@ Class Public implements UserInterface
      * @return  array
      * @since   1.0
      */
-    public function getOptions()
+    public
+    function getOptions()
     {
         return $this->options;
     }

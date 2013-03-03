@@ -35,6 +35,7 @@ Class Authentication implements AuthenticationInterface
 
     /**
      * Performs an authentication.
+     *
      * @return Nette\Security\Identity
      * @throws Nette\Security\AuthenticationException
      */
@@ -43,7 +44,7 @@ Class Authentication implements AuthenticationInterface
         list($username, $password) = $credentials;
         $row = $this->database->table('users')->where('username', $username)->fetch();
 
-        if (!$row) {
+        if (! $row) {
             throw new Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
         }
 
@@ -56,18 +57,19 @@ Class Authentication implements AuthenticationInterface
     }
 
 
-
     /**
      * Computes salted password hash.
+     *
      * @param  string
+     *
      * @return string
      */
-    public static function calculateHash($password, $salt = NULL)
+    public static function calculateHash($password, $salt = null)
     {
         if ($password === Strings::upper($password)) { // perhaps caps lock is on
             $password = Strings::lower($password);
         }
-        return crypt($password, $salt ?: '$2a$07$' . Strings::random(22));
+        return crypt($password, $salt ? : '$2a$07$' . Strings::random(22));
     }
 
 

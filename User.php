@@ -199,7 +199,7 @@ Class User implements UserInterface
 
     protected $token = null;
 
-    var $remTime = 2592000;//One month
+    var $remTime = 2592000; //One month
     /**
      * The name of the cookie which we will use if user wants to be remembered by the system
      * var string
@@ -503,10 +503,12 @@ Class User implements UserInterface
 
         return $this->data;
     }
+
     /**
      * Find a user record by its ID
      *
      * @param $userID
+     *
      * @return mixed
      */
     public function findByID($userID)
@@ -518,6 +520,7 @@ Class User implements UserInterface
      * Get a user entity by its ID
      *
      * @param $userID
+     *
      * @return mixed
      * @throws \Exception
      */
@@ -536,6 +539,7 @@ Class User implements UserInterface
      * Find a user record by the email
      *
      * @param  string $email
+     *
      * @return mixed
      */
     public function findByEmail($email)
@@ -552,6 +556,7 @@ Class User implements UserInterface
      * Get a user entity by the email address
      *
      * @param  string     $email
+     *
      * @return mixed
      * @throws \Exception
      */
@@ -571,6 +576,7 @@ Class User implements UserInterface
      * Check if a user record exists by email address
      *
      * @param $email
+     *
      * @return bool
      */
     public function existsByEmail($email)
@@ -590,6 +596,7 @@ Class User implements UserInterface
      * Delete a user by their email address
      *
      * @param  string $email
+     *
      * @return mixed
      */
     public function deleteByEmail($email)
@@ -601,6 +608,7 @@ Class User implements UserInterface
      * Create a user record
      *
      * @param  array $userData
+     *
      * @return mixed
      */
     public function create(array $userData, $configSalt)
@@ -613,25 +621,26 @@ Class User implements UserInterface
     }
 
 
-
     /**
      * Check the authentication fields to make sure things auth properly
      *
      * @param string $email
      * @param string $password
      * @param string $configSalt
+     *
      * @return boolean
      */
-    function checkAuth($email, $password, $configSalt) {
+    function checkAuth($email, $password, $configSalt)
+    {
 
         $user = $this->findByEmail($email);
 
-        if(empty($user)) {
+        if (empty($user)) {
             return false;
         }
 
         $encPass = $this->saltPass($user['salt'], $configSalt, $password);
-        $row = $this->_conn->createQueryBuilder()
+        $row     = $this->_conn->createQueryBuilder()
             ->select('count(id) as total')
             ->from($this->getTableName(), 'u')
             ->andWhere('u.email = :email')
@@ -645,7 +654,8 @@ Class User implements UserInterface
     }
 
 
-    public function logoutAction() {
+    public function logoutAction()
+    {
         $this->getSession()->clear();
         $this->redirectToRoute('Homepage');
     }
@@ -655,42 +665,49 @@ Class User implements UserInterface
 
         $errors       = $missingFields = array();
         $post         = $this->post();
-        $requiredKeys = array('userTitle', 'userFirstName', 'userLastName', 'userEmail', 'userPassword', 'userConfirmPassword');
+        $requiredKeys = array(
+            'userTitle',
+            'userFirstName',
+            'userLastName',
+            'userEmail',
+            'userPassword',
+            'userConfirmPassword'
+        );
         $userStorage  = $this->getUserStorage();
 
         // Check for missing fields, or fields being empty.
-        foreach($requiredKeys as $field) {
-            if(!isset($post[$field]) || empty($post[$field])) {
+        foreach ($requiredKeys as $field) {
+            if (! isset($post[$field]) || empty($post[$field])) {
                 $missingFields[] = $field;
             }
         }
 
         // If any fields were missing, inform the client
-        if(!empty($missingFields)) {
+        if (! empty($missingFields)) {
             $errors[] = 'Missing fields';
             return $this->render('User:auth:signup.html.php', compact('errors'));
         }
 
         // Check if the user's passwords do not match
-        if($post['userPassword'] !== $post['userConfirmPassword']) {
+        if ($post['userPassword'] !== $post['userConfirmPassword']) {
             $errors[] = 'Passwords do not match';
             return $this->render('User:auth:signup.html.php', compact('errors'));
         }
 
         // Check if the user's email address already exists
-        if($userStorage->existsByEmail($post['userEmail'])) {
+        if ($userStorage->existsByEmail($post['userEmail'])) {
             $errors[] = 'That email address already exists';
             return $this->render('User:auth:signup.html.php', compact('errors'));
         }
 
         // Prepare user array for insertion
         $user = array(
-            'title'           => $post['userTitle'],
-            'email'           => $post['userEmail'],
-            'firstname'       => $post['userFirstName'],
-            'lastname'        => $post['userLastName'],
-            'password'        => $post['userPassword'],
-            'salt'            => base64_encode(openssl_random_pseudo_bytes(16))
+            'title'     => $post['userTitle'],
+            'email'     => $post['userEmail'],
+            'firstname' => $post['userFirstName'],
+            'lastname'  => $post['userLastName'],
+            'password'  => $post['userPassword'],
+            'salt'      => base64_encode(openssl_random_pseudo_bytes(16))
         );
 
         // Create the user
@@ -700,10 +717,12 @@ Class User implements UserInterface
         $activationCode = sha1(openssl_random_pseudo_bytes(16));
 
         // Insert an activation token for this user
-        $this->getUserActivationStorage()->create(array(
+        $this->getUserActivationStorage()->create(
+            array(
                 'user_id' => $newUserID,
                 'token'   => $activationCode
-            ));
+            )
+        );
 
         // Send the user's activation email
         $this->sendActivationEmail($user, $activationCode);
@@ -722,21 +741,20 @@ Class User implements UserInterface
         $userStorage  = $this->getUserStorage();
 
         // Check for missing fields, or fields being empty.
-        foreach($requiredKeys as $field) {
-            if(!isset($post[$field]) || empty($post[$field])) {
+        foreach ($requiredKeys as $field) {
+            if (! isset($post[$field]) || empty($post[$field])) {
                 $missingFields[] = $field;
             }
         }
 
         // If any fields were missing, inform the client
-        if(!empty($missingFields)) {
+        if (! empty($missingFields)) {
             $errors[] = 'Missing fields';
             return $this->render('User:auth:login.html.php', compact('errors'));
         }
 
         // Lets try to authenticate the user
-        if(!$userStorage->checkAuth($post['userEmail'], $post['userPassword'], $this->getConfigSalt()))
-        {
+        if (! $userStorage->checkAuth($post['userEmail'], $post['userPassword'], $this->getConfigSalt())) {
             $errors[] = 'Login Invalid';
             return $this->render('User:auth:login.html.php', compact('errors'));
         }
@@ -745,7 +763,7 @@ Class User implements UserInterface
         $userEntity = $userStorage->getByEmail($post['userEmail']);
 
         // Check if user is activated
-        if(!$this->getUserActivationStorage()->isActivated($userEntity->getID())) {
+        if (! $this->getUserActivationStorage()->isActivated($userEntity->getID())) {
             $errors[] = 'Account not activated';
             return $this->render('User:auth:login.html.php', compact('errors'));
         }
@@ -767,14 +785,14 @@ Class User implements UserInterface
         $us       = $this->getUserStorage();
 
         // Check for missing field
-        if(empty($email)) {
-            $response['status'] = 'E_MISSING_FIELD';
+        if (empty($email)) {
+            $response['status']      = 'E_MISSING_FIELD';
             $response['error_value'] = 'email';
             $this->renderJsonResponse($response);
         }
 
         // Check if user record does not exist
-        if(!$us->existsByEmail($email)) {
+        if (! $us->existsByEmail($email)) {
             $response['status'] = 'E_MISSING_RECORD';
             $this->renderJsonResponse($response);
         }
@@ -783,10 +801,12 @@ Class User implements UserInterface
         $forgotToken = sha1(openssl_random_pseudo_bytes(16));
 
         // Insert a forgot token for this user
-        $this->getUserForgotStorage()->create(array(
+        $this->getUserForgotStorage()->create(
+            array(
                 'user_id' => $forgotUser->getID(),
                 'token'   => $forgotToken
-            ));
+            )
+        );
 
         // Lets send the user forgotpw email
         $this->sendForgotPWEmail($forgotUser, $forgotToken);
@@ -801,10 +821,10 @@ Class User implements UserInterface
     {
 
         $token = $this->getRouteParam('token');
-        $fs = $this->getUserForgotStorage();
+        $fs    = $this->getUserForgotStorage();
 
         // If the user has not activated their token before, activate it!
-        if(!$fs->isUserActivatedByToken($token)) {
+        if (! $fs->isUserActivatedByToken($token)) {
 
             $fs->useToken($token);
 
@@ -821,52 +841,56 @@ Class User implements UserInterface
         $this->redirectToRoute('User_Signup');
     }
 
-    public function forgotpwsaveAction() {
+    public function forgotpwsaveAction()
+    {
 
-        $post          = $this->post();
-        $requiredKeys  = array('password', 'confirm_password', 'csrf');
+        $post         = $this->post();
+        $requiredKeys = array('password', 'confirm_password', 'csrf');
 
         // Check for missing fields, or fields being empty.
-        foreach($requiredKeys as $field) {
-            if(!isset($post[$field]) || empty($post[$field])) {
+        foreach ($requiredKeys as $field) {
+            if (! isset($post[$field]) || empty($post[$field])) {
                 $missingFields[] = $field;
             }
         }
 
         // If any fields were missing, inform the client
-        if(!empty($missingFields)) {
-            $response['status']       = 'E_MISSING_FIELD';
-            $response['error_value']  = implode(',', $missingFields);
+        if (! empty($missingFields)) {
+            $response['status']      = 'E_MISSING_FIELD';
+            $response['error_value'] = implode(',', $missingFields);
             $this->renderJsonResponse($response);
         }
 
         // Check if both passwords match
-        if($post['password'] !== $post['confirm_password']) {
+        if ($post['password'] !== $post['confirm_password']) {
             $response['status'] = 'E_PASSWORD_MISMATCH';
             $this->renderJsonResponse($response);
         }
 
         // Check for csrf protection
         $csrf = $this->session('forgotpw_csrf');
-        if(empty($csrf) || $csrf !== $post['csrf']) {
+        if (empty($csrf) || $csrf !== $post['csrf']) {
             $response['status'] = 'E_INVALID_CSRF';
             $this->renderJsonResponse($response);
         }
 
         // Get the user record out of the session token
         $token = $this->session('forgotpw_token');
-        if(empty($token)) {
+        if (empty($token)) {
             $response['status'] = 'E_MISSING_TOKEN';
             $this->renderJsonResponse($response);
         }
 
         // Get user entity from the userID on the token row
-        $us = $this->getUserStorage();
+        $us         = $this->getUserStorage();
         $userEntity = $us->getByID($this->getUserForgotStorage()->getByToken($token)->getUserID());
 
         // Update the user's password
         $this->getUserStorage()->updatePassword(
-            $userEntity->getID(), $userEntity->getSalt(), $this->getConfigSalt(), $post['password']
+            $userEntity->getID(),
+            $userEntity->getSalt(),
+            $this->getConfigSalt(),
+            $post['password']
         );
 
         // Wipe session values clean
@@ -883,13 +907,14 @@ Class User implements UserInterface
     /**
      * Activation action. Active the user's account
      */
-    public function activateAction() {
+    public function activateAction()
+    {
 
         $token = $this->getRouteParam('token');
-        $uas = $this->getUserActivationStorage();
+        $uas   = $this->getUserActivationStorage();
 
         // If the user has not activated their token before, activate it!
-        if(!$uas->isUserActivatedByToken($token)) {
+        if (! $uas->isUserActivatedByToken($token)) {
             $uas->activateUser($token);
         }
 
@@ -903,10 +928,11 @@ Class User implements UserInterface
      * @param \User\Entity\User $toUser
      * @param string            $activationCode
      */
-    protected function sendActivationEmail($toUser, $activationCode) {
+    protected function sendActivationEmail($toUser, $activationCode)
+    {
 
         $fromUser = new UserEntity($this->getEmailConfig());
-        $toUser = new UserEntity($toUser);
+        $toUser   = new UserEntity($toUser);
 
         // Generate the activation link from the route key
         $activationLink = $this->generateUrl('User_Activate', array('token' => $activationCode), true);
@@ -926,14 +952,16 @@ Class User implements UserInterface
      *
      * @param \User\Entity\User|array $toUser
      * @param string                  $activationCode
+     *
      * @return void
      */
-    protected function sendForgotPWEmail($toUser, $forgotToken) {
+    protected function sendForgotPWEmail($toUser, $forgotToken)
+    {
 
         // User entity preparation
         $fromUser = new UserEntity($this->getEmailConfig());
-        if(is_array($toUser)) {
-            $toUser   = new UserEntity($toUser);
+        if (is_array($toUser)) {
+            $toUser = new UserEntity($toUser);
         }
 
         // Generate the activation link from the route key

@@ -15,7 +15,6 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Molajo\User\Cookies\Cookies::exists
-     * @todo   Implement testInitialise().
      */
     public function setUp()
     {
@@ -27,7 +26,7 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Molajo\User\Cookies\Cookies::exists
      */
-    public function testSet()
+    public function testExists()
     {
         $parameters = array();
 
@@ -47,18 +46,42 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
         $parameters['httponly'] = $httponly;
 
         $key = 'MolajoCookie';
-        $value = 'Toothpick';
+        $value = 'dogfood';
 
-        $set = $this->cookiesClass->set($key, $value, $parameters);
-        var_dump($set);
-        die;
+        $_COOKIE[$key] = $value;
 
-        $this->assertEquals($set, $set);
+        $this->assertTrue($this->cookiesClass->exists($key));
     }
 
+    /**
+     * @covers Molajo\User\Cookies\Cookies::exists
+     */
+    public function testExistsFalse()
+    {
+        $parameters = array();
+
+        $expire = 60 * 60 * 60;
+        $parameters['expire'] = time() + $expire;
+
+        $path = '';
+        $parameters['path'] = $path;
+
+        $domain = '';
+        $parameters['domain'] = $domain;
+
+        $secure = 0;
+        $parameters['secure'] = $secure;
+
+        $httponly = 0;
+        $parameters['httponly'] = $httponly;
+
+        $key = 'MolajoCookie';
+
+        $this->assertFalse($this->cookiesClass->exists($key));
+    }
 
     /**
-     * @covers Molajo\User\Cookies\Cookies::testSet
+     * @covers Molajo\User\Cookies\Cookies::set
      */
     public function testSet()
     {
@@ -84,7 +107,105 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
 
         $set = $this->cookiesClass->set($key, $value, $parameters);
 
-        $this->assertEquals($set, $set);
+        $value2 = htmlspecialchars_decode($_COOKIE[$key]);
+        $new = @unserialize($value2);
+        $this->assertEquals($value, $new);
+    }
+
+    /**
+     * @covers Molajo\User\Cookies\Cookies::get
+     */
+    public function testGet()
+    {
+        $parameters = array();
+
+        $expire = 60 * 60 * 60;
+        $parameters['expire'] = time() + $expire;
+
+        $path = '';
+        $parameters['path'] = $path;
+
+        $domain = '';
+        $parameters['domain'] = $domain;
+
+        $secure = 0;
+        $parameters['secure'] = $secure;
+
+        $httponly = 0;
+        $parameters['httponly'] = $httponly;
+
+        $key = 'MolajoCookie';
+        $value = 'Toothpick';
+
+        $set = $this->cookiesClass->set($key, $value, $parameters);
+
+        $get = $this->cookiesClass->get($key);
+
+        $value2 = htmlspecialchars_decode($_COOKIE[$key]);
+        $new = @unserialize($value2);
+        $this->assertEquals($value, $get);
+    }
+
+    /**
+     * @covers Molajo\User\Cookies\Cookies::get
+     * @expectedException  Molajo\User\Exception\CookiesException
+     */
+    public function testGetFail()
+    {
+        $parameters = array();
+
+        $expire = 60 * 60 * 60;
+        $parameters['expire'] = time() + $expire;
+
+        $path = '';
+        $parameters['path'] = $path;
+
+        $domain = '';
+        $parameters['domain'] = $domain;
+
+        $secure = 0;
+        $parameters['secure'] = $secure;
+
+        $httponly = 0;
+        $parameters['httponly'] = $httponly;
+
+        $key = 'MolajoCookieDoesNotExist';
+
+        $get = $this->cookiesClass->get($key);
+    }
+
+    /**
+     * @covers Molajo\User\Cookies\Cookies::delete
+     * @expectedException  Molajo\User\Exception\CookiesException
+     */
+    public function testDelete()
+    {
+        $parameters = array();
+
+        $expire = 60 * 60 * 60;
+        $parameters['expire'] = time() + $expire;
+
+        $path = '';
+        $parameters['path'] = $path;
+
+        $domain = '';
+        $parameters['domain'] = $domain;
+
+        $secure = 0;
+        $parameters['secure'] = $secure;
+
+        $httponly = 0;
+        $parameters['httponly'] = $httponly;
+
+        $key = 'MolajoCookie';
+        $value = 'Toothpick';
+
+        $this->cookiesClass->set('MolajoCookie1', $value, $parameters);
+        $this->cookiesClass->set('MolajoCookie2', $value, $parameters);
+        $this->cookiesClass->set('MolajoCookie3', $value, $parameters);
+
+        $this->cookiesClass->delete('MolajoCookie3');
+        $this->cookiesClass->get('MolajoCookie3');
     }
 
     /**

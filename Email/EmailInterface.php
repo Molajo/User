@@ -27,6 +27,7 @@ interface UserEmailInterface
      * @param \User\Entity\User $to
      * @param string            $subject
      * @param string            $emailContent
+     *
      * @return mixed
      */
     public function sendEmail();

@@ -28,6 +28,7 @@ Class Password extends User implements PasswordInterface
      * @param string $configSalt
      * @param string $userEmail
      * @param string $password
+     *
      * @return bool
      */
     public function verifyPassword($userSalt, $configSalt, $userEmail, $password)
@@ -57,7 +58,8 @@ Class Password extends User implements PasswordInterface
      * @param $configSalt
      * @param $password
      */
-    public function updatePassword($userID, $userSalt, $configSalt, $password) {
+    public function updatePassword($userID, $userSalt, $configSalt, $password)
+    {
         $this->update(
             array('password' => $this->saltPass($userSalt, $configSalt, $password)),
             array('id' => $userID)
@@ -70,9 +72,11 @@ Class Password extends User implements PasswordInterface
      * @param string $userSalt
      * @param string $configSalt
      * @param string $pass
+     *
      * @return string
      */
-    function saltPass($userSalt, $configSalt, $pass) {
+    function saltPass($userSalt, $configSalt, $pass)
+    {
         return sha1($userSalt . $configSalt . $pass);
     }
 

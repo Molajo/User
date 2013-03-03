@@ -1,6 +1,6 @@
 <?php
 /**
- * Cookies Interface
+ * Cookies Class
  *
  * @package   Molajo
  * @copyright 2013 Amy Stephen. All rights reserved.
@@ -13,7 +13,7 @@ defined('MOLAJO') or die;
 use Molajo\User\Exception\CookiesException;
 
 /**
- * Cookies Interface
+ * Cookies Class
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
@@ -70,7 +70,7 @@ class Cookies implements CookiesInterface
         if (isset($parameters['path'])) {
             $path = $parameters['path'];
         }
-        $path               = (string)$path;
+        $path = (string)$path;
         if ($path == '/') {
             $path = '/';
         }

@@ -11,7 +11,6 @@ namespace Molajo\User;
 use Molajo\Service\Type;
 
 
-
 defined('MOLAJO') or die;
 
 /**

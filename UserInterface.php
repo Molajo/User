@@ -4,77 +4,164 @@
  *
  * @package   Molajo
  * @copyright 2013 Amy Stephen. All rights reserved.
- * @license   MIT
+ * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\User\Adapter;
+namespace Molajo\User;
 
 defined('MOLAJO') or die;
+
+use Molajo\User\Exception\UserException;
 
 /**
  * User Interface
  *
  * @package   Molajo
- * @license   MIT
+ * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
 interface UserInterface
 {
     /**
-     * Retrieve User Data
+     * Verify authorisation
      *
-     * @return  void
+     * @param   array  $request
+     *
+     * @return  bool
      * @since   1.0
+     * @throws  UserException
      */
-    public function getUser();
+    public function isAuthenticated(array $request = array());
 
     /**
-     * Registration
+     * Set Authenticated
      *
-     * @return  void
+     * @param   int  $user
+     *
+     * @return  bool
      * @since   1.0
+     * @throws  UserException
      */
-    public function register();
+    public function setAuthenticated($user = null);
 
     /**
-     * Authentication
+     * Get Authenticated
      *
-     * @return  void
+     * @param   int  $user
+     *
+     * @return  bool
      * @since   1.0
+     * @throws  UserException
      */
-    public function authenticate();
+    public function getAuthenticated($user = null);
 
     /**
-     * Authorisation
+     * Verify logged in status
      *
-     * @return  void
+     * @param   array  $request
+     *
+     * @return  bool
      * @since   1.0
+     * @throws  UserException
      */
-    public function authorise();
+    public function isLoggedIn(array $request = array());
 
     /**
-     * Get Session
+     * Log User in
      *
-     * @return  void
+     * @param   int  $user
+     *
+     * @return  bool
      * @since   1.0
+     * @throws  UserException
      */
-    public function getSession();
+    public function login($id = null, $password = null);
 
     /**
-     * Get Cookie
+     * Enables log out after inactivity.
      *
-     * @return  void
-     * @since   1.0
+     * @param  string|int|DateTime number of seconds or timestamp
+     * @param                      bool   log out when the browser is closed?
+     * @param                      bool   clear the identity from persistent storage?
+     *
+     * @return User  provides a fluent interface
      */
-    public function getCookie();
-
+    public function setExpiration($time, $whenBrowserIsClosed = true, $clearIdentity = false);
 
     /**
-     * Get Csrf Token
+     * Log User out
+     *
+     * @param   int  $user
+     *
+     * @return  bool
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function logout($user = null);
+
+    /**
+     * Get user data
+     *
+     * @param   int  $user
+     *
+     * @return  bool
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function getUserData($user = null);
+
+    /**
+     * Set user data
+     *
+     * @param   int  $user
+     *
+     * @return  bool
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function setUserData($user_id = 0);
+
+    /**
+     * Verify authorisation
+     *
+     * @param   array  $request
+     *
+     * @return  bool
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function isAuthorised(array $request = array());
+
+    /**
+     * Set Applications
+     *
+     * @param   array  $applications
      *
      * @return  void
      * @since   1.0
+     * @throws  UserException
      */
-    public function getToken();
+    public function setApplications(array $applications = array());
 
+    /**
+     * Set Extensions
+     *
+     * @param   array  $extensions
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function setExtensions(array $extensions = array());
+
+    /**
+     * Set Groups
+     *
+     * @param   array  $groups
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function setGroups(array $groups = array());
 }

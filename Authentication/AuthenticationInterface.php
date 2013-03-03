@@ -6,9 +6,11 @@
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\Service\Adapter;
+namespace Molajo\User\Authentication;
 
 defined('MOLAJO') or die;
+
+use Molajo\User\Exception\AuthenticationException;
 
 /**
  * Authentication Interface
@@ -23,13 +25,13 @@ interface AuthenticationInterface
 
     /** Credential key */
     const USERNAME = 0,
-        PASSWORD = 1;
+        PASSWORD   = 1;
 
     /** Exception error code */
-    const NOT_FOUND = 1,
+    const NOT_FOUND      = 1,
         INVALID_PASSWORD = 2,
-        BLOCK = 3,
-        NOT_ACTIVATED = 4;
+        BLOCK            = 3,
+        NOT_ACTIVATED    = 4;
 
     /**
      * Authenticate

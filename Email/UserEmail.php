@@ -7,7 +7,7 @@ use User\Entity\User as UserEntity;
 class Email
 {
 
-    public function __construct()
+    public function __construct($parameters)
     {
 
     }
@@ -33,6 +33,48 @@ class Email
             ->setBody($emailContent, 'text/html');
 
         return $mailer->send($message);
+
+    }
+
+    /**
+     * Set parameter Value
+     *
+     * @param   string  $key
+     * @param   null    $value
+     *
+     * @return  mixed
+     * @throws  AuthorisationException
+     * @since   1.0
+     */
+    public function set($key, $value = null)
+    {
+
+    }
+
+    /**
+     * Get parameters value
+     *
+     * @param   string  $key
+     * @param   null    $value
+     *
+     * @return  mixed
+     * @throws  AuthorisationException
+     * @since   1.0
+     */
+    public function get($key, $default = null)
+    {
+
+    }
+
+    /**
+     * Send email
+     *
+     * @return  mixed
+     * @throws  AuthorisationException
+     * @since   1.0
+     */
+    public function send()
+    {
 
     }
 

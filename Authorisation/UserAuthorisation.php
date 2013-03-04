@@ -11,7 +11,6 @@ namespace Molajo\User\Authorisation;
 defined('MOLAJO') or die;
 
 use Molajo\Foundation\Permissions\PermissionsInterface;
-use Molajo\User\Authorisation\AuthorisationInterface as UserAuthorisationInterface;
 
 use Exception;
 use Molajo\User\Exception\AuthorisationException;

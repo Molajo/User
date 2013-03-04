@@ -44,20 +44,56 @@ interface AuthenticationInterface
     public function authenticate(array $credentials);
 
     /**
-     * Get User
+     * Verify User Logged In Status
      *
-     * @return  object  UserInterface
-     * @since   1.0
-     * @throws  AuthenticationException
-     */
-    public function getUser();
-
-    /**
-     * Destroy
+     * getAuthenticated
+     * checkExpiration
+     * setCookies
+     * Load Userdata from Session
      *
      * @return  bool
      * @since   1.0
      * @throws  AuthenticationException
      */
-    public function destroy();
+    public function isLoggedIn();
+
+    /**
+     * Login User
+     *
+     * - verifyAccess
+     *
+     * setAuthenticated
+     * setExpiration
+     * getUserData
+     * Session
+     *
+     * @param   int  $user_id
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  AuthenticationException
+     */
+    public function login($credentials);
+
+    /**
+     * Get user data
+     *
+     * @param   int  $user
+     *
+     * @return  bool
+     * @since   1.0
+     * @throws  AuthenticationException
+     */
+    public function getUserData($user = null);
+
+    /**
+     * Logout User
+     *
+     * @param   bool  $key
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  AuthenticationException
+     */
+    public function logout();
 }

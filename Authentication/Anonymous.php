@@ -6,23 +6,19 @@
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\Service\Adapter;
+namespace Molajo\User\Authentication;
 
 defined('MOLAJO') or die;
 
+use Molajo\User\Exception\Authentication;
+
 /**
- * Authentication Interface
+ * Anonymous Authentication Interface
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
- *
- * Anonymous
- * User
- * RememberMe
- * Http
- *
  */
 class Anonymous extends Authentication implements AuthenticationInterface
 {
@@ -36,30 +32,6 @@ class Anonymous extends Authentication implements AuthenticationInterface
      * @throws  AuthenticationException
      */
     public function authenticate(array $credentials)
-    {
-
-    }
-
-    /**
-     * Get User
-     *
-     * @return  object  UserInterface
-     * @since   1.0
-     * @throws  AuthenticationException
-     */
-    public function getUser()
-    {
-
-    }
-
-    /**
-     * Destroy
-     *
-     * @return  bool
-     * @since   1.0
-     * @throws  AuthenticationException
-     */
-    public function destroy()
     {
 
     }

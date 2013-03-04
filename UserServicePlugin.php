@@ -1,6 +1,6 @@
 <?php
 /**
- * User Service Plugin
+ * User Injection
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
@@ -8,11 +8,11 @@
  */
 namespace Molajo\User;
 
-use Molajo\Service\Type;
-
-
 defined('MOLAJO') or die;
 
+use Molajo\User\Exception\UserException;
+
+use Molajo\User\Type\UserType;
 /**
  * User Service Plugin
  *
@@ -21,8 +21,16 @@ defined('MOLAJO') or die;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class UserPlugin extends ServicesPlugin
+Class UserInjection
 {
+    /**
+     * UserType Interface
+     *
+     * @var     object  UserTypeInterface
+     * @since   1.0
+     */
+    public $user_type;
+
     /**
      * on Before Startup Event
      *
@@ -33,10 +41,34 @@ Class UserPlugin extends ServicesPlugin
      */
     public function onBeforeServiceInitialise()
     {
+        $$this->getUserType();
+
         if ($this->service_class_instance->get('id', 0) == 0) {
             //$this->service_class_instance->set('id', Services::Session()->get('Userid'));
             $this->service_class_instance->set('id', 1);
         }
+    }
+
+    /**
+     * Get the User Type (ex., Local, Ftp, Virtual, etc.)
+     *
+     * @param string $user_type
+     *
+     * @return string
+     * @since   1.0
+     * @throws UserException
+     */
+    protected function getUserType($user_type)
+    {
+        $class = 'Molajo\\User\\Type\\' . $user_type;
+
+        if (class_exists($class)) {
+        } else {
+            throw new UserException
+            ('User Type Class ' . $class . ' does not exist.');
+        }
+
+        return $class;
     }
 
     /**

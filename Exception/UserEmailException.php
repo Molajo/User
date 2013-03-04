@@ -1,6 +1,6 @@
 <?php
 /**
- * Email Exception
+ * User Email Exception
  *
  * @package   Molajo
  * @copyright 2013 Amy Stephen. All rights reserved.
@@ -13,14 +13,14 @@ defined('MOLAJO') or die;
 use RuntimeException;
 
 /**
- * Email Exception
+ * User Email Exception
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-class EmailException extends RuntimeException implements UserExceptionInterface
+class UserEmailException extends RuntimeException implements UserExceptionInterface
 {
 
 }

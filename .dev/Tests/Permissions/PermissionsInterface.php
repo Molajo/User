@@ -133,6 +133,8 @@ interface PermissionsInterface
     /**
      * Determines if User Content must be filtered
      *
+     * @param   string  $key
+     *
      * Example usage:
      * $userHTMLFilter = Services::Permissions()->setHTMLFilter();
      *
@@ -143,5 +145,5 @@ interface PermissionsInterface
      * @return  bool
      * @since   1.0
      */
-    public function setHTMLFilter();
+    public function setHTMLFilter($key);
 }

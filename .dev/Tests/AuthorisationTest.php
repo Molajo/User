@@ -38,62 +38,70 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
         $class                    = 'Molajo\\Foundation\\Permissions\\Permissions';
         $this->PermissionClass    = new $class;
 
-        $class                    = 'Molajo\\User\\Authorisation\\Authorisation';
+        $class                    = 'Molajo\\User\\Authorisation\\UserAuthorisation';
         $this->AuthorisationClass = new $class($this->PermissionClass) ;
 
         return;
     }
 
     /**
-     * @covers Molajo\User\Authorisation\Authorisation::verifyLogin
+     * @covers Molajo\User\Authorisation\UserAuthorisation::verifyLogin
      */
     public function testVerifyLogin()
     {
         $id = 1;
-        $login = $this->AuthorisationClass->verifyLogin($id);
+        $request = array();
+        $request['user_id'] = $id;
+        $request['method'] = 'login';
 
-        $this->assertEquals(true, $login);
+        $results = $this->AuthorisationClass->isAuthorised($request);
+
+        $this->assertEquals(true, $results);
     }
 
     /**
-     * @covers Molajo\User\Authorisation\Authorisation::verifyTask
+     * @covers Molajo\User\Authorisation\UserAuthorisation::verifyTask
      */
     public function testVerifyTask()
     {
-        $actionList = array();
-        $actionList[] = 'read';
-        $actionList[] = 'write';
-        $actionList[] = 'update';
+        $request = array();
+        $request['method'] = 'task';
+        $request['action'] = 'view';
+        $request['catalog_id'] = 1;
 
-        $task = $this->AuthorisationClass->verifyTask('view', 1);
+        $results = $this->AuthorisationClass->isAuthorised($request);
 
-        $this->assertEquals(true, $task);
+        $this->assertEquals(true, $results);
     }
 
     /**
-     * @covers Molajo\User\Authorisation\Authorisation::verifyTask
+     * @covers Molajo\User\Authorisation\UserAuthorisation::verifyTask
      */
     public function testVerifyActionTest()
     {
-        $view_group_id  = 1;
-        $request_action = 'read';
-        $catalog_id     = 1;
+        $request = array();
+        $request['method'] = 'action';
+        $request['view_group_id'] = 1;
+        $request['request_action'] = 'read';
+        $request['catalog_id'] = 1;
 
-        $action = $this->AuthorisationClass->verifyAction($view_group_id, $request_action, $catalog_id);
+        $results = $this->AuthorisationClass->isAuthorised($request);
 
-        $this->assertEquals(true, $action);
+        $this->assertEquals(true, $results);
     }
 
     /**
-     * @covers Molajo\User\Authorisation\Authorisation::setHTMLFilter
+     * @covers Molajo\User\Authorisation\UserAuthorisation::setHTMLFilter
      */
     public function testSetHTMLFilter()
     {
-        $key = 'MolajoAuthorisation';
+        $request = array();
+        $request['method'] = 'htmlfilter';
+        $request['key'] = 'MolajoAuthorisation';
 
-        $result = $this->AuthorisationClass->setHTMLFilter($key);
+        $results = $this->AuthorisationClass->isAuthorised($request);
 
-        $this->assertEquals(true, $result);
+        $this->assertEquals(true, $results);
     }
 
     /**

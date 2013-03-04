@@ -23,7 +23,7 @@ use Molajo\User\Exception\AuthorisationException;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class Authorisation implements UserAuthorisationInterface
+Class UserAuthorisation implements UserAuthorisationInterface
 {
     /**
      * Authorisation Class Object
@@ -49,17 +49,80 @@ Class Authorisation implements UserAuthorisationInterface
     }
 
     /**
+     * Determines if User is Authorised for specific action
+     *
+     * @param   array  $request
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  AuthorisationException
+     */
+    public function isAuthorised(array $request = array())
+    {
+        if (is_array($request) && count($request) > 0) {
+        } else {
+            throw new AuthorisationException
+            ('Authorisation isAuthorised Failed. Input $request array is empty.');
+        }
+
+        if (isset($request['method'])) {
+            $method = strtolower($request['method']);
+
+        } else {
+            throw new AuthorisationException
+            ('Authorisation isAuthorised Failed. Input $request array missing method entry.');
+        }
+
+        try {
+
+            if ($method == 'login') {
+                return $this->verifyLogin($request);
+
+            } elseif ($method == 'task') {
+                return $this->verifyTask($request);
+
+            } elseif ($method == 'tasklist') {
+                return $this->verifyTasklist($request);
+
+            } elseif ($method == 'action') {
+                return $this->verifyAction($request);
+
+            } elseif ($method == 'htmlfilter') {
+                return $this->setHTMLFilter($request);
+
+            } else {
+                throw new AuthorisationException
+                ('Authorisation Unknown Method: ' . $method);
+            }
+
+        } catch (Exception $e) {
+            throw new AuthorisationException
+            ('Authorisation setHTMLFilter Failed ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Verify Logon
      *
-     * @param   int  $user_id
+     * @param   array  $request
      *
      * @return  bool
      * @since   1.0
      * @throws  AuthorisationException
      */
-    public function verifyLogin($user_id)
+    protected function verifyLogin(array $request = array())
     {
+        if (isset($request['user_id'])) {
+            $user_id = strtolower($request['user_id']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation verifyLogin Failed $user_id not provided');
+        }
+
         try {
+
             return $this->permissions_class->verifyLogin($user_id);
 
         } catch (Exception $e) {
@@ -79,8 +142,26 @@ Class Authorisation implements UserAuthorisationInterface
      * @since   1.0
      * @throws  AuthorisationException
      */
-    public function verifyTask($action, $catalog_id)
+    protected function verifyTask(array $request = array())
     {
+        if (isset($request['action'])) {
+            $action = strtolower($request['action']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation verifyLogin Failed $action not provided');
+        }
+
+        if (isset($request['catalog_id'])) {
+            $catalog_id = strtolower($request['catalog_id']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation verifyLogin Failed $catalog_id not provided');
+        }
+
         try {
             return $this->permissions_class->verifyTask($action, $catalog_id);
 
@@ -99,9 +180,28 @@ Class Authorisation implements UserAuthorisationInterface
      *
      * @return  mixed
      * @since   1.0
+     * @throws  AuthorisationException
      */
-    public function verifyTaskList($actionlist = array(), $catalog_id = 0)
+    protected function verifyTaskList(array $request = array())
     {
+        if (isset($request['action'])) {
+            $actionlist = strtolower($request['action']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation verifyLogin Failed $action not provided');
+        }
+
+        if (isset($request['catalog_id'])) {
+            $catalog_id = strtolower($request['catalog_id']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation verifyLogin Failed $catalog_id not provided');
+        }
+
         try {
             return $this->permissions_class->verifyTaskList($actionlist, $catalog_id);
 
@@ -123,8 +223,35 @@ Class Authorisation implements UserAuthorisationInterface
      * @since   1.0
      * @throws  AuthorisationException
      */
-    public function verifyAction($view_group_id, $request_action, $catalog_id)
+    protected function verifyAction(array $request = array())
     {
+        if (isset($request['view_group_id'])) {
+            $view_group_id = strtolower($request['view_group_id']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation verifyAction Failed $view_group_id not provided');
+        }
+
+        if (isset($request['request_action'])) {
+            $request_action = strtolower($request['request_action']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation verifyAction Failed $request_action not provided');
+        }
+
+        if (isset($request['catalog_id'])) {
+            $catalog_id = strtolower($request['catalog_id']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation verifyAction Failed $catalog_id not provided');
+        }
+
         try {
             return $this->permissions_class->verifyAction($view_group_id, $request_action, $catalog_id);
 
@@ -138,14 +265,23 @@ Class Authorisation implements UserAuthorisationInterface
     /**
      * Determines if User Content must be filtered
      *
-     * @param   bool  $key
+     * @param   string  $key
      *
      * @return  mixed
      * @since   1.0
      * @throws  AuthorisationException
      */
-    public function setHTMLFilter($key)
+    protected function setHTMLFilter(array $request = array())
     {
+        if (isset($request['key'])) {
+            $key = strtolower($request['key']);
+
+        } else {
+
+            throw new AuthorisationException
+            ('Authorisation setHTMLFilter Failed $key not provided');
+        }
+
         try {
             return $this->permissions_class->setHTMLFilter($key);
 

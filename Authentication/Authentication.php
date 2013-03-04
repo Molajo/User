@@ -1,5 +1,7 @@
 <?php
 /**
+ * Authentication Anonymous
+ *
  * @package   Molajo
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
@@ -8,16 +10,39 @@ namespace Molajo\User\Authentication;
 
 defined('MOLAJO') or die;
 
+use Molajo\User\Exception\AuthenticationException;
+
 /**
- * Authentication
+ * Anonymous Authentication Interface
  *
- * @package     Molajo
- * @subpackage  Services
- * @since       1.0
+ * @package   Molajo
+ * @license   http://www.opensource.org/licenses/mit-license.html MIT License
+ * @copyright 2013 Amy Stephen. All rights reserved.
+ * @since     1.0
  */
 Class Authentication implements AuthenticationInterface
 {
-    /** @var array */
+    /**
+     * Authenticate
+     *
+     * @param   array $credentials
+     *
+     * @return  bool
+     * @since   1.0
+     * @throws  AuthenticationException
+     */
+    public function authenticate(array $credentials)
+    {
+
+    }
+
+    /**
+     * Credentials
+     *
+     * @param   array $credentials
+     *
+     * @since   1.0
+     */
     protected $credentials;
 
     /**
@@ -25,7 +50,6 @@ Class Authentication implements AuthenticationInterface
      *
      * @param   array  $credentials
      *
-     * @return  bool
      * @since   1.0
      */
     public function __construct(array $credentials)
@@ -34,10 +58,13 @@ Class Authentication implements AuthenticationInterface
     }
 
     /**
-     * Performs an authentication.
+     * Authenticate User
      *
-     * @return Nette\Security\Identity
-     * @throws Nette\Security\AuthenticationException
+     * @param   array   $credentials
+     *
+     * @return  object  UserInterface
+     * @since   1.0
+     * @throws  AuthenticationException
      */
     public function authenticate(array $credentials)
     {
@@ -45,32 +72,37 @@ Class Authentication implements AuthenticationInterface
         $row = $this->database->table('users')->where('username', $username)->fetch();
 
         if (! $row) {
-            throw new Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
+            throw new AuthenticationException
+            ('The username is incorrect.', self::IDENTITY_NOT_FOUND);
         }
 
         if ($row->password !== $this->calculateHash($password, $row->password)) {
-            throw new Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
+            throw new AuthenticationException
+            ('The password is incorrect.', self::INVALID_CREDENTIAL);
         }
 
         unset($row->password);
-        return new Security\Identity($row->id, $row->role, $row->toArray());
-    }
 
+        // return new Security\Identity
+
+        ($row->id, $row->role, $row->toArray());
+    }
 
     /**
      * Computes salted password hash.
      *
-     * @param  string
+     * @param         $password
+     * @param   null  $salt
      *
-     * @return string
+     * @return  string
+     * @since   1.0
      */
-    public static function calculateHash($password, $salt = null)
+    public function calculateHash($password, $salt = null)
     {
-        if ($password === Strings::upper($password)) { // perhaps caps lock is on
-            $password = Strings::lower($password);
+        if ($password === strtoupper($password)) {
+            $password = strtolower($password);
         }
-        return crypt($password, $salt ? : '$2a$07$' . Strings::random(22));
+
+        //return crypt($password, $salt ? : '$2a$07$' . Strings::random(22));
     }
-
-
 }

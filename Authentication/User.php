@@ -24,6 +24,10 @@ defined('MOLAJO') or die;
  */
 class User extends Authentication implements AuthenticationInterface
 {
+<define name="AUTHENTICATE_STATUS_SUCCESS" value="1"/>
+<define name="AUTHENTICATE_STATUS_CANCEL" value="2"/>
+<define name="AUTHENTICATE_STATUS_FAILURE" value="4"/>
+
     /**
      * Authenticate
      *

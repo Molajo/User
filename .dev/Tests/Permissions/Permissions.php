@@ -298,6 +298,8 @@ Class Permissions implements PermissionsInterface
     /**
      * Determines if User Content must be filtered
      *
+     * @param   int  $key
+     *
      * Example usage:
      * $userHTMLFilter = Services::Permissions()->setHTMLFilter();
      *
@@ -308,7 +310,7 @@ Class Permissions implements PermissionsInterface
      * @return  bool
      * @since   1.0
      */
-    public function setHTMLFilter()
+    public function setHTMLFilter($key)
     {
         return true;
     }

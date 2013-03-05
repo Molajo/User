@@ -122,7 +122,6 @@ Class UserAuthorisation implements UserAuthorisationInterface
         }
 
         try {
-
             return $this->permissions_class->verifyLogin($user_id);
 
         } catch (Exception $e) {

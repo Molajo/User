@@ -20,41 +20,33 @@ defined('MOLAJO') or die;
  */
 interface PasswordInterface
 {
-
     /**
-     * Verify logged in status
-     * getAuthenticated
+     * Verify Password
      *
      * @param   array  $request
      *
      * @return  bool
      * @since   1.0
-     * @throws  PasswordException
      */
-    public function isLoggedIn();
+    public function verify(array $request);
 
     /**
-     * Login User
+     * Change Password
      *
-     * - verifyAccess
+     * @param   array  $request
      *
-     * setAuthenticated
-     * setExpiration
-     *
-     * @param   int  $user_id
-     *
-     * @return  mixed
+     * @return  string
      * @since   1.0
      */
-    public function login($credentials);
+    public function change(array $request);
 
     /**
-     * Determines if User Content must be filtered
+     * Salt Password
      *
-     * @param   bool  $key
+     * @param   array  $request
      *
-     * @return  mixed
+     * @return  string
      * @since   1.0
      */
-    public function logout();
+    function salt(array $request);
 }

@@ -503,28 +503,28 @@ Class UserType implements UserTypeInterface
     /**
      * Find a user record by its ID
      *
-     * @param $userID
+     * @param $user_id
      *
      * @return mixed
      */
-    public function findByID($userID)
+    public function findByID($user_id)
     {
-        return $this->find($userID);
+        return $this->find($user_id);
     }
 
     /**
      * Get a user entity by its ID
      *
-     * @param $userID
+     * @param $user_id
      *
      * @return mixed
      * @throws \Exception
      */
-    public function getByID($userID)
+    public function getByID($user_id)
     {
-        $row = $this->find($userID);
+        $row = $this->find($user_id);
         if ($row === false) {
-            throw new \Exception('Unable to obtain user row for id: ' . $userID);
+            throw new \Exception('Unable to obtain user row for id: ' . $user_id);
         }
 
         return new UserEntity($row);
@@ -607,11 +607,11 @@ Class UserType implements UserTypeInterface
      *
      * @return mixed
      */
-    public function create(array $userData, $configSalt)
+    public function create(array $userData, $configuration_password_salt)
     {
 
         // Override the plaintext pass with the encrypted one
-        $userData['password'] = $this->saltPass($userData['salt'], $configSalt, $userData['password']);
+        $userData['password'] = $this->salt_password($userData['salt'], $configuration_password_salt, $userData['password']);
 
         return $this->insert($userData);
     }
@@ -622,11 +622,11 @@ Class UserType implements UserTypeInterface
      *
      * @param string $email
      * @param string $password
-     * @param string $configSalt
+     * @param string $configuration_password_salt
      *
      * @return boolean
      */
-    function checkAuth($email, $password, $configSalt)
+    function checkAuth($email, $password, $configuration_password_salt)
     {
 
         $user = $this->findByEmail($email);
@@ -635,7 +635,7 @@ Class UserType implements UserTypeInterface
             return false;
         }
 
-        $encPass = $this->saltPass($user['salt'], $configSalt, $password);
+        $encPass = $this->salt_password($user['salt'], $configuration_password_salt, $password);
         $row     = $this->_conn->createQueryBuilder()
             ->select('count(id) as total')
             ->from($this->getTableName(), 'u')

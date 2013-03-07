@@ -1,43 +1,33 @@
 <?php
 /**
- * User Service
+ * User Data
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  */
-namespace Molajo\User;
+namespace Molajo\User\Data;
 
 defined('MOLAJO') or die;
 
+use Molajo\User\Exception\UserDataException;
+
 /**
- * User
+ * User Data
  *
  * @author    Amy Stephen
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
- *
- * Usage
- *  -- for current visitor, whether they are logged in, or not
- *  -- automatically run during service startup
- *
- *  Services::User()->get($key);
- *  Services::User()->set($key, $value);
- *
- * Usage
- *  -- for any user
- *  -- new instance
- *
- *  $userInstance = User ($id);
- *  $userInstance->load();
- *
- *  echo $userInstance->get('username');
- *
- *  $userInstance->set($key, $value);
  */
-Class UserType implements UserTypeInterface
+Class UserData implements UserDataInterface
 {
+    /** Group Constants */
+    const GROUP_PUBLIC      = 1,
+        GROUP_GUEST         = 2,
+        GROUP_REGISTERED    = 3,
+        GROUP_ADMINISTRATOR = 6;
+
     /**
      * ID for visitor
      *
@@ -53,13 +43,6 @@ Class UserType implements UserTypeInterface
      * @since  1.0
      */
     protected $password;
-
-    /**
-     * User Salt
-     *
-     * @var null|integer
-     */
-    protected $salt = null;
 
     /**
      * Language
@@ -182,40 +165,6 @@ Class UserType implements UserTypeInterface
     protected $authorised_extension_titles = array();
 
     /**
-     * The user's state ID
-     *
-     * @var null
-     */
-    protected $user_state = null;
-
-
-    protected $used = null;
-
-    protected $date_used = null;
-
-    protected $token = null;
-
-    var $remTime = 2592000; //One month
-
-    /**
-     * The name of the cookie which we will use if user wants to be remembered by the system
-     * var string
-     */
-    var $remCookieName = 'ckSavePass';
-
-    /**
-     * The cookie domain
-     * var string
-     */
-    var $remCookieDomain = '';
-
-    /**
-     * The method used to encrypt the password. It can be sha1, md5 or nothing (no encryption)
-     * var string
-     */
-    var $passMethod = 'sha1';
-
-    /**
      * List of Properties
      *
      * @var    object
@@ -244,9 +193,8 @@ Class UserType implements UserTypeInterface
     /**
      * Construct
      *
-     * @param   $id
+     * @param   int $id
      *
-     * @return  void
      * @since   1.0
      */
     public function __construct($id = 0)
@@ -264,7 +212,7 @@ Class UserType implements UserTypeInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  UserTypeException
+     * @throws  UserDataException
      */
     public function get($key = null, $default = null)
     {
@@ -304,7 +252,7 @@ Class UserType implements UserTypeInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  UserTypeException
+     * @throws  UserDataException
      */
     public function set($key, $value = null)
     {
@@ -334,18 +282,6 @@ Class UserType implements UserTypeInterface
     }
 
     /**
-     * Get ID for Email Address
-     *
-     * @return  void
-     * @since   1.0
-     * @throws  UserTypeException
-     */
-    public function getIDForEmail($email = '')
-    {
-        return;
-    }
-
-    /**
      * Checks to see that the user is authorised to use this extension
      *
      * @param   string  $extension_instance_id
@@ -367,13 +303,13 @@ Class UserType implements UserTypeInterface
      *
      * @returns  void
      * @since    1.0
-     * @throws   UserTypeException
+     * @throws   UserDataException
      */
     public function getUserData()
     {
         if (is_object($this->data)) {
         } else {
-            throw new UserTypeException ('User Service: Load User Query Failed');
+            throw new UserDataException ('User Service: Load User Query Failed');
         }
 
         $this->language = $this->data->language;
@@ -406,7 +342,7 @@ Class UserType implements UserTypeInterface
      *
      * @return  void
      * @since   1.0
-     * @throws  UserTypeException
+     * @throws  UserDataException
      */
     protected function setApplications()
     {
@@ -423,7 +359,7 @@ Class UserType implements UserTypeInterface
         array_unique($this->applications);
 
         if (count($this->applications) == 0) {
-            throw new UserTypeException ('User Service: User is not authorised for any applications.');
+            throw new UserDataException ('User Service: User is not authorised for any applications.');
         }
 
         unset($this->data->Userapplications);
@@ -436,7 +372,7 @@ Class UserType implements UserTypeInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  UserTypeException
+     * @throws  UserDataException
      */
     protected function setGroups()
     {
@@ -487,7 +423,7 @@ Class UserType implements UserTypeInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  UserTypeException
+     * @throws  UserDataException
      */
     protected function setViewgroups()
     {

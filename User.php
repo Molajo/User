@@ -12,8 +12,7 @@ namespace Molajo\User;
 defined('MOLAJO') or die;
 
 use Molajo\User\Exception\UserException;
-use Molajo\User\Authentication\Authentication;
-use Molajo\User\Authorisation\UserAuthorisation;
+use Molajo\User\Type;
 
 /**
  * User Class
@@ -36,20 +35,16 @@ Class User implements UserInterface
     /**
      * Construct
      *
-     * @param string $action
-     * @param string $user_type
-     * @param array  $options
+     * @param   string  $action
+     * @param   string  $user_type
+     * @param   array   $options
      *
      * @since   1.0
-     * @throws UserException
+     * @throws  UserException
      */
-    public function __construct(UserTypeInterface $user_type,
-
-
-        $action = '', $user_type, $options = array())
+    public function __construct($action = '', $user_type, $options = array())
     {
         $options = $this->getTimeZone($options);
-
 
         $class = $this->getUserType($user_type);
 
@@ -57,6 +52,7 @@ Class User implements UserInterface
             $this->ct = new $class($action, $user_type, $options);
 
         } catch (\Exception $e) {
+
             throw new UserException
             ('Caught this ' . $e->getMessage());
         }
@@ -68,39 +64,160 @@ Class User implements UserInterface
         return $this->ct;
     }
 
-
     /**
-     * Process the User
+     * register
      *
-     * @return void
      * @since   1.0
+     * @throws  UserException
      */
-    public function process()
+    public function register()
     {
-        $this->ct->process();
-
-        return;
+        //edit and filter
+        // insert
+        // activated code: $activationCode = sha1(openssl_random_pseudo_bytes(16));
+        // Send the user's activation email
+        // flash message 'Signup Succcessful
+        // redirect to home
     }
 
     /**
-     * Close the Connection
+     * Verify User Logged In Status
      *
-     * @return null
+     * getAuthenticated
+     * checkExpiration
+     * setCookies
+     * Load Userdata from Session
+     *
+     * @return  bool
      * @since   1.0
+     * @throws  AuthenticationException
      */
-    public function close()
+    public function isLoggedIn()
     {
-        $this->ct->close();
 
-        return;
+    }
+
+    /**
+     * Login User
+     *
+     * - verifyAccess
+     *
+     * setAuthenticated
+     * setExpiration
+     * getUserData
+     * Session
+     *
+     * @param   int  $user_id
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  AuthenticationException
+     */
+    public function login($credentials)
+    {
+
+    }
+
+    /**
+     * Logout User
+     *
+     * @param   bool  $key
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  AuthenticationException
+     */
+    public function logout()
+    {
+
+    }
+
+    /**
+     * Log in User
+     *
+     * @param   array   $credentials
+     *
+     * @return  bool
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function login(array $credentials)
+    {
+        //edit and filter
+        // authenticate
+        // get user
+        // is user activated?
+        // populate session w user info
+        // flash message 'Login Succcessful
+        // redirect to home
+    }
+
+    /**
+     * Remind Me Username
+     *
+     * @param   string  $type  Password Userid Username
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  UserTypeException
+     */
+    public function remindMeUsername()
+    {
+        //edit and filter
+        // $activationCode = sha1(openssl_random_pseudo_bytes(16));
+        // redirect to home
+    }
+
+    /**
+     * Remind Me Password
+     *
+     * @param   string  $type  Password Userid Username
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  UserTypeException
+     */
+    public function remindMePassword($type)
+    {
+        //edit and filter
+        // $activationCode = sha1(openssl_random_pseudo_bytes(16));
+        // redirect to home
+    }
+
+    /**
+     * Is Authorised passes through the authorisation request
+     * to a specialized Authorisation class
+     *
+     * @param   array  $request
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function isAuthorised(array $request)
+    {
+
+    }
+
+    /**
+     * Log out User
+     *
+     * @return  bool
+     * @since   1.0
+     * @throws  UserException
+     */
+    public function logout()
+    {
+        $this->getSession()->clear();
+        $this->redirectToRoute('Homepage');
     }
 
     /**
      * Get timezone
      *
-     * @param array $options
+     * @param   array  $options
      *
-     * @return array
+     * @return  array
      * @since   1.0
      */
     protected function getTimeZone($options)

@@ -22,5 +22,4 @@ use RuntimeException;
  */
 class UserEmailException extends RuntimeException implements UserExceptionInterface
 {
-
 }

@@ -1,16 +1,16 @@
 **NOT COMPLETE**
 
+To do:
+1. User Types
+2. User/UserInterface Class
+3. Tests for Authentication
+4. User Injection
+
 =======
 User
 =======
 
 [![Build Status](https://travis-ci.org/Molajo/User.png?branch=master)](https://travis-ci.org/Molajo/User)
-
-Maybe women should start their own colleges.  After all ...MEN started them.
-
-Read more: http://www.insidehighered.com/news/2012/09/21/study-offers-new-evidence-scientists-are-biased-against-women#ixzz2LBQF9GDc
-Inside Higher Ed
-
 
 Validates and filters input. Escapes and formats output.
 
@@ -41,91 +41,6 @@ Each field is processed by one, or many, field handlers for validation, filterin
 3. **$field_value** contains the data value to be verified or filtered;
 4. **$User_type_chain** one or more field handlers, separated by a comma, processed in left-to-right order;
 5. **$options** associative array of named pair values required by field handlers.
-
-###Two possible results:###
-
-1. **Success** Retrieve the resulting field value from the object.
-2. **Failure** Handle the exception.
-
-#### Example Usage ####
-
-The following example processes the `id` field using the `int`, `default`, and `required` field handlers.
-The `options` associative array defines two data elements: `default` is the default value for the field, if needed;
-the `required` element with a `true` value is used by the `required` field handler to verify a value has been
- provided.
-
-Chaining is supported and field handlers are processed in left-to-right order. The example shows how to sequence
- the default before the required check in the field handler chain.
-
-```php
-    try {
-        $User_type_chain = array('int', 'default', 'required');
-        $options = array('default' => 14, 'required' => true);
-        $adapter = new Molajo/User/Adapter
-            ->('Validate', 'id', 12, $User_type_chain, $options);
-
-    } catch (Exception $e) {
-        //handle the exception here
-    }
-
-    // Success!
-    echo $adapter->field_value;
-
-```
-**Results:**
-
-If the method was a success, simply retrieve the field value from the resulting object.
-
-Use the Try/Catch pattern, as presented above, to catch thrown exceptions for errors.
-
-## Available Users ##
-
-### Accepted ###
-
-* **Validate:** True if field value is true, 1, 'yes', or 'on.'
-* **Filter:** If not true, 1, 'yes', or 'on', value is set to NULL.
-* **Escape:** If not true, 1, 'yes', or 'on', value is set to NULL.
-
-```php
-    try {
-        $User_type_chain = array('accepted');
-        $adapter = new Molajo/User/Adapter
-            ->('Validate', 'agreement', 1, $User_type_chain);
-```
-
-* Alias
-* Alpha
-* Alphanumeric
-* Arrays
-* Boolean
-* Callback
-* Date
-* Defaults
-* Digit
-* Email
-* Encoded
-* Equals
-* Extensions
-* Float
-* Extensions
-* Float
-* Fullspecialchars
-* Int
-* Lower
-* Maximum
-* Mimetypes
-* Minimum
-- Notequal
-* Numeric
-* Raw
-* Regex
-* Required
-* String
-* Trim
-* Upper
-* Url
-* Values (Inarray) (Inlist)
-
 
 
 ## System Requirements ##

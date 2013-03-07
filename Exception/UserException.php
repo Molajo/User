@@ -22,5 +22,4 @@ use RuntimeException;
  */
 class UserException extends RuntimeException implements UserExceptionInterface
 {
-
 }

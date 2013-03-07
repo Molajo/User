@@ -57,6 +57,53 @@ class Session implements SessionInterface
     }
 
     /**
+     * Returns Session Name
+     *
+     * @return  string
+     * @since   1.0
+     * @throws  SessionException
+     */
+    public function getSessionName()
+    {
+        if (session_name()) {
+        } else {
+            $this->start();
+        }
+
+        return session_name();
+    }
+
+    /**
+     * Set Session Name
+     *
+     * @param   string  $name
+     *
+     * @return  string
+     * @since   1.0
+     * @throws  SessionException
+     */
+    public function setSessionName($name)
+    {
+        if (session_name()) {
+        } else {
+            $this->start();
+        }
+
+        if (is_string($name) &&
+            preg_match('#[^0-9.][^.]*\z#A', $name)
+        ) {
+        } else {
+
+            throw new SessionException
+            ('Session setSessionName Invalid Name: ' . $name);
+        }
+
+        session_name($name);
+
+        return session_name();
+    }
+
+    /**
      * Does session exist?
      *
      * @param   string  $key
@@ -152,6 +199,54 @@ class Session implements SessionInterface
     }
 
     /**
+     * Check CSRF Token
+     *
+     * @param   string  $key
+     * @param   string  $request_method
+     * @param   string  $request_key
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  SessionException
+     */
+    public function token($key = '', $request_method, $request_key)
+    {
+        if (session_id()) {
+        } else {
+            throw new SessionException
+            ('Session required for CSFR Token');
+        }
+
+        $key = (string)$key;
+
+        if (isset($_SESSION[$key])) {
+        } else {
+            $_SESSION[$key] = sha1(serialize($_SERVER) . mt_rand(0, 0xffffffff));
+        }
+
+        if ($this->exists($key) === true) {
+        } else {
+            $this->destroy();
+            throw new SessionException
+            ('Session Invalid or missing CSRF Token ' . $key);
+        }
+
+        $token = $_SESSION[$key];
+
+        if (in_array($request_method, array('POST', 'PUT', 'DELETE'))) {
+
+            if ($token == $request_key) {
+            } else {
+                $this->destroy();
+                throw new SessionException
+                ('Session Invalid or missing CSRF Token ' . $key);
+            }
+        }
+
+        return $token;
+    }
+
+    /**
      * Delete a session
      *
      * @param   int  $key
@@ -192,7 +287,7 @@ class Session implements SessionInterface
         if (session_id()) {
             session_unset();
             session_destroy();
-            $_SESSION = array();
+            $_SESSION = null;
         }
 
         return $this;

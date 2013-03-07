@@ -20,5 +20,4 @@ defined('MOLAJO') or die;
  */
 interface UserExceptionInterface
 {
-
 }

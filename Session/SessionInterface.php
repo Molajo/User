@@ -20,7 +20,6 @@ defined('MOLAJO') or die;
  */
 interface SessionInterface
 {
-
     /**
      * Start Session
      *
@@ -36,6 +35,24 @@ interface SessionInterface
      * @since   1.0
      */
     public function getSessionId();
+
+    /**
+     * Gets the value of Session Name
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function getSessionName();
+
+    /**
+     * Gets the value of Session Name
+     *
+     * @param   string  $name
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function setSessionName($name);
 
     /**
      * Does session exist?
@@ -67,6 +84,18 @@ interface SessionInterface
      * @since   1.0
      */
     public function get($key);
+
+    /**
+     * CSRF Token create and validate
+     *
+     * @param   int     $key
+     * @param   string  $request_method
+     * @param   string  $request_key
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function token($key, $request_method, $request_key);
 
     /**
      * Delete a session

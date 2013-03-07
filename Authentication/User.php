@@ -24,9 +24,11 @@ defined('MOLAJO') or die;
  */
 class User extends Authentication implements AuthenticationInterface
 {
-<define name="AUTHENTICATE_STATUS_SUCCESS" value="1"/>
-<define name="AUTHENTICATE_STATUS_CANCEL" value="2"/>
-<define name="AUTHENTICATE_STATUS_FAILURE" value="4"/>
+
+    /** Exception error code */
+    const AUTHENTICATE_STATUS_SUCCESS = 1,
+        AUTHENTICATE_STATUS_CANCEL    = 2,
+        AUTHENTICATE_STATUS_FAILURE   = 3;
 
     /**
      * Authenticate
@@ -42,17 +44,6 @@ class User extends Authentication implements AuthenticationInterface
 
     }
 
-    /**
-     * Get User
-     *
-     * @return  object  UserInterface
-     * @since   1.0
-     * @throws  AuthenticationException
-     */
-    public function getUser()
-    {
-
-    }
 
     /**
      * Destroy

@@ -1,31 +1,25 @@
 <?php
 /**
- * User Email Interface
+ * User Type Exception
  *
  * @package   Molajo
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\User\Email;
+namespace Molajo\User\Exception;
 
 defined('MOLAJO') or die;
 
+use RuntimeException;
+
 /**
- * Email Interface
+ * User Type Exception
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-interface UserEmailInterface
+class UserTypeException extends RuntimeException implements UserExceptionInterface
 {
-    /**
-     * Send email
-     *
-     * @return  mixed
-     * @throws  UserEmailException
-     * @since   1.0
-     */
-    public function send();
 }

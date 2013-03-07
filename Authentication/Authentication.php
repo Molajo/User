@@ -1,6 +1,8 @@
 <?php
+include __DIR__ . '/' . 'PasswordLib.phar';
+
 /**
- * Authentication Anonymous
+ * Authentication
  *
  * @package   Molajo
  * @copyright 2013 Amy Stephen. All rights reserved.
@@ -31,78 +33,39 @@ Class Authentication implements AuthenticationInterface
      * @since   1.0
      * @throws  AuthenticationException
      */
-    public function authenticate(array $credentials)
+    public function login(array $credentials)
     {
-
-    }
-
-    /**
-     * Credentials
-     *
-     * @param   array $credentials
-     *
-     * @since   1.0
-     */
-    protected $credentials;
-
-    /**
-     * Constructor
-     *
-     * @param   array  $credentials
-     *
-     * @since   1.0
-     */
-    public function __construct(array $credentials)
-    {
-        $this->credentials = $credentials;
-    }
-
-    /**
-     * Authenticate User
-     *
-     * @param   array   $credentials
-     *
-     * @return  object  UserInterface
-     * @since   1.0
-     * @throws  AuthenticationException
-     */
-    public function authenticate(array $credentials)
-    {
-        list($username, $password) = $credentials;
-        $row = $this->database->table('users')->where('username', $username)->fetch();
-
-        if (! $row) {
-            throw new AuthenticationException
-            ('The username is incorrect.', self::IDENTITY_NOT_FOUND);
+        $password = null;
+        if (isset($parameters['password'])) {
+            $password = $parameters['password'];
         }
 
-        if ($row->password !== $this->calculateHash($password, $row->password)) {
+        $username = null;
+        if (isset($parameters['username'])) {
+            $username = $parameters['username'];
+        }
+
+        $lib      = new PasswordLib / PasswordLib();
+        $verified = $lib->verifyPasswordHash($password);
+
+        if ($verified === true) {
+        } else {
+            throw new AuthenticationException
+            ('Authentication Password is incorrect.', self::INVALID_CREDENTIAL);
+        }
+
+        $actual_password = null;
+        if (isset($parameters['actual_password'])) {
+            $actual_password = $parameters['actual_password'];
+        }
+
+        $results = $this->calculateHash($password, $actual_password);
+        if ($results === true) {
+        } else {
             throw new AuthenticationException
             ('The password is incorrect.', self::INVALID_CREDENTIAL);
         }
 
-        unset($row->password);
-
-        // return new Security\Identity
-
-        ($row->id, $row->role, $row->toArray());
-    }
-
-    /**
-     * Computes salted password hash.
-     *
-     * @param         $password
-     * @param   null  $salt
-     *
-     * @return  string
-     * @since   1.0
-     */
-    public function calculateHash($password, $salt = null)
-    {
-        if ($password === strtoupper($password)) {
-            $password = strtolower($password);
-        }
-
-        //return crypt($password, $salt ? : '$2a$07$' . Strings::random(22));
+        return;
     }
 }

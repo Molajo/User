@@ -36,10 +36,9 @@ Class UserAuthorisation implements UserAuthorisationInterface
     /**
      * Construct
      *
-     * @param   object  $permissions_class
+     * @param   PermissionsInterface $permissions_class
      *
      * @since   1.0
-     * @throws  AuthorisationException
      */
     public function __construct(PermissionsInterface $permissions_class)
     {
@@ -134,8 +133,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
     /**
      * Verify Task
      *
-     * @param   string  $action
-     * @param   string  $catalog_id
+     * @param array $request
      *
      * @return  bool
      * @since   1.0
@@ -174,8 +172,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
     /**
      * Verify Task List
      *
-     * @param   array   $actionlist
-     * @param   int     $catalog_id
+     * @param array $request
      *
      * @return  mixed
      * @since   1.0
@@ -214,9 +211,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
     /**
      * Verify Action
      *
-     * @param   string  $view_group_id
-     * @param   string  $request_action
-     * @param   string  $catalog_id
+     * @param array $request
      *
      * @return  bool
      * @since   1.0
@@ -264,7 +259,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
     /**
      * Determines if User Content must be filtered
      *
-     * @param   string  $key
+     * @param array $request
      *
      * @return  mixed
      * @since   1.0

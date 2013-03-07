@@ -22,5 +22,4 @@ use RuntimeException;
  */
 class PasswordException extends RuntimeException implements UserExceptionInterface
 {
-
 }

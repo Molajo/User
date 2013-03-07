@@ -10,11 +10,12 @@ namespace Molajo\User;
 
 defined('MOLAJO') or die;
 
-use Molajo\User\Exception\UserException;
+use Molajo\User\Exception\UserInjectionException;
 
 use Molajo\User\Type\UserType;
+
 /**
- * User Service Plugin
+ * TEMPORARY UNTIL SIC AVAILBLE
  *
  * @author    Amy Stephen
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
@@ -56,7 +57,7 @@ Class UserInjection
      *
      * @return string
      * @since   1.0
-     * @throws UserException
+     * @throws UserInjectionException
      */
     protected function getUserType($user_type)
     {
@@ -64,7 +65,7 @@ Class UserInjection
 
         if (class_exists($class)) {
         } else {
-            throw new UserException
+            throw new UserInjectionException
             ('User Type Class ' . $class . ' does not exist.');
         }
 

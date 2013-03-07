@@ -10,7 +10,7 @@ namespace Molajo\User\Authorisation;
 
 defined('MOLAJO') or die;
 
-use Molajo\User\Authorisation;
+use Molajo\User\Exception\UserAuthorisationException;
 
 /**
  * User Authorisation Interface
@@ -23,7 +23,7 @@ use Molajo\User\Authorisation;
 interface UserAuthorisationInterface
 {
     /**
-     * Is Authorised passes thru the authorisation request
+     * Is Authorised passes through the authorisation request
      * to a specialized Authorisation class
      *
      * @param   array  $request

@@ -18,11 +18,12 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $class = 'Molajo\\User\\Cookies\\Cookies';
+        $class              = 'Molajo\\User\\Cookies\\Cookies';
         $this->cookiesClass = new $class;
 
         return;
     }
+
     /**
      * @covers Molajo\User\Cookies\Cookies::exists
      */
@@ -30,22 +31,22 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
     {
         $parameters = array();
 
-        $expire = 60 * 60 * 60;
+        $expire               = 60 * 60 * 60;
         $parameters['expire'] = time() + $expire;
 
-        $path = '';
+        $path               = '';
         $parameters['path'] = $path;
 
-        $domain = '';
+        $domain               = '';
         $parameters['domain'] = $domain;
 
-        $secure = 0;
+        $secure               = 0;
         $parameters['secure'] = $secure;
 
-        $httponly = 0;
+        $httponly               = 0;
         $parameters['httponly'] = $httponly;
 
-        $key = 'MolajoCookie';
+        $key   = 'MolajoCookie';
         $value = 'dogfood';
 
         $_COOKIE[$key] = $value;
@@ -60,19 +61,19 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
     {
         $parameters = array();
 
-        $expire = 60 * 60 * 60;
+        $expire               = 60 * 60 * 60;
         $parameters['expire'] = time() + $expire;
 
-        $path = '';
+        $path               = '';
         $parameters['path'] = $path;
 
-        $domain = '';
+        $domain               = '';
         $parameters['domain'] = $domain;
 
-        $secure = 0;
+        $secure               = 0;
         $parameters['secure'] = $secure;
 
-        $httponly = 0;
+        $httponly               = 0;
         $parameters['httponly'] = $httponly;
 
         $key = 'MolajoCookie';
@@ -87,28 +88,28 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
     {
         $parameters = array();
 
-        $expire = 60 * 60 * 60;
+        $expire               = 60 * 60 * 60;
         $parameters['expire'] = time() + $expire;
 
-        $path = '';
+        $path               = '';
         $parameters['path'] = $path;
 
-        $domain = '';
+        $domain               = '';
         $parameters['domain'] = $domain;
 
-        $secure = 0;
+        $secure               = 0;
         $parameters['secure'] = $secure;
 
-        $httponly = 0;
+        $httponly               = 0;
         $parameters['httponly'] = $httponly;
 
-        $key = 'MolajoCookie';
+        $key   = 'MolajoCookie';
         $value = 'Toothpick';
 
         $set = $this->cookiesClass->set($key, $value, $parameters);
 
         $value2 = htmlspecialchars_decode($_COOKIE[$key]);
-        $new = @unserialize($value2);
+        $new    = @unserialize($value2);
         $this->assertEquals($value, $new);
     }
 
@@ -119,22 +120,22 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
     {
         $parameters = array();
 
-        $expire = 60 * 60 * 60;
+        $expire               = 60 * 60 * 60;
         $parameters['expire'] = time() + $expire;
 
-        $path = '';
+        $path               = '';
         $parameters['path'] = $path;
 
-        $domain = '';
+        $domain               = '';
         $parameters['domain'] = $domain;
 
-        $secure = 0;
+        $secure               = 0;
         $parameters['secure'] = $secure;
 
-        $httponly = 0;
+        $httponly               = 0;
         $parameters['httponly'] = $httponly;
 
-        $key = 'MolajoCookie';
+        $key   = 'MolajoCookie';
         $value = 'Toothpick';
 
         $set = $this->cookiesClass->set($key, $value, $parameters);
@@ -142,7 +143,7 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
         $get = $this->cookiesClass->get($key);
 
         $value2 = htmlspecialchars_decode($_COOKIE[$key]);
-        $new = @unserialize($value2);
+        $new    = @unserialize($value2);
         $this->assertEquals($value, $get);
     }
 
@@ -154,19 +155,19 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
     {
         $parameters = array();
 
-        $expire = 60 * 60 * 60;
+        $expire               = 60 * 60 * 60;
         $parameters['expire'] = time() + $expire;
 
-        $path = '';
+        $path               = '';
         $parameters['path'] = $path;
 
-        $domain = '';
+        $domain               = '';
         $parameters['domain'] = $domain;
 
-        $secure = 0;
+        $secure               = 0;
         $parameters['secure'] = $secure;
 
-        $httponly = 0;
+        $httponly               = 0;
         $parameters['httponly'] = $httponly;
 
         $key = 'MolajoCookieDoesNotExist';
@@ -182,22 +183,22 @@ class UserCookiesTest extends \PHPUnit_Framework_TestCase
     {
         $parameters = array();
 
-        $expire = 60 * 60 * 60;
+        $expire               = 60 * 60 * 60;
         $parameters['expire'] = time() + $expire;
 
-        $path = '';
+        $path               = '';
         $parameters['path'] = $path;
 
-        $domain = '';
+        $domain               = '';
         $parameters['domain'] = $domain;
 
-        $secure = 0;
+        $secure               = 0;
         $parameters['secure'] = $secure;
 
-        $httponly = 0;
+        $httponly               = 0;
         $parameters['httponly'] = $httponly;
 
-        $key = 'MolajoCookie';
+        $key   = 'MolajoCookie';
         $value = 'Toothpick';
 
         $this->cookiesClass->set('MolajoCookie1', $value, $parameters);

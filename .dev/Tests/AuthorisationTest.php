@@ -35,11 +35,11 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $class                    = 'Molajo\\Foundation\\Permissions\\Permissions';
-        $this->PermissionClass    = new $class;
+        $class                 = 'Molajo\\Foundation\\Permissions\\Permissions';
+        $this->PermissionClass = new $class;
 
         $class                    = 'Molajo\\User\\Authorisation\\UserAuthorisation';
-        $this->AuthorisationClass = new $class($this->PermissionClass) ;
+        $this->AuthorisationClass = new $class($this->PermissionClass);
 
         return;
     }
@@ -49,10 +49,10 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
      */
     public function testVerifyLogin()
     {
-        $id = 1;
-        $request = array();
+        $id                 = 1;
+        $request            = array();
         $request['user_id'] = $id;
-        $request['method'] = 'login';
+        $request['method']  = 'login';
 
         $results = $this->AuthorisationClass->isAuthorised($request);
 
@@ -64,9 +64,9 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
      */
     public function testVerifyTask()
     {
-        $request = array();
-        $request['method'] = 'task';
-        $request['action'] = 'view';
+        $request               = array();
+        $request['method']     = 'task';
+        $request['action']     = 'view';
         $request['catalog_id'] = 1;
 
         $results = $this->AuthorisationClass->isAuthorised($request);
@@ -79,11 +79,11 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
      */
     public function testVerifyActionTest()
     {
-        $request = array();
-        $request['method'] = 'action';
-        $request['view_group_id'] = 1;
+        $request                   = array();
+        $request['method']         = 'action';
+        $request['view_group_id']  = 1;
         $request['request_action'] = 'read';
-        $request['catalog_id'] = 1;
+        $request['catalog_id']     = 1;
 
         $results = $this->AuthorisationClass->isAuthorised($request);
 
@@ -95,9 +95,9 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetHTMLFilter()
     {
-        $request = array();
+        $request           = array();
         $request['method'] = 'htmlfilter';
-        $request['key'] = 'MolajoAuthorisation';
+        $request['key']    = 'MolajoAuthorisation';
 
         $results = $this->AuthorisationClass->isAuthorised($request);
 

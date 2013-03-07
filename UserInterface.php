@@ -22,44 +22,6 @@ use Molajo\User\Exception\UserException;
  */
 interface UserInterface
 {
-    /**
-     * Verify user is logged in
-     *
-     * @return  bool
-     * @since   1.0
-     * @throws  UserException
-     */
-    public function isLoggedIn();
 
-    /**
-     * Log in User
-     *
-     * @param   array   $credentials
-     *
-     * @return  bool
-     * @since   1.0
-     * @throws  UserException
-     */
-    public function login(array $credentials);
 
-    /**
-     * Log out User
-     *
-     * @return  bool
-     * @since   1.0
-     * @throws  UserException
-     */
-    public function logout();
-
-    /**
-     * Is Authorised passes thru the authorisation request
-     * to a specialized Authorisation class
-     *
-     * @param   array  $request
-     *
-     * @return  mixed
-     * @since   1.0
-     * @throws  UserException
-     */
-    public function isAuthorised(array $request = array());
 }

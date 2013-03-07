@@ -22,5 +22,4 @@ use RuntimeException;
  */
 class CookiesException extends RuntimeException implements UserExceptionInterface
 {
-
 }

@@ -31,16 +31,14 @@ interface CookiesInterface
     public function exists($key);
 
     /**
-     * Set cookie
+     * Set Cookie Parameters
      *
-     * @param   int    $key
-     * @param   mixed  $value
-     * @param   array  $parameters
+     * @param   array  $parameters Configuration Values
      *
      * @return  mixed
      * @since   1.0
      */
-    public function set($key, $value, array $parameters);
+    public function setCookieParameters(array $parameters);
 
     /**
      * Gets the value stored in a cookie
@@ -51,6 +49,18 @@ interface CookiesInterface
      * @since   1.0
      */
     public function get($key);
+
+    /**
+     * Set Cookie
+     *
+     * @param   int    $key
+     * @param   mixed  $value
+     * @param   array  $parameters
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function set($key, $value);
 
     /**
      * Delete a cookie

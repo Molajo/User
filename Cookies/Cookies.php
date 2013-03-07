@@ -41,7 +41,7 @@ class Cookies implements CookiesInterface
     }
 
     /**
-     * Set cookie
+     * Set Cookie Parameters
      *
      * @param   int    $key
      * @param   mixed  $value
@@ -51,10 +51,9 @@ class Cookies implements CookiesInterface
      * @since   1.0
      * @throws  CookiesException
      */
-    public function set($key, $value, array $parameters)
+    public function setCookieParameters(array $parameters)
     {
-        $key   = (string)$key;
-        $value = serialize($value);
+        $parameters = session_get_cookie_params();
 
         $expire = 0;
         if (isset($parameters['expire'])) {
@@ -98,17 +97,45 @@ class Cookies implements CookiesInterface
 
         try {
 
-            // foreach ($parameters as $name => $value) {
-            $key           = htmlspecialchars($key);
-            $value         = htmlspecialchars($value);
-            $_COOKIE[$key] = $value;
+            session_set_cookie_params(
+                $parameters['lifetime'],
+                $parameters['path'],
+                $parameters['domain'],
+                $parameters['secure'],
+                $parameters['httponly']
+            );
 
-            //setcookie($key, $value,
-            //    $parameters['expire'],
-            //    $parameters['path'],
-            //    $parameters['domain'],
-            //    $parameters['secure'],
-            //    $parameters['httponly']);
+        } catch (\Exception $e) {
+
+            throw new CookiesException
+            ('Cookie Set Error: ' . $e->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set cookie
+     *
+     * @param   int    $key
+     * @param   mixed  $value
+     * @param   array  $parameters
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  CookiesException
+     */
+    public function set($key, $value)
+    {
+        $key   = (string)$key;
+        $value = serialize($value);
+
+        try {
+
+            $key   = htmlspecialchars($key);
+            $value = htmlspecialchars($value);
+
+            $_COOKIE[$key] = $value;
 
         } catch (\Exception $e) {
 

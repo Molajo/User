@@ -33,7 +33,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $class               = 'Molajo\\User\\Session\\Session';
+        $class              = 'Molajo\\User\\Session\\Session';
         $this->SessionClass = new $class;
 
         return;
@@ -60,6 +60,35 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Molajo\User\Session\Session::get
+     */
+    public function testNoToken()
+    {
+        $key            = 'MolajoSessionDoesNotExist';
+        $request_method = 'token';
+        $request_key    = '';
+
+        $session = $this->SessionClass->start();
+
+        $token = $this->SessionClass->token($key, $request_method, $request_key);
+
+        $this->assertEquals(40, strlen($token));
+    }
+
+    /**
+     * @covers Molajo\User\Session\Session::get
+     * @expectedException  Molajo\User\Exception\SessionException
+     */
+    public function testSaveToken()
+    {
+        $key            = 'MolajoSessionDoesNotExist';
+        $request_method = 'POST';
+        $request_key    = 'willnotmatch';
+
+        $this->SessionClass->token($key, $request_method, $request_key);
+    }
+
+    /**
      * @covers Molajo\User\Session\Session::exists
      */
     public function testExists()
@@ -67,7 +96,8 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $key   = 'MolajoSession';
         $value = 'dogfood';
 
-        $_SESSION[$key] = $value;
+        $session = $this->SessionClass->start();
+        $session = $this->SessionClass->set($key, $value);
 
         $this->assertTrue($this->SessionClass->exists($key));
     }

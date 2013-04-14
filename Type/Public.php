@@ -10,7 +10,7 @@ namespace Molajo\User\Type;
 
 defined('MOLAJO') or die;
 
-use Molajo\User\Adapter\UserInterface;
+use Molajo\User\Api\UserInterface;
 use Molajo\User\Exception\UserException;
 
 /**
@@ -21,7 +21,7 @@ use Molajo\User\Exception\UserException;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class Public implements UserInterface
+class Public implements UserInterface
 {
     /**
      * Action
@@ -58,10 +58,10 @@ Class Public implements UserInterface
      * @param array  $options
      *
      * @since   1.0
-     * @throws UserException
+     * @throws  UserException
      */
     public
-    function __construct($action = '', $user_type, $options = array())
+    public function __construct($action = '', $user_type, $options = array())
     {
         $this->setAction($action);
         $this->setUserType($user_type);
@@ -73,11 +73,11 @@ Class Public implements UserInterface
     /**
      * Initialise User
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function initialise()
+    public function initialise()
     {
         return;
     }
@@ -85,11 +85,11 @@ Class Public implements UserInterface
     /**
      * Process User Data
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function process()
+    public function process()
     {
         return;
     }
@@ -97,11 +97,11 @@ Class Public implements UserInterface
     /**
      * Finish processing
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function close()
+    public function close()
     {
         return;
     }
@@ -109,13 +109,13 @@ Class Public implements UserInterface
     /**
      * Set Action
      *
-     * @param  string  $action
+     * @param string $action
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function setAction($action)
+    public function setAction($action)
     {
         $this->action = $action;
 
@@ -125,11 +125,11 @@ Class Public implements UserInterface
     /**
      * Get Action
      *
-     * @return  string
+     * @return string
      * @since   1.0
      */
     public
-    function getAction()
+    public function getAction()
     {
         return $this->action;
     }
@@ -137,13 +137,13 @@ Class Public implements UserInterface
     /**
      * Set User Type
      *
-     * @param  string  $user_type
+     * @param string $user_type
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function setUserType($user_type)
+    public function setUserType($user_type)
     {
         $this->user_type = $user_type;
 
@@ -153,11 +153,11 @@ Class Public implements UserInterface
     /**
      * Get User Type
      *
-     * @return  string
+     * @return string
      * @since   1.0
      */
     public
-    function getUserType()
+    public function getUserType()
     {
         return $this->user_type;
     }
@@ -165,13 +165,13 @@ Class Public implements UserInterface
     /**
      * Set Options
      *
-     * @param   array  $options
+     * @param array $options
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function setOptions($options)
+    public function setOptions($options)
     {
         $this->options = $options;
 
@@ -181,11 +181,11 @@ Class Public implements UserInterface
     /**
      * Get Options
      *
-     * @return  array
+     * @return array
      * @since   1.0
      */
     public
-    function getOptions()
+    public function getOptions()
     {
         return $this->options;
     }

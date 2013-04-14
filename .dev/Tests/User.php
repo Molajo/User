@@ -13,7 +13,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
-
     /**
      * Setup testing
      */

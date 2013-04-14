@@ -1,6 +1,6 @@
 <?php
 /**
- * Permissions Service Plugin
+ * Permissions Service Dependency Injector
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
@@ -8,33 +8,31 @@
  */
 namespace Molajo\User\Permissions;
 
-use Molajo\Service\Type;
-
 defined('MOLAJO') or die;
 
 /**
- * Permissions Service Plugin
+ * Permissions Service Dependency Injector
  *
  * @author    Amy Stephen
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class PermissionsPlugin extends ServicesPlugin
+class PermissionsInjector extends Injector implements InjectorInterface
 {
     /**
      * on Before Startup Event
      *
      * Follows instantiation of the service class and before the method identified as the "start" method
      *
-     * @return  void
+     * @return void
      * @since   1.0
-     * @throws  \RuntimeException
-     * @throws  \Exception
+     * @throws  RuntimeException
+     * @throws  Exception
      */
-    public function onBeforeServiceInitialise()
+    public function onBeforeServiceInstantiate()
     {
-        $controllerClass = CONTROLLER_CLASS_NAMESPACE;
+        $controllerclass = CONTROLLER_CLASS_NAMESPACE;
         $controller      = new $controllerClass();
         $controller->getModelRegistry('Datasource', 'Actions', 1);
 
@@ -57,12 +55,12 @@ Class PermissionsPlugin extends ServicesPlugin
             $permission_action_ids[$title] = $item->id;
         }
 
-        $this->service_class_instance->set('actions', $permission_actions);
+        $this->service_instance->set('actions', $permission_actions);
 
         /** Verb Actions (Order Up, Order Down, Feature) to Permission Actions */
         $actions = Services::Configuration()->getFile('Application', 'Actions');
         if (count($actions) == 0) {
-            throw new \Exception('Permissions: Actions Table not found.');
+            throw new Exception('Permissions: Actions Table not found.');
         }
 
         $tasks                   = array();
@@ -70,45 +68,45 @@ Class PermissionsPlugin extends ServicesPlugin
         $action_to_controller    = array();
 
         foreach ($actions->action as $t) {
-            $name                           = (string)$t['name'];
+            $name                           = (string) $t['name'];
             $tasks[]                        = $name;
-            $action_to_authorisation[$name] = (string)$t['authorisation'];
-            $action_to_controller[$name]    = (string)$t['controller'];
+            $action_to_authorisation[$name] = (string) $t['authorisation'];
+            $action_to_controller[$name]    = (string) $t['controller'];
         }
 
-        $this->service_class_instance->set('action_to_authorisation', $action_to_authorisation);
-        $this->service_class_instance->set('action_to_controller', $action_to_controller);
+        $this->service_instance->set('action_to_authorisation', $action_to_authorisation);
+        $this->service_instance->set('action_to_controller', $action_to_controller);
         sort($tasks);
-        $this->service_class_instance->set('tasks', $tasks);
+        $this->service_instance->set('tasks', $tasks);
 
         /** Bridges the Verb Action (Order Up, Order Down) to the Permission Action (Read, Update) to the ID (1, 2, etc.) */
         $action_to_authorisation_id = array();
         foreach ($action_to_authorisation as $action => $authorisation) {
             $action_to_authorisation_id[$action] = $permission_action_ids[$authorisation];
         }
-        $this->service_class_instance->set('action_to_authorisation_id', $action_to_authorisation_id);
+        $this->service_instance->set('action_to_authorisation_id', $action_to_authorisation_id);
 
         /** Not sure where else to place this */
         $filtersFile = Services::Configuration()->getFile('Application', 'Filters');
         if (count($filtersFile) == 0) {
-            throw new \Exception('Permissions: Filters Table not found.');
+            throw new Exception('Permissions: Filters Table not found.');
         }
 
         $filters = array();
         foreach ($filtersFile->filter as $f) {
-            $name      = (string)$f['name'];
+            $name      = (string) $f['name'];
             $filters[] = $name;
         }
         sort($filters);
-        $this->service_class_instance->set('filters', $filters);
+        $this->service_instance->set('filters', $filters);
 
-        $this->service_class_instance->set('user_view_groups', Services::User()->get('view_groups'));
+        $this->service_instance->set('user_view_groups', Services::User()->get('view_groups'));
 
-        $this->service_class_instance->set('user_groups', Services::User()->get('groups'));
+        $this->service_instance->set('user_groups', Services::User()->get('groups'));
 
-        $this->service_class_instance->set(
+        $this->service_instance->set(
             'disable_filter_for_groups',
-            explode(',', Services::Application()->get('user_disable_filter_for_groups'))
+            explode(',', $this->application_instance->get('user_disable_filter_for_groups'))
         );
 
         return;
@@ -119,10 +117,10 @@ Class PermissionsPlugin extends ServicesPlugin
      *
      * Follows the completion of the start method defined in the configuration
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
-    public function onAfterServiceInitialise()
+    public function onAfterServiceInstantiate()
     {
 
     }

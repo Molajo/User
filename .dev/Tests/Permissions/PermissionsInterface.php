@@ -25,10 +25,10 @@ interface PermissionsInterface
     /**
      * Get language property
      *
-     * @param   string  $key
-     * @param   string  $default
+     * @param string $key
+     * @param string $default
      *
-     * @return  array|mixed|string
+     * @return array|mixed|string
      * @throws  PermissionsException
      * @since   1.0
      */
@@ -37,10 +37,10 @@ interface PermissionsInterface
     /**
      * Set the value of the specified key
      *
-     * @param   string  $key
-     * @param   mixed   $value
+     * @param string $key
+     * @param mixed  $value
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  PermissionsException
      */
@@ -53,10 +53,10 @@ interface PermissionsInterface
      * Example usage:
      * $permissions = Services::Permissions()->verifyTaskList($actionsArray, $item->catalog_id);
      *
-     * @param   array  $actionlist
-     * @param   int    $catalog_id
+     * @param array $actionlist
+     * @param int   $catalog_id
      *
-     * @return  array
+     * @return array
      * @since   1.0
      * @throws  PermissionsException
      */
@@ -68,11 +68,11 @@ interface PermissionsInterface
      * Example usage:
      *  $permissions = Services::Permissions()->verifyAction($view_group_id, $request_action, $catalog_id);
      *
-     * @param   string  $view_group_id
-     * @param   string  $request_action
-     * @param   string  $catalog_id
+     * @param string $view_group_id
+     * @param string $request_action
+     * @param string $catalog_id
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  PermissionsException
      */
@@ -85,10 +85,10 @@ interface PermissionsInterface
      * Example usage:
      *  Services::Permissions()->verifyTask($action, $catalog_id);
      *
-     * @param   string  $action
-     * @param   string  $catalog_id
+     * @param string $action
+     * @param string $catalog_id
      *
-     * @return  boolean
+     * @return boolean
      * @since   1.0
      * @throws  PermissionsException
      */
@@ -100,9 +100,9 @@ interface PermissionsInterface
      * Example usage:
      *  Services::Permissions()->verifyLogin($user_id);
      *
-     * @param   int  $user_id
+     * @param int $user_id
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      */
     public function verifyLogin($user_id);
@@ -121,11 +121,11 @@ interface PermissionsInterface
      *     )
      * );
      *
-     * @param   array  $query
-     * @param   array  $db
-     * @param   array  $parameters
+     * @param array $query
+     * @param array $db
+     * @param array $parameters
      *
-     * @return  array
+     * @return array
      * @since   1.0
      */
     public function setQueryViewAccess($query = array(), $db = array(), $parameters = array());
@@ -133,7 +133,7 @@ interface PermissionsInterface
     /**
      * Determines if User Content must be filtered
      *
-     * @param   string  $key
+     * @param string $key
      *
      * Example usage:
      * $userHTMLFilter = Services::Permissions()->setHTMLFilter();
@@ -142,7 +142,7 @@ interface PermissionsInterface
      *
      *  False => Filter is not required
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      */
     public function setHTMLFilter($key);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mock Permissions Class for Testing
+ * Mock Permissions class for Testing
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
@@ -13,14 +13,14 @@ defined('MOLAJO') or die;
 use Molajo\Foundation\Permissions\Exception\PermissionsException;
 
 /**
- * Mock Permissions Class for Testing
+ * Mock Permissions class for Testing
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class Permissions implements PermissionsInterface
+class Permissions implements PermissionsInterface
 {
     /**
      * Actions used to establish permissions
@@ -120,10 +120,10 @@ Class Permissions implements PermissionsInterface
     /**
      * Get language property
      *
-     * @param   string  $key
-     * @param   string  $default
+     * @param string $key
+     * @param string $default
      *
-     * @return  array|mixed|string
+     * @return array|mixed|string
      * @throws  PermissionsException
      * @since   1.0
      */
@@ -135,10 +135,10 @@ Class Permissions implements PermissionsInterface
     /**
      * Set the value of the specified key
      *
-     * @param   string  $key
-     * @param   mixed   $value
+     * @param string $key
+     * @param mixed  $value
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  PermissionsException
      */
@@ -154,12 +154,12 @@ Class Permissions implements PermissionsInterface
      * Example usage:
      * $permissions = Services::Permissions()->verifyTaskList($actionsArray, $item->catalog_id);
      *
-     * @param   array  $actionlist
-     * @param   int    $catalog_id
+     * @param array $actionlist
+     * @param int   $catalog_id
      *
-     * @return  array
+     * @return array
      * @since   1.0
-     * @throws  \Exception
+     * @throws  Exception
      */
     public function verifyTaskList($actionlist = array(), $catalog_id = 0)
     {
@@ -196,13 +196,13 @@ Class Permissions implements PermissionsInterface
      * Example usage:
      *  $permissions = Services::Permissions()->verifyAction($view_group_id, $request_action, $catalog_id);
      *
-     * @param   string  $view_group_id
-     * @param   string  $request_action
-     * @param   string  $catalog_id
+     * @param string $view_group_id
+     * @param string $request_action
+     * @param string $catalog_id
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
-     * @throws  \Exception
+     * @throws  Exception
      */
     public function verifyAction($view_group_id, $request_action, $catalog_id)
     {
@@ -221,12 +221,12 @@ Class Permissions implements PermissionsInterface
      * Example usage:
      *  Services::Permissions()->verifyTask($action, $catalog_id);
      *
-     * @param   string  $action
-     * @param   string  $catalog_id
+     * @param string $action
+     * @param string $catalog_id
      *
-     * @return  boolean
+     * @return boolean
      * @since   1.0
-     * @throws  \Exception
+     * @throws  Exception
      */
     public function verifyTask($action, $catalog_id)
     {
@@ -253,9 +253,9 @@ Class Permissions implements PermissionsInterface
      * Example usage:
      *  Services::Permissions()->verifyLogin($user_id);
      *
-     * @param   int  $user_id
+     * @param int $user_id
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      */
     public function verifyLogin($user_id)
@@ -283,11 +283,11 @@ Class Permissions implements PermissionsInterface
      *     )
      * );
      *
-     * @param   array  $query
-     * @param   array  $db
-     * @param   array  $parameters
+     * @param array $query
+     * @param array $db
+     * @param array $parameters
      *
-     * @return  array
+     * @return array
      * @since   1.0
      */
     public function setQueryViewAccess($query = array(), $db = array(), $parameters = array())
@@ -298,7 +298,7 @@ Class Permissions implements PermissionsInterface
     /**
      * Determines if User Content must be filtered
      *
-     * @param   int  $key
+     * @param int $key
      *
      * Example usage:
      * $userHTMLFilter = Services::Permissions()->setHTMLFilter();
@@ -307,7 +307,7 @@ Class Permissions implements PermissionsInterface
      *
      *  False => Filter is not required
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      */
     public function setHTMLFilter($key)

@@ -20,7 +20,7 @@ defined('MOLAJO') or die;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class UserType1 extends Public
+class Guest extends Public
 {
     /**
      * Construct
@@ -30,10 +30,10 @@ Class UserType1 extends Public
      * @param array  $options
      *
      * @since   1.0
-     * @throws UserException
+     * @throws  UserException
      */
     public
-    function __construct($action = '', $user_type, $options = array())
+    public function __construct($action = '', $user_type, $options = array())
     {
         return parent::__construct($action, $user_type, $options);
     }
@@ -41,11 +41,11 @@ Class UserType1 extends Public
     /**
      * Initialise User
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function initialise()
+    public function initialise()
     {
         parent::initialise();
 
@@ -55,11 +55,11 @@ Class UserType1 extends Public
     /**
      * Process User Data
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function process()
+    public function process()
     {
         parent::process();
 
@@ -69,11 +69,11 @@ Class UserType1 extends Public
     /**
      * Finish processing
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public
-    function close()
+    public function close()
     {
         parent::close();
 

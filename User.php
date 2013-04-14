@@ -22,7 +22,7 @@ use Molajo\User\Type;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class User implements UserInterface
+class User implements UserInterface
 {
     /**
      * UserType Interface
@@ -35,9 +35,9 @@ Class User implements UserInterface
     /**
      * Construct
      *
-     * @param   string  $action
-     * @param   string  $user_type
-     * @param   array   $options
+     * @param string $action
+     * @param string $user_type
+     * @param array  $options
      *
      * @since   1.0
      * @throws  UserException
@@ -51,7 +51,7 @@ Class User implements UserInterface
         try {
             $this->ct = new $class($action, $user_type, $options);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             throw new UserException
             ('Caught this ' . $e->getMessage());
@@ -88,7 +88,7 @@ Class User implements UserInterface
      * setCookies
      * Load Userdata from Session
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  AuthenticationException
      */
@@ -107,9 +107,9 @@ Class User implements UserInterface
      * getUserData
      * Session
      *
-     * @param   int  $user_id
+     * @param int $user_id
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  AuthenticationException
      */
@@ -121,9 +121,9 @@ Class User implements UserInterface
     /**
      * Logout User
      *
-     * @param   bool  $key
+     * @param bool $key
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  AuthenticationException
      */
@@ -135,9 +135,9 @@ Class User implements UserInterface
     /**
      * Log in User
      *
-     * @param   array   $credentials
+     * @param array $credentials
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  UserException
      */
@@ -155,9 +155,9 @@ Class User implements UserInterface
     /**
      * Remind Me Username
      *
-     * @param   string  $type  Password Userid Username
+     * @param string $type Password Userid Username
      *
-     * @return  array
+     * @return array
      * @since   1.0
      * @throws  UserTypeException
      */
@@ -171,9 +171,9 @@ Class User implements UserInterface
     /**
      * Remind Me Password
      *
-     * @param   string  $type  Password Userid Username
+     * @param string $type Password Userid Username
      *
-     * @return  array
+     * @return array
      * @since   1.0
      * @throws  UserTypeException
      */
@@ -188,9 +188,9 @@ Class User implements UserInterface
      * Is Authorised passes through the authorisation request
      * to a specialized Authorisation class
      *
-     * @param   array  $request
+     * @param array $request
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  UserException
      */
@@ -202,7 +202,7 @@ Class User implements UserInterface
     /**
      * Log out User
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  UserException
      */
@@ -215,9 +215,9 @@ Class User implements UserInterface
     /**
      * Get timezone
      *
-     * @param   array  $options
+     * @param array $options
      *
-     * @return  array
+     * @return array
      * @since   1.0
      */
     protected function getTimeZone($options)

@@ -31,10 +31,10 @@ interface UserDataInterface
     /**
      * Get the current value (or default) of the specified key
      *
-     * @param   string  $key
-     * @param   mixed   $default
+     * @param string $key
+     * @param mixed  $default
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  UserDataException
      */
@@ -43,10 +43,10 @@ interface UserDataInterface
     /**
      * Set the value of a specified key
      *
-     * @param   string  $key
-     * @param   mixed   $value
+     * @param string $key
+     * @param mixed  $value
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  UserDataException
      */
@@ -55,9 +55,9 @@ interface UserDataInterface
     /**
      * Checks to see that the user is authorised to use this extension
      *
-     * @param   string  $extension_instance_id
+     * @param string $extension_instance_id
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      */
     public function checkAuthorised($extension_instance_id);
@@ -67,7 +67,7 @@ interface UserDataInterface
      *
      * @returns  void
      * @since    1.0
-     * @throws   UserDataException
+     * @throws  UserDataException
      */
     public function getUserData();
 }

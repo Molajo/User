@@ -23,10 +23,10 @@ use Molajo\User\Exception\AuthorisationException;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class UserAuthorisation implements UserAuthorisationInterface
+class UserAuthorisation implements UserAuthorisationInterface
 {
     /**
-     * Authorisation Class Object
+     * Authorisation class Object
      *
      * @var     object  PermissionsInterface
      * @since   1.0
@@ -36,7 +36,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
     /**
      * Construct
      *
-     * @param   PermissionsInterface $permissions_class
+     * @param PermissionsInterface $permissions_class
      *
      * @since   1.0
      */
@@ -50,9 +50,9 @@ Class UserAuthorisation implements UserAuthorisationInterface
     /**
      * Determines if User is Authorised for specific action
      *
-     * @param   array  $request
+     * @param array $request
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  AuthorisationException
      */
@@ -103,9 +103,9 @@ Class UserAuthorisation implements UserAuthorisationInterface
     /**
      * Verify Logon
      *
-     * @param   array  $request
+     * @param array $request
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  AuthorisationException
      */
@@ -135,7 +135,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
      *
      * @param array $request
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  AuthorisationException
      */
@@ -174,7 +174,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
      *
      * @param array $request
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  AuthorisationException
      */
@@ -213,7 +213,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
      *
      * @param array $request
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  AuthorisationException
      */
@@ -261,7 +261,7 @@ Class UserAuthorisation implements UserAuthorisationInterface
      *
      * @param array $request
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  AuthorisationException
      */

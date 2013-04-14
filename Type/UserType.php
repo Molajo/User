@@ -36,7 +36,7 @@ defined('MOLAJO') or die;
  *
  *  $userInstance->set($key, $value);
  */
-Class UserType implements UserTypeInterface
+class UserType implements UserTypeInterface
 {
     /**
      * ID for visitor
@@ -195,25 +195,25 @@ Class UserType implements UserTypeInterface
 
     protected $token = null;
 
-    var $remTime = 2592000; //One month
+    public $remTime = 2592000; //One month
 
     /**
      * The name of the cookie which we will use if user wants to be remembered by the system
      * var string
      */
-    var $remCookieName = 'ckSavePass';
+    public $remCookieName = 'ckSavePass';
 
     /**
      * The cookie domain
      * var string
      */
-    var $remCookieDomain = '';
+    public $remCookieDomain = '';
 
     /**
      * The method used to encrypt the password. It can be sha1, md5 or nothing (no encryption)
      * var string
      */
-    var $passMethod = 'sha1';
+    public $passMethod = 'sha1';
 
     /**
      * List of Properties
@@ -246,12 +246,12 @@ Class UserType implements UserTypeInterface
      *
      * @param   $id
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
     public function __construct($id = 0)
     {
-        $this->id = (int)$id;
+        $this->id = (int) $id;
 
         return;
     }
@@ -259,10 +259,10 @@ Class UserType implements UserTypeInterface
     /**
      * Get the current value (or default) of the specified key
      *
-     * @param   string  $key
-     * @param   mixed   $default
+     * @param string $key
+     * @param mixed  $default
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  UserTypeException
      */
@@ -299,10 +299,10 @@ Class UserType implements UserTypeInterface
     /**
      * Set the value of a specified key
      *
-     * @param   string  $key
-     * @param   mixed   $value
+     * @param string $key
+     * @param mixed  $value
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  UserTypeException
      */
@@ -336,7 +336,7 @@ Class UserType implements UserTypeInterface
     /**
      * Get ID for Email Address
      *
-     * @return  void
+     * @return void
      * @since   1.0
      * @throws  UserTypeException
      */
@@ -348,9 +348,9 @@ Class UserType implements UserTypeInterface
     /**
      * Checks to see that the user is authorised to use this extension
      *
-     * @param   string  $extension_instance_id
+     * @param string $extension_instance_id
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      */
     public function checkAuthorised($extension_instance_id)
@@ -367,7 +367,7 @@ Class UserType implements UserTypeInterface
      *
      * @returns  void
      * @since    1.0
-     * @throws   UserTypeException
+     * @throws  UserTypeException
      */
     public function getUserData()
     {
@@ -404,7 +404,7 @@ Class UserType implements UserTypeInterface
     /**
      * Set Applications for which User is Authorised to Login
      *
-     * @return  void
+     * @return void
      * @since   1.0
      * @throws  UserTypeException
      */
@@ -434,7 +434,7 @@ Class UserType implements UserTypeInterface
     /**
      * Set Groups the User is authorised for
      *
-     * @return  array
+     * @return array
      * @since   1.0
      * @throws  UserTypeException
      */
@@ -485,7 +485,7 @@ Class UserType implements UserTypeInterface
     /**
      * Set View Groups the User is authorised for
      *
-     * @return  array
+     * @return array
      * @since   1.0
      * @throws  UserTypeException
      */

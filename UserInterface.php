@@ -10,8 +10,6 @@ namespace Molajo\User;
 
 defined('MOLAJO') or die;
 
-use Molajo\User\Exception\UserException;
-
 /**
  * User Interface
  *
@@ -22,6 +20,5 @@ use Molajo\User\Exception\UserException;
  */
 interface UserInterface
 {
-
 
 }

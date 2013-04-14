@@ -26,9 +26,9 @@ interface UserAuthorisationInterface
      * Is Authorised passes through the authorisation request
      * to a specialized Authorisation class
      *
-     * @param   array  $request
+     * @param array $request
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  UserAuthorisationException
      */

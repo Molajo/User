@@ -10,7 +10,6 @@ namespace Molajo\Tests;
 
 defined('MOLAJO') or die;
 
-use RuntimeException;
 use Molajo\User\Session\Session;
 
 /**
@@ -34,7 +33,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $class              = 'Molajo\\User\\Session\\Session';
-        $this->SessionClass = new $class;
+        $this->Sessionclass = new $class;
 
         return;
     }

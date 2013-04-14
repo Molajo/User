@@ -4,7 +4,7 @@ To do:
 1. User Types
 2. User/UserInterface Class
 3. Tests for Authentication
-4. User Injection
+4. User Injector extends Injector implements InjectorInterface
 
 =======
 User

@@ -1,6 +1,6 @@
 <?php
 /**
- * User Injection
+ * User Injector extends Injector implements InjectorInterface
  *
  * @package   Molajo
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
@@ -10,7 +10,7 @@ namespace Molajo\User;
 
 defined('MOLAJO') or die;
 
-use Molajo\User\Exception\UserInjectionException;
+use Molajo\User\Exception\UserServiceException;
 
 use Molajo\User\Type\UserType;
 
@@ -22,7 +22,7 @@ use Molajo\User\Type\UserType;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class UserInjection
+class UserService
 {
     /**
      * UserType Interface
@@ -37,16 +37,16 @@ Class UserInjection
      *
      * Follows instantiation of the service class and before the method identified as the "start" method
      *
-     * @return  void
+     * @return void
      * @since   1.0
      */
-    public function onBeforeServiceInitialise()
+    public function onBeforeServiceInstantiate()
     {
-        $$this->getUserType();
+        $this->getUserType($user_type);
 
-        if ($this->service_class_instance->get('id', 0) == 0) {
-            //$this->service_class_instance->set('id', Services::Session()->get('Userid'));
-            $this->service_class_instance->set('id', 1);
+        if ($this->service_instance->get('id', 0) == 0) {
+            //$this->service_instance->set('id', Services::Session()->get('Userid'));
+            $this->service_instance->set('id', 1);
         }
     }
 
@@ -57,7 +57,7 @@ Class UserInjection
      *
      * @return string
      * @since   1.0
-     * @throws UserInjectionException
+     * @throws  UserServiceException
      */
     protected function getUserType($user_type)
     {
@@ -65,8 +65,8 @@ Class UserInjection
 
         if (class_exists($class)) {
         } else {
-            throw new UserInjectionException
-            ('User Type Class ' . $class . ' does not exist.');
+            throw new UserServiceException
+            ('User Type class ' . $class . ' does not exist.');
         }
 
         return $class;
@@ -77,21 +77,21 @@ Class UserInjection
      *
      * Follows the completion of the start method defined in the configuration
      *
-     * @return  void
+     * @return void
      * @since   1.0
-     * @throws  \RuntimeException
+     * @throws  RuntimeException
      */
-    public function onAfterServiceInitialise()
+    public function onAfterServiceInstantiate()
     {
-        $id = $this->service_class_instance->get('id');
+        $id = $this->service_instance->get('id');
 
-        $controllerClass = CONTROLLER_CLASS_NAMESPACE;
+        $controllerclass = CONTROLLER_CLASS_NAMESPACE;
         $controller      = new $controllerClass();
         $model_registry  = $controller->getModelRegistry('Datasource', 'User', 1);
 
-        $this->service_class_instance->set('model_registry', $model_registry);
+        $this->service_instance->set('model_registry', $model_registry);
 
-        $controller->set('primary_key_value', (int)$id, 'model_registry');
+        $controller->set('primary_key_value', (int) $id, 'model_registry');
         $controller->set('get_customfields', 2, 'model_registry');
         $controller->set('use_special_joins', 1, 'model_registry');
         $controller->set('process_plugins', 1, 'model_registry');
@@ -99,7 +99,7 @@ Class UserInjection
         $data = $controller->getData(QUERY_OBJECT_ITEM);
         if (is_object($data)) {
         } else {
-            throw new \RuntimeException ('User Service Plugin: Load User Query Failed');
+            throw new RuntimeException ('User Service Dependency Injector: Load User Query Failed');
         }
 
         $customfields = $model_registry['customfieldgroups'];
@@ -128,23 +128,24 @@ Class UserInjection
                     }
                 }
 
-                $this->service_class_instance->set($type, $temp_array);
+                $this->service_instance->set($type, $temp_array);
                 unset($data->$type);
                 unset($temp_array);
                 unset($type);
             }
         }
 
-        $this->service_class_instance->set('data', $data);
+        $this->service_instance->set('data', $data);
 
-        $this->service_class_instance->getUserData();
+        $this->service_instance->getUserData();
 
         $this->setAuthorisedExtensions();
-        //$view_groups = $this->service_class_instance->get('view_groups');
+        //$view_groups = $this->service_instance->get('view_groups');
 
         $extension_class    = $this->frontcontroller_instance->get_class_array('ExtensionHelper');
         $extension_instance = new $extension_class();
         $results            = $extension_instance->get(0, null, null, null, 0);
+
         return;
     }
 
@@ -152,20 +153,20 @@ Class UserInjection
      * Retrieve all Extensions the logged on User is authorised to use. The Extension Helper will use this
      *  registry to avoid a new read when processing requests for Themes, Views, Plugins, Services, etc.
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
-     * @throws  \Exception
+     * @throws  Exception
      */
     protected function setAuthorisedExtensions()
     {
-        //$view_groups = $this->service_class_instance->get('view_groups');
+        //$view_groups = $this->service_instance->get('view_groups');
 
         $extension_class    = $this->frontcontroller_instance->get_class_array('ExtensionHelper');
         $extension_instance = new $extension_class();
         $results            = $extension_instance->get(0, null, null, null, 0);
 
         if ($results === false || count($results) == 0) {
-            throw new \Exception('User Service: No authorised Extension Instances.');
+            throw new Exception('User Service: No authorised Extension Instances.');
         }
 
         $authorised_extensions       = array();
@@ -184,8 +185,8 @@ Class UserInjection
         sort($authorised_extensions);
         sort($authorised_extension_titles);
 
-        $this->service_class_instance->set('authorised_extensions', $authorised_extensions);
-        $this->service_class_instance->set('authorised_extension_titles', $authorised_extension_titles);
+        $this->service_instance->set('authorised_extensions', $authorised_extensions);
+        $this->service_instance->set('authorised_extension_titles', $authorised_extension_titles);
 
         return;
     }

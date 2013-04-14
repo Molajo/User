@@ -35,9 +35,9 @@ interface AuthenticationInterface
     /**
      * Authenticate
      *
-     * @param   array $credentials
+     * @param array $credentials
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  AuthenticationException
      */

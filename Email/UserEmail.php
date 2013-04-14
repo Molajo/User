@@ -48,8 +48,8 @@ class UserEmail implements UserEmailInterface
     /**
      * Constructor
      *
-     * @param   UserEmailInterface  $email
-     * @param   array               $parameters
+     * @param UserEmailInterface $email
+     * @param array              $parameters
      *
      * @since   1.0
      */
@@ -71,10 +71,10 @@ class UserEmail implements UserEmailInterface
     /**
      * Set parameter Value
      *
-     * @param   string  $key
-     * @param   null    $value
+     * @param string $key
+     * @param null   $value
      *
-     * @return  mixed
+     * @return mixed
      * @throws  UserMailException
      * @since   1.0
      */
@@ -83,7 +83,7 @@ class UserEmail implements UserEmailInterface
         try {
             $this->email_instance->set($key, $value);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             throw new UserMailException
             ('User Mail Set Exception: ' . $e->getMessage());
@@ -93,10 +93,10 @@ class UserEmail implements UserEmailInterface
     /**
      * Get parameters value
      *
-     * @param   string  $key
-     * @param   null    $value
+     * @param string $key
+     * @param null   $value
      *
-     * @return  mixed
+     * @return mixed
      * @throws  UserMailException
      * @since   1.0
      */
@@ -105,7 +105,7 @@ class UserEmail implements UserEmailInterface
         try {
             $this->email_instance->get($key, $default);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             throw new UserMailException
             ('User Mail Get Exception: ' . $e->getMessage());
@@ -117,7 +117,7 @@ class UserEmail implements UserEmailInterface
     /**
      * Send email
      *
-     * @return  mixed
+     * @return mixed
      * @throws  UserMailException
      * @since   1.0
      */
@@ -126,7 +126,7 @@ class UserEmail implements UserEmailInterface
         try {
             $this->email_instance->send();
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             throw new UserMailException
             ('User Mail Send Exception: ' . $e->getMessage());

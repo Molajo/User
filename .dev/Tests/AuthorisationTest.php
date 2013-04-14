@@ -8,8 +8,6 @@
  */
 namespace Molajo\Tests;
 
-use RuntimeException;
-
 /**
  * Test User Authorisation
  *
@@ -36,10 +34,10 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $class                 = 'Molajo\\Foundation\\Permissions\\Permissions';
-        $this->PermissionClass = new $class;
+        $this->Permissionclass = new $class;
 
         $class                    = 'Molajo\\User\\Authorisation\\UserAuthorisation';
-        $this->AuthorisationClass = new $class($this->PermissionClass);
+        $this->Authorisationclass = new $class($this->PermissionClass);
 
         return;
     }

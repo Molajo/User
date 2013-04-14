@@ -23,7 +23,7 @@ interface UserEmailInterface
     /**
      * Send email
      *
-     * @return  mixed
+     * @return mixed
      * @throws  UserEmailException
      * @since   1.0
      */

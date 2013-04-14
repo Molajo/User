@@ -22,14 +22,14 @@ use Molajo\User\Exception\AuthenticationException;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class Authentication implements AuthenticationInterface
+class Authentication implements AuthenticationInterface
 {
     /**
      * Authenticate
      *
-     * @param   array $credentials
+     * @param array $credentials
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  AuthenticationException
      */

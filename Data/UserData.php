@@ -20,7 +20,7 @@ use Molajo\User\Exception\UserDataException;
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @since     1.0
  */
-Class UserData implements UserDataInterface
+class UserData implements UserDataInterface
 {
     /** Group Constants */
     const GROUP_PUBLIC      = 1,
@@ -193,13 +193,13 @@ Class UserData implements UserDataInterface
     /**
      * Construct
      *
-     * @param   int $id
+     * @param int $id
      *
      * @since   1.0
      */
     public function __construct($id = 0)
     {
-        $this->id = (int)$id;
+        $this->id = (int) $id;
 
         return;
     }
@@ -207,10 +207,10 @@ Class UserData implements UserDataInterface
     /**
      * Get the current value (or default) of the specified key
      *
-     * @param   string  $key
-     * @param   mixed   $default
+     * @param string $key
+     * @param mixed  $default
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  UserDataException
      */
@@ -247,10 +247,10 @@ Class UserData implements UserDataInterface
     /**
      * Set the value of a specified key
      *
-     * @param   string  $key
-     * @param   mixed   $value
+     * @param string $key
+     * @param mixed  $value
      *
-     * @return  mixed
+     * @return mixed
      * @since   1.0
      * @throws  UserDataException
      */
@@ -284,9 +284,9 @@ Class UserData implements UserDataInterface
     /**
      * Checks to see that the user is authorised to use this extension
      *
-     * @param   string  $extension_instance_id
+     * @param string $extension_instance_id
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      */
     public function checkAuthorised($extension_instance_id)
@@ -303,7 +303,7 @@ Class UserData implements UserDataInterface
      *
      * @returns  void
      * @since    1.0
-     * @throws   UserDataException
+     * @throws  UserDataException
      */
     public function getUserData()
     {
@@ -340,7 +340,7 @@ Class UserData implements UserDataInterface
     /**
      * Set Applications for which User is Authorised to Login
      *
-     * @return  void
+     * @return void
      * @since   1.0
      * @throws  UserDataException
      */
@@ -370,7 +370,7 @@ Class UserData implements UserDataInterface
     /**
      * Set Groups the User is authorised for
      *
-     * @return  array
+     * @return array
      * @since   1.0
      * @throws  UserDataException
      */
@@ -421,7 +421,7 @@ Class UserData implements UserDataInterface
     /**
      * Set View Groups the User is authorised for
      *
-     * @return  array
+     * @return array
      * @since   1.0
      * @throws  UserDataException
      */

@@ -6,7 +6,7 @@
  * @copyright 2013 Amy Stephen. All rights reserved.
  * @license   http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\Service\Adapter;
+namespace Molajo\Service\Api;
 
 use Molajo\User\Authentication\Authentication;
 
@@ -29,9 +29,9 @@ class Http extends Authentication implements AuthenticationInterface
     /**
      * Authenticate
      *
-     * @param   array $credentials
+     * @param array $credentials
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  AuthenticationException
      */
@@ -43,7 +43,7 @@ class Http extends Authentication implements AuthenticationInterface
     /**
      * Get User
      *
-     * @return  object  UserInterface
+     * @return  object UserInterface
      * @since   1.0
      * @throws  AuthenticationException
      */
@@ -55,7 +55,7 @@ class Http extends Authentication implements AuthenticationInterface
     /**
      * Destroy
      *
-     * @return  bool
+     * @return bool
      * @since   1.0
      * @throws  AuthenticationException
      */

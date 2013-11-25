@@ -66,7 +66,7 @@ Features [GitHub](https://github.com/Molajo/User/issues)
 Author
 ------
 
-Amy Stephen - <AmyStephen@gmail.com> - <http://twitter.com/AmyStephen>
+Amy Stephen - <AmyStephen@Molajo.org> - <http://twitter.com/AmyStephen>
 License
 -------
 

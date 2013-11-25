@@ -50,8 +50,8 @@ class MailerInjector extends AbstractInjector implements ServiceHandlerInterface
         parent::processFulfilledDependencies($dependency_instances);
 
         $this->dependencies['default_exception']   = 'Exception\\User\\MailerException';
-        $this->dependencies['from']                = 'AmyStephen@gmail.com,Amy Stephen';
-        $this->dependencies['reply_to']            = 'AmyStephen@gmail.com,Amy Stephen';
+        $this->dependencies['from']                = 'AmyStephen@Molajo.org,Amy Stephen';
+        $this->dependencies['reply_to']            = 'AmyStephen@Molajo.org,Amy Stephen';
         $this->dependencies['mailer_html_or_text'] = 'text';
 
         return $this->dependencies;

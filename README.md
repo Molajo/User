@@ -1,47 +1,12 @@
-**NOT COMPLETE**
-
-To do:
-1. User Types
-2. User/UserInterface Class
-3. Tests for Authentication
-4. User Injector extends Injector implements InjectorInterface
-
 =======
 User
 =======
 
 [![Build Status](https://travis-ci.org/Molajo/User.png?branch=master)](https://travis-ci.org/Molajo/User)
 
-Validates and filters input. Escapes and formats output.
-
-Supports standard data type and PHP-specific filters and validation, value lists verification, callbacks, regex checking, and more.
- Use with rendering process to ensure proper escaping of output data and for special formatting needs.
-
-## Basic Usage ##
-
-Each field is processed by one, or many, field handlers for validation, filtering, or escaping.
-
-```php
-    try {
-        $adapter = new Molajo/User/Adapter
-            ->($method, $field_name, $field_value, $User_type_chain, $options);
-
-    } catch (Exception $e) {
-        //handle the exception here
-    }
-
-    // Success!
-    echo $adapter->field_value;
-```
-
-###There are five input parameters:###
-
-1. **$method** can be `validate`, `filter`, or `escape`;
-2. **$field_name** name of the field containing the data value to be verified or filtered;
-3. **$field_value** contains the data value to be verified or filtered;
-4. **$User_type_chain** one or more field handlers, separated by a comma, processed in left-to-right order;
-5. **$options** associative array of named pair values required by field handlers.
-
+Instantiates a User Object, providing access to User Profile and other System data, Authentication (Database, HTTP, and
+"Offline Access" testing. Also enables access to Registration processes, Login, Logout, Remember Me, Remind Me,
+User Email and Assets, and Authorisation processes.
 
 ## System Requirements ##
 
@@ -101,9 +66,7 @@ Features [GitHub](https://github.com/Molajo/User/issues)
 Author
 ------
 
-Amy Stephen - <AmyStephen@gmail.com> - <http://twitter.com/AmyStephen><br />
-See also the list of [contributors](https://github.com/Molajo/User/contributors) participating in this project.
-
+Amy Stephen - <AmyStephen@gmail.com> - <http://twitter.com/AmyStephen>
 License
 -------
 

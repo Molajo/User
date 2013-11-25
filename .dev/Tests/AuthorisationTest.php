@@ -2,19 +2,19 @@
 /**
  * Authorisation Test
  *
- * @package   Molajo
- * @copyright 2013 Amy Stephen. All rights reserved.
- * @license   http://www.opensource.org/licenses/mit-license.html MIT License
+ * @package    Molajo
+ * @copyright  2013 Amy Stephen. All rights reserved.
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
 namespace Molajo\Tests;
 
 /**
  * Test User Authorisation
  *
- * @package   Molajo
- * @license   http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright 2013 Amy Stephen. All rights reserved.
- * @since     1.0
+ * @package    Molajo
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
+ * @copyright  2013 Amy Stephen. All rights reserved.
+ * @since      1.0
  */
 class AuthorisationTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,17 +33,17 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $class                 = 'Molajo\\Foundation\\Permissions\\Permissions';
+        $class                 = 'Molajo\\Permissions\\Permissions';
         $this->Permissionclass = new $class;
 
-        $class                    = 'Molajo\\User\\Authorisation\\UserAuthorisation';
+        $class                    = 'Molajo\\User\\Authorisation\\Authorisation';
         $this->Authorisationclass = new $class($this->PermissionClass);
 
         return;
     }
 
     /**
-     * @covers Molajo\User\Authorisation\UserAuthorisation::verifyLogin
+     * @covers Molajo\User\Authorisation\Authorisation::verifyLogin
      */
     public function testVerifyLogin()
     {
@@ -58,7 +58,7 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Authorisation\UserAuthorisation::verifyTask
+     * @covers Molajo\User\Authorisation\Authorisation::verifyActionPermissions
      */
     public function testVerifyTask()
     {
@@ -73,7 +73,7 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Authorisation\UserAuthorisation::verifyTask
+     * @covers Molajo\User\Authorisation\Authorisation::verifyActionPermissions
      */
     public function testVerifyActionTest()
     {
@@ -89,7 +89,7 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Authorisation\UserAuthorisation::setHTMLFilter
+     * @covers Molajo\User\Authorisation\Authorisation::isUserAuthorisedNoFiltering
      */
     public function testSetHTMLFilter()
     {
@@ -109,5 +109,4 @@ class AuthorisationTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
     }
-
 }

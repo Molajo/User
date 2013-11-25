@@ -2,23 +2,21 @@
 /**
  * Test User Session
  *
- * @package   Molajo
- * @copyright 2013 Amy Stephen. All rights reserved.
- * @license   http://www.opensource.org/licenses/mit-license.html MIT License
+ * @package    Molajo
+ * @copyright  2013 Amy Stephen. All rights reserved.
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
 namespace Molajo\Tests;
 
-defined('MOLAJO') or die;
-
-use Molajo\User\Session\Session;
+use Molajo\User\Persist\Session;
 
 /**
  * Test User Session
  *
- * @package   Molajo
- * @license   http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright 2013 Amy Stephen. All rights reserved.
- * @since     1.0
+ * @package    Molajo
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
+ * @copyright  2013 Amy Stephen. All rights reserved.
+ * @since      1.0
  */
 class SessionTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,14 +30,14 @@ class SessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $class              = 'Molajo\\User\\Session\\Session';
+        $class              = 'Molajo\\User\\Persist\\Session';
         $this->Sessionclass = new $class;
 
         return;
     }
 
     /**
-     * @covers Molajo\User\Session\Session::start
+     * @covers Molajo\User\Persist\Session::start
      */
     public function testStart()
     {
@@ -49,7 +47,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::testGetSessionId
+     * @covers Molajo\User\Persist\Session::testGetSessionId
      */
     public function testGetSessionId()
     {
@@ -59,7 +57,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::get
+     * @covers Molajo\User\Persist\Session::get
      */
     public function testNoToken()
     {
@@ -75,8 +73,8 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::get
-     * @expectedException  Molajo\User\Exception\SessionException
+     * @covers Molajo\User\Persist\Session::get
+     * @expectedException  Exception\User\SessionException
      */
     public function testSaveToken()
     {
@@ -88,7 +86,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::exists
+     * @covers Molajo\User\Persist\Session::exists
      */
     public function testExists()
     {
@@ -102,7 +100,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::exists
+     * @covers Molajo\User\Persist\Session::exists
      */
     public function testExistsFalse()
     {
@@ -112,7 +110,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::set
+     * @covers Molajo\User\Persist\Session::set
      */
     public function testSet()
     {
@@ -127,7 +125,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::get
+     * @covers Molajo\User\Persist\Session::get
      */
     public function testGet()
     {
@@ -144,8 +142,8 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::get
-     * @expectedException  Molajo\User\Exception\SessionException
+     * @covers Molajo\User\Persist\Session::get
+     * @expectedException  Exception\User\SessionException
      */
     public function testGetFail()
     {
@@ -155,8 +153,8 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::delete
-     * @expectedException  Molajo\User\Exception\SessionException
+     * @covers Molajo\User\Persist\Session::delete
+     * @expectedException  Exception\User\SessionException
      */
     public function testDelete()
     {
@@ -169,7 +167,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Molajo\User\Session\Session::destroy
+     * @covers Molajo\User\Persist\Session::destroy
      */
     public function testDestroy()
     {
@@ -185,5 +183,4 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
     }
-
 }

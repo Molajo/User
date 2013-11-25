@@ -1,251 +1,429 @@
 <?php
 /**
- * User Class
+ * User Facade to access to all user functions and data
  *
- * @package   Molajo
- * @copyright 2013 Amy Stephen. All rights reserved.
- * @license   MIT
+ * @package    Molajo
+ * @copyright  2013 Amy Stephen. All rights reserved.
+ * @license    MIT
  */
-
 namespace Molajo\User;
 
-defined('MOLAJO') or die;
-
-use Molajo\User\Exception\UserException;
-use Molajo\User\Type;
+use Exception\User\DataException;
+use Exception\User\AuthorisationException;
+use Exception\User\CookieException;
+use Exception\User\SessionException;
+use CommonApi\User\UserInterface;
+use CommonApi\User\UserDataInterface;
+use CommonApi\User\AuthorisationInterface;
+use CommonApi\User\SessionInterface;
+use CommonApi\User\FlashMessageInterface;
+use CommonApi\User\ActivityInterface;
+use CommonApi\User\CookieInterface;
 
 /**
- * User Class
+ * User Facade to access to all user functions and data
  *
- * @package   Molajo
- * @license   MIT
- * @copyright 2013 Amy Stephen. All rights reserved.
- * @since     1.0
+ * @package    Molajo
+ * @license    MIT
+ * @copyright  2013 Amy Stephen. All rights reserved.
+ * @since      1.0
  */
 class User implements UserInterface
 {
     /**
-     * UserType Interface
+     * User Data
      *
-     * @var     object  UserTypeInterface
+     * @var     object  CommonApi\User\UserDataInterface
      * @since   1.0
      */
-    public $user_type;
+    protected $userdata;
 
     /**
-     * Construct
-     *
-     * @param string $action
-     * @param string $user_type
-     * @param array  $options
-     *
-     * @since   1.0
-     * @throws  UserException
-     */
-    public function __construct($action = '', $user_type, $options = array())
-    {
-        $options = $this->getTimeZone($options);
-
-        $class = $this->getUserType($user_type);
-
-        try {
-            $this->ct = new $class($action, $user_type, $options);
-
-        } catch (Exception $e) {
-
-            throw new UserException
-            ('Caught this ' . $e->getMessage());
-        }
-
-        $this->process();
-
-        $this->close();
-
-        return $this->ct;
-    }
-
-    /**
-     * register
-     *
-     * @since   1.0
-     * @throws  UserException
-     */
-    public function register()
-    {
-        //edit and filter
-        // insert
-        // activated code: $activationCode = sha1(openssl_random_pseudo_bytes(16));
-        // Send the user's activation email
-        // flash message 'Signup Succcessful
-        // redirect to home
-    }
-
-    /**
-     * Verify User Logged In Status
-     *
-     * getAuthenticated
-     * checkExpiration
-     * setCookies
-     * Load Userdata from Session
-     *
-     * @return bool
-     * @since   1.0
-     * @throws  AuthenticationException
-     */
-    public function isLoggedIn()
-    {
-
-    }
-
-    /**
-     * Login User
-     *
-     * - verifyAccess
-     *
-     * setAuthenticated
-     * setExpiration
-     * getUserData
      * Session
      *
-     * @param int $user_id
-     *
-     * @return mixed
+     * @var     object  CommonApi\User\SessionInterface
      * @since   1.0
-     * @throws  AuthenticationException
      */
-    public function login($credentials)
-    {
+    protected $session;
 
+    /**
+     * Flash Message
+     *
+     * @var     object  CommonApi\User\FlashMessageInterface
+     * @since   1.0
+     */
+    protected $flashmessage;
+
+    /**
+     * Cookie
+     *
+     * @var     object  CommonApi\User\CookieInterface
+     * @since   1.0
+     */
+    protected $cookie;
+
+    /**
+     * Activity
+     *
+     * @var     object  CommonApi\User\ActivityInterface
+     * @since   1.0
+     */
+    protected $activity;
+
+    /**
+     * Constructor
+     *
+     * @param  UserDataInterface     $userdata
+     * @param  SessionInterface      $session
+     * @param  FlashMessageInterface $flashmessage
+     * @param  CookieInterface       $cookie
+     * @param  ActivityInterface     $activity
+     *
+     * @since  1.0
+     */
+    public function __construct(
+        UserDataInterface $userdata,
+        SessionInterface $session,
+        FlashMessageInterface $flashmessage,
+        CookieInterface $cookie = null,
+        ActivityInterface $activity = null
+    ) {
+        $this->data         = $userdata;
+        $this->session      = $session;
+        $this->flashmessage = $flashmessage;
+        $this->cookie       = $cookie;
+        $this->activity     = $activity;
     }
 
     /**
-     * Logout User
+     * GetDate
      *
-     * @param bool $key
-     *
-     * @return mixed
+     * @return  object  DateTime
      * @since   1.0
-     * @throws  AuthenticationException
+     * @throws  \Exception\User\DataException
      */
-    public function logout()
+    public function getDate()
     {
-
+        $this->data->getDate();
     }
 
     /**
-     * Log in User
+     * Get the current value (or default) of the specified key or all User Data for null key
+     * The secondary key can be used to designate a customfield group or child object
      *
-     * @param array $credentials
+     * @param   null|string $key
+     * @param   null|string $secondary_key
      *
-     * @return bool
+     * @return  mixed
      * @since   1.0
-     * @throws  UserException
+     * @throws  \Exception\User\DataException
      */
-    public function login(array $credentials)
+    public function getUserData($key = null, $secondary_key = null)
     {
-        //edit and filter
-        // authenticate
-        // get user
-        // is user activated?
-        // populate session w user info
-        // flash message 'Login Succcessful
-        // redirect to home
+        return $this->data->getUserData($key, $secondary_key);
     }
 
     /**
-     * Remind Me Username
+     * Set the value of a specified key
      *
-     * @param string $type Password Userid Username
+     * @param   string $key
+     * @param   mixed  $value
      *
-     * @return array
+     * @return  $this
      * @since   1.0
-     * @throws  UserTypeException
+     * @throws  \Exception\User\DataException
      */
-    public function remindMeUsername()
+    public function setUserData($key, $value = null)
     {
-        //edit and filter
-        // $activationCode = sha1(openssl_random_pseudo_bytes(16));
-        // redirect to home
+        return $this->data->setUserData($key, $value);
     }
 
     /**
-     * Remind Me Password
+     * Get User Customfields
      *
-     * @param string $type Password Userid Username
+     * @param    string $key
+     * @param    mixed  $default
      *
-     * @return array
-     * @since   1.0
-     * @throws  UserTypeException
+     * @returns  $this
+     * @since    1.0
+     * @throws   \Exception\User\DataException
      */
-    public function remindMePassword($type)
+    public function getUserCustomfields($key, $default = null)
     {
-        //edit and filter
-        // $activationCode = sha1(openssl_random_pseudo_bytes(16));
-        // redirect to home
+        return $this->data->getUserCustomfields($key, $default);
     }
 
     /**
-     * Is Authorised passes through the authorisation request
-     * to a specialized Authorisation class
+     * Set User Customfields
      *
-     * @param array $request
+     * @param    string $key
+     * @param    mixed  $value
      *
-     * @return mixed
-     * @since   1.0
-     * @throws  UserException
+     * @return   $this
+     * @since    1.0
+     * @throws   \Exception\User\DataException
      */
-    public function isAuthorised(array $request)
+    public function setUserCustomfields($key, $value = null)
     {
-
+        return $this->data->setUserCustomfields($key, $value);
     }
 
     /**
-     * Log out User
+     * Get User Parameters
      *
-     * @return bool
-     * @since   1.0
-     * @throws  UserException
+     * @param    string $key
+     * @param    mixed  $default
+     *
+     * @returns  $this
+     * @since    1.0
+     * @throws   \Exception\User\DataException
      */
-    public function logout()
+    public function getUserParameters($key, $default = null)
     {
-        $this->getSession()->clear();
-        $this->redirectToRoute('Homepage');
+        return $this->data->getUserParameters($key, $default);
     }
 
     /**
-     * Get timezone
+     * Set User Parameters
      *
-     * @param array $options
+     * @param    string $key
+     * @param    mixed  $value
      *
-     * @return array
+     * @return   $this
+     * @since    1.0
+     * @throws   \Exception\User\DataException
+     */
+    public function setUserParameters($key, $value = null)
+    {
+        return $this->data->setUserParameters($key, $value);
+    }
+
+    /**
+     * Get User Metadata
+     *
+     * @param    string $key
+     * @param    mixed  $default
+     *
+     * @return   $this
+     * @since    1.0
+     * @throws   \Exception\User\DataException
+     */
+    public function getUserMetadata($key, $default = null)
+    {
+        return $this->data->getUserMetadata($key, $default);
+    }
+
+    /**
+     * Set User Metadata
+     *
+     * @param    string $key
+     * @param    mixed  $value
+     *
+     * @return   $this
+     * @since    1.0
+     * @throws   \Exception\User\DataException
+     */
+    public function setUserMetadata($key, $value = null)
+    {
+        return $this->data->setUserMetadata($key, $value);
+    }
+
+    /**
+     * Save the User
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  DataException
+     */
+    public function updateUser()
+    {
+        return $this->data->updateUser();
+    }
+
+    /**
+     * Delete the User
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  DataException
+     */
+    public function deleteUser()
+    {
+        return $this->data->deleteUser();
+    }
+
+    /**
+     * Gets the value for a key
+     *
+     * @param   string $key
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  \Exception\User\SessionException
+     */
+    public function getSession($key)
+    {
+        return $this->session->getSession($key);
+    }
+
+    /**
+     * Sets the value for key
+     *
+     * @param   string $key
+     * @param   mixed  $value
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  \Exception\User\SessionException
+     */
+    public function setSession($key, $value)
+    {
+        return $this->session->setSession($key, $value);
+    }
+
+    /**
+     * Delete a single or all session keys
+     *
+     * @param   null|string $key
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  \Exception\User\SessionException
+     */
+    public function deleteSession($key)
+    {
+        return $this->session->deleteSession($key);
+    }
+
+    /**
+     * Get Flash Messages for User, all or by Type
+     *
+     * @param   null|string $type (Success, Notice, Warning, Error)
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  \Exception\User\FlashMessageException
+     */
+    public function getFlashMessage($type = null)
+    {
+        return $this->flashmessage->getFlashMessage($type);
+    }
+
+    /**
+     * Save a Flash Message (User Message)
+     *
+     * @param   string $type (Success, Notice, Warning, Error)
+     * @param   string $message
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \Exception\User\FlashMessageException
+     */
+    public function setFlashMessage($type, $message)
+    {
+        return $this->flashmessage->setFlashMessage($type, $message);
+    }
+
+    /**
+     * Delete Flash Messages, all or by type
+     *
+     * @param   null|string $type
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \Exception\User\FlashMessageException
+     */
+    public function deleteFlashMessage($type = null)
+    {
+        return $this->flashmessage->deleteFlashMessage($type);
+    }
+
+    /**
+     * Get an HTTP Cookie
+     *
+     * @param           $name
+     *
+     * @link    http://www.faqs.org/rfcs/rfc6265.html
+     * @return  $this
      * @since   1.0
      */
-    protected function getTimeZone($options)
+    public function getCookie($name)
     {
-        $timezone = '';
+        return $this->cookie->getCookie($name);
+    }
 
-        if (is_array($options)) {
-        } else {
-            $options = array();
-        }
+    /**
+     * Sets an HTTP Cookie to be sent with the HTTP response
+     *
+     * @param           $name
+     * @param   null    $value
+     * @param   int     $minutes
+     * @param   string  $path
+     * @param   string  $domain
+     * @param   bool    $secure
+     * @param   bool    $http_only
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    public function setCookie(
+        $name,
+        $value = null,
+        $minutes = 0,
+        $path = '/',
+        $domain = '',
+        $secure = false,
+        $http_only = false
+    ) {
+        return $this->cookie->setCookie
+            (
+                $name,
+                $value,
+                $minutes,
+                $path,
+                $domain,
+                $secure,
+                $http_only
+            );
+    }
 
-        if (isset($options['timezone'])) {
-            $timezone = $options['timezone'];
-        }
+    /**
+     * Delete a cookie
+     *
+     * @param   string $name
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  CookieException
+     */
+    public function deleteCookie($name)
+    {
+        return $this->cookie->deleteCookie($name);
+    }
 
-        if ($timezone === '') {
-            if (ini_get('date.timezone')) {
-                $timezone = ini_get('date.timezone');
-            }
-        }
+    /**
+     * sendCookies
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  CookieException
+     */
+    public function sendCookies()
+    {
+        return $this->cookie->sendCookies();
+    }
 
-        if ($timezone === '') {
-            $timezone = 'UTC';
-        }
-
-        ini_set('date.timezone', $timezone);
-        $options['timezone'] = $timezone;
-
-        return $options;
+    /**
+     * sendCookie
+     *
+     * @param   object $cookie
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  CookieException
+     */
+    protected function sendCookie($cookie)
+    {
+        return $this->cookie->sendCookie($cookie);
     }
 }

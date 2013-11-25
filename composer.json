@@ -23,7 +23,7 @@
     "require": {
         "php": ">=5.3.10",
         "commonapi/user": "dev-master",
-        "commonapi/filehandler": "dev-master"
+        "commonapi/fieldhandler": "dev-master"
     },
     "suggest": {
         "molajo/email": "Molajo Email Services",

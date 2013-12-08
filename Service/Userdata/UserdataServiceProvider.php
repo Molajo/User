@@ -1,6 +1,6 @@
 <?php
 /**
- * User Data Dependency Injector
+ * User Data Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -8,8 +8,8 @@
  */
 namespace Molajo\Service\Userdata;
 
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
@@ -20,7 +20,7 @@ use CommonApi\Exception\RuntimeException;
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class UserdataInjector extends AbstractInjector implements ServiceHandlerInterface
+class UserdataServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -39,7 +39,7 @@ class UserdataInjector extends AbstractInjector implements ServiceHandlerInterfa
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the ServiceHandlerInterface
+     * Instantiate a new handler and inject it into the Adapter for the ServiceProviderInterface
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array

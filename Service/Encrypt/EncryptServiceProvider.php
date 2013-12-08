@@ -1,26 +1,27 @@
 <?php
 /**
- * Mailer Dependency Injector
+ * Encrypt Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Service\Mailer;
+namespace Molajo\Service\Encrypt;
 
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Exception;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * Mailer Dependency Injector
+ * User Encrypt Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class MailerInjector extends AbstractInjector implements ServiceHandlerInterface
+class EncryptServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -33,7 +34,7 @@ class MailerInjector extends AbstractInjector implements ServiceHandlerInterface
     {
         $options['service_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['service_namespace']        = 'Molajo\\User\\Utilities\\Mailer';
+        $options['service_namespace']        = 'Molajo\\User\\Utilities\\Encrypt';
 
         parent::__construct($options);
     }
@@ -49,11 +50,8 @@ class MailerInjector extends AbstractInjector implements ServiceHandlerInterface
     {
         parent::processFulfilledDependencies($dependency_instances);
 
-        $this->dependencies['default_exception']   = 'Exception\\User\\MailerException';
-        $this->dependencies['from']                = 'AmyStephen@Molajo.org,Amy Stephen';
-        $this->dependencies['reply_to']            = 'AmyStephen@Molajo.org,Amy Stephen';
-        $this->dependencies['mailer_html_or_text'] = 'text';
+        $this->dependencies['encrypt_exception'] = 'Exception\\User\\EncryptException';
 
-        return $this->dependencies;
+        return $this;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * User Template Dependency Injector
+ * User Template Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -9,19 +9,19 @@
 namespace Molajo\Service\Template;
 
 use stdClass; // this is needed by required files in getTemplates() method below
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * User Template Dependency Injector
+ * User Template Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class TemplateInjector extends AbstractInjector implements ServiceHandlerInterface
+class TemplateServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -86,7 +86,7 @@ class TemplateInjector extends AbstractInjector implements ServiceHandlerInterfa
             } else {
 
                 throw new RuntimeException
-                ('IoC: Injector Instance Failed for Molajo\User\Utilities\TextTemplate '
+                ('IoC Service Provider Instance Failed for Molajo\User\Utilities\TextTemplate '
                 . 'Template folder does not exist ' . $template_folder);
             }
         }
@@ -110,7 +110,7 @@ class TemplateInjector extends AbstractInjector implements ServiceHandlerInterfa
         if (count($template_files) > 0) {
         } else {
             throw new RuntimeException
-            ('IoC: Injector Instance Failed for Molajo\User\Utilities\TextTemplate '
+            ('IoC Service Provider Instance Failed for Molajo\User\Utilities\TextTemplate '
             . 'Template folder does not contain templates: ' . $template_folder);
         }
 
@@ -129,7 +129,7 @@ class TemplateInjector extends AbstractInjector implements ServiceHandlerInterfa
 
             } else {
                 throw new RuntimeException
-                ('IoC: Injector Instance Failed for Molajo\User\Utilities\TextTemplate '
+                ('IoC Service Provider Instance Failed for Molajo\User\Utilities\TextTemplate '
                 . ' Template File does not exist. (This should never happen.');
             }
         }

@@ -1,27 +1,26 @@
 <?php
 /**
- * Encrypt Dependency Injector
+ * Mailer Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Service\Encrypt;
+namespace Molajo\Service\Mailer;
 
-use Exception;
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * User Encrypt Dependency Injector
+ * Mailer Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class EncryptInjector extends AbstractInjector implements ServiceHandlerInterface
+class MailerServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -34,7 +33,7 @@ class EncryptInjector extends AbstractInjector implements ServiceHandlerInterfac
     {
         $options['service_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['service_namespace']        = 'Molajo\\User\\Utilities\\Encrypt';
+        $options['service_namespace']        = 'Molajo\\User\\Utilities\\Mailer';
 
         parent::__construct($options);
     }
@@ -50,8 +49,11 @@ class EncryptInjector extends AbstractInjector implements ServiceHandlerInterfac
     {
         parent::processFulfilledDependencies($dependency_instances);
 
-        $this->dependencies['encrypt_exception'] = 'Exception\\User\\EncryptException';
+        $this->dependencies['default_exception']   = 'Exception\\User\\MailerException';
+        $this->dependencies['from']                = 'AmyStephen@Molajo.org,Amy Stephen';
+        $this->dependencies['reply_to']            = 'AmyStephen@Molajo.org,Amy Stephen';
+        $this->dependencies['mailer_html_or_text'] = 'text';
 
-        return $this;
+        return $this->dependencies;
     }
 }

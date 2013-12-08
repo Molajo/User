@@ -1,6 +1,6 @@
 <?php
 /**
- * User FlashMessage Dependency Injector
+ * User FlashMessage Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -8,19 +8,19 @@
  */
 namespace Molajo\Service\Flashmessage;
 
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * FlashMessage Dependency Injector
+ * FlashMessage Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class FlashmessageInjector extends AbstractInjector implements ServiceHandlerInterface
+class FlashmessageServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor

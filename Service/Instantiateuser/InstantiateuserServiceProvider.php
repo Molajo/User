@@ -1,6 +1,6 @@
 <?php
 /**
- * User User Dependency Injector
+ * User User Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -8,18 +8,18 @@
  */
 namespace Molajo\Service\Instantiateuser;
 
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 
 /**
- * User User Dependency Injector
+ * User User Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class InstantiateuserInjector extends AbstractInjector implements ServiceHandlerInterface
+class InstantiateuserServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor

@@ -1,6 +1,6 @@
 <?php
 /**
- * User Dependency Injector
+ * User Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -8,19 +8,19 @@
  */
 namespace Molajo\Service\User;
 
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * User Dependency Injector
+ * User Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class UserInjector extends AbstractInjector implements ServiceHandlerInterface
+class UserServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Actions Array

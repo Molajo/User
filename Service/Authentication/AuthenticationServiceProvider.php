@@ -1,6 +1,6 @@
 <?php
 /**
- * Authentication Dependency Injector
+ * Authentication Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -10,8 +10,8 @@ namespace Molajo\Service\Authentication;
 
 use stdClass;
 use Exception;
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
@@ -22,7 +22,7 @@ use CommonApi\Exception\RuntimeException;
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class AuthenticationInjector extends AbstractInjector implements ServiceHandlerInterface
+class AuthenticationServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -41,7 +41,7 @@ class AuthenticationInjector extends AbstractInjector implements ServiceHandlerI
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the ServiceHandlerInterface
+     * Instantiate a new handler and inject it into the Adapter for the ServiceProviderInterface
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
@@ -136,7 +136,7 @@ class AuthenticationInjector extends AbstractInjector implements ServiceHandlerI
                     $id = $this->service_instance->$action($this->options['session_id']);
                 } catch (Exception $e) {
                     throw new RuntimeException
-                    ('User Authentication Injector isGuest Failed. Exception: ' . $e->getMessage());
+                    ('User Authentication Service Provider isGuest Failed. Exception: ' . $e->getMessage());
                 }
                 break;
 
@@ -152,7 +152,7 @@ class AuthenticationInjector extends AbstractInjector implements ServiceHandlerI
                 } catch (Exception $e) {
 
                     throw new RuntimeException
-                    ('User Authentication Injector login Failed. Exception: ' . $e->getMessage());
+                    ('User Authentication Service Provider login Failed. Exception: ' . $e->getMessage());
                 }
                 break;
 
@@ -167,7 +167,7 @@ class AuthenticationInjector extends AbstractInjector implements ServiceHandlerI
                 } catch (Exception $e) {
 
                     throw new RuntimeException
-                    ('User Authentication Injector login Failed. Exception: ' . $e->getMessage());
+                    ('User Authentication Service Provider login Failed. Exception: ' . $e->getMessage());
                 }
                 break;
 
@@ -186,7 +186,7 @@ class AuthenticationInjector extends AbstractInjector implements ServiceHandlerI
                 } catch (Exception $e) {
 
                     throw new RuntimeException
-                    ('User Authentication Injector changePassword Failed. Exception: ' . $e->getMessage());
+                    ('User Authentication Service Provider changePassword Failed. Exception: ' . $e->getMessage());
                 }
                 break;
 
@@ -201,7 +201,7 @@ class AuthenticationInjector extends AbstractInjector implements ServiceHandlerI
                 } catch (Exception $e) {
 
                     throw new RuntimeException
-                    ('User Authentication Injector requestPasswordReset Failed. Exception: ' . $e->getMessage());
+                    ('User Authentication Service Provider requestPasswordReset Failed. Exception: ' . $e->getMessage());
                 }
                 break;
 
@@ -216,7 +216,7 @@ class AuthenticationInjector extends AbstractInjector implements ServiceHandlerI
                 } catch (Exception $e) {
 
                     throw new RuntimeException
-                    ('User Authentication Injector logout Failed. Exception: ' . $e->getMessage());
+                    ('User Authentication Service Provider logout Failed. Exception: ' . $e->getMessage());
                 }
                 break;
 
@@ -230,7 +230,7 @@ class AuthenticationInjector extends AbstractInjector implements ServiceHandlerI
              */
             default:
                 throw new RuntimeException
-                ('User Authentication Injector: Invalid action: ' . $action);
+                ('User Authentication Service Provider: Invalid action: ' . $action);
         }
 
         $this->options['id'] = $id;

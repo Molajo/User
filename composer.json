@@ -30,6 +30,9 @@
         "molajo/fieldhandler": "Molajo Fieldhandler Services"
     },
     "autoload": {
-        "classmap": "./"
+        "psr-0": {
+            "Molajo\\Service": "./Service/",
+            "Molajo\\User": "./Source/"
+        }
     }
 }

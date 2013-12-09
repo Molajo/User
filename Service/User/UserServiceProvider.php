@@ -112,7 +112,7 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
         $this->dependencies['Session']      = $options;
         $this->dependencies['Flashmessage'] = $options;
         $this->dependencies['Runtimedata']   = $options;
-        $this->dependencies['Resources']    = $options;
+        $this->dependencies['Resource']    = $options;
 
         return $this->dependencies;
     }
@@ -124,7 +124,7 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function processFulfilledDependencies(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_instances = null)
     {
         foreach ($dependency_instances as $service => $instance) {
             $this->dependencies[$service] = $instance;
@@ -161,7 +161,7 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
     }
 
     /**
-     * IoC Controller triggers the DI Handler to create the Class for the Service
+     * Service Provider Controller triggers the Service Provider to create the Class for the Service
      *
      * @return  $this
      * @since   1.0
@@ -213,7 +213,7 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
      * @return  $this
      * @since   1.0
      */
-    public function scheduleNextService()
+    public function scheduleServices()
     {
         $options = array();
         foreach ($this->options as $key => $value) {

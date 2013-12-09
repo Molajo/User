@@ -37,7 +37,7 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
     }
 
     /**
-     * Following Class creation, DI Handler requests the IoC Controller set Services in the Container
+     * Following Class creation, Service Provider requests the Service Provider Controller set Services in the Container
      *
      * @return  string
      * @since   1.0
@@ -56,7 +56,7 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
      * @return  $this
      * @since   1.0
      */
-    public function scheduleNextService()
+    public function scheduleServices()
     {
         $options = array();
 

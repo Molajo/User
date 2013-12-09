@@ -50,7 +50,7 @@ class FlashmessageServiceProvider extends AbstractServiceProvider implements Ser
         parent::setDependencies($reflection);
 
         $options                         = array();
-        $this->dependencies['Resources'] = $options;
+        $this->dependencies['Resource'] = $options;
         return $this->dependencies;
     }
 
@@ -61,9 +61,9 @@ class FlashmessageServiceProvider extends AbstractServiceProvider implements Ser
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function processFulfilledDependencies(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_instances = null)
     {
-        parent::processFulfilledDependencies($dependency_instances);
+        parent::onBeforeInstantiation($dependency_instances);
 
         $this->dependencies['flash_message_exception'] = 'Molajo\\User\Exception\\FlashMessageException';
         $this->dependencies['flash_types']             = $this->setFlashTypes();

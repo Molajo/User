@@ -51,7 +51,7 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
         parent::setDependencies($reflection);
 
         $options                         = array();
-        $this->dependencies['Resources'] = $options;
+        $this->dependencies['Resource'] = $options;
 
         return $this->dependencies;
     }
@@ -63,13 +63,13 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function processFulfilledDependencies(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_instances = null)
     {
-        parent::processFulfilledDependencies($dependency_instances);
+        parent::onBeforeInstantiation($dependency_instances);
 
         $this->dependencies['default_exception'] = 'Molajo\\User\Exception\\DataException';
         $this->dependencies['model_registry']    =
-            $this->dependencies['Resources']->get('xml:///Molajo//Datasource//User.xml');
+            $this->dependencies['Resource']->get('xml:///Molajo//Datasource//User.xml');
 
         $xml = $this->dependencies['model_registry']['children'];
 
@@ -79,7 +79,7 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
                 $name                 = (string)$child['name'];
                 $name                 = ucfirst(strtolower($name));
                 $child_model_registry = 'xml:///Molajo//Datasource//' . $name . '.xml';
-                $children[$name]      = $this->dependencies['Resources']->get($child_model_registry);
+                $children[$name]      = $this->dependencies['Resource']->get($child_model_registry);
             }
         }
 
@@ -94,7 +94,7 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
      * @return  $this
      * @since   1.0
      */
-    public function scheduleNextService()
+    public function scheduleServices()
     {
         $options = array();
         foreach ($this->options as $key => $value) {

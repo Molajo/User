@@ -56,7 +56,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
         $this->dependencies['Activity']   = $options;
         $this->dependencies['Runtimedata'] = $options;
         $this->dependencies['Request']    = $options;
-        $this->dependencies['Resources']  = $options;
+        $this->dependencies['Resource']  = $options;
 
         return $this->dependencies;
     }
@@ -68,9 +68,9 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function processFulfilledDependencies(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_instances = null)
     {
-        parent::processFulfilledDependencies($dependency_instances);
+        parent::onBeforeInstantiation($dependency_instances);
 
         $this->dependencies['default_exception'] = 'Exception\\User\\AuthenticationException';
         $this->dependencies['configuration']     = $this->getConfiguration();
@@ -124,7 +124,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function performAfterInstantiationLogic()
+    public function onAfterInstantiation()
     {
         $action = $this->options['action'];
 
@@ -244,7 +244,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
      * @return  $this
      * @since   1.0
      */
-    public function scheduleNextService()
+    public function scheduleServices()
     {
         $options                                   = array();
         $options['id']                             = $this->options['id'];

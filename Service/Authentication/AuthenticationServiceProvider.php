@@ -72,7 +72,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
     {
         parent::onBeforeInstantiation($dependency_instances);
 
-        $this->dependencies['default_exception'] = 'Exception\\User\\AuthenticationException';
+        $this->dependencies['default_exception'] = 'Exception\\User\\RuntimeException';
         $this->dependencies['configuration']     = $this->getConfiguration();
 
         return $this->dependencies;

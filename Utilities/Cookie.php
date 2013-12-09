@@ -10,7 +10,7 @@ namespace Molajo\User\Utilities;
 
 use stdClass;
 use Exception;
-use Exception\User\CookieException;
+use CommonApi\Exception\RuntimeException;
 use CommonApi\User\CookieInterface;
 
 /**
@@ -238,7 +238,7 @@ class Cookie implements CookieInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  CookieException
+     * @throws  RuntimeException
      */
     public function deleteCookie($name)
     {
@@ -260,7 +260,7 @@ class Cookie implements CookieInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  CookieException
+     * @throws  RuntimeException
      */
     public function sendCookies()
     {
@@ -282,7 +282,7 @@ class Cookie implements CookieInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  CookieException
+     * @throws  RuntimeException
      */
     protected function sendCookie($cookie)
     {
@@ -297,7 +297,7 @@ class Cookie implements CookieInterface
                 $cookie->http_only
             );
         } catch (Exception $e) {
-            throw new CookieException
+            throw new RuntimeException
             ('Cookie Response: sendCookie failed for : ' . $cookie->name . ' ' . $e->getMessage());
         }
 

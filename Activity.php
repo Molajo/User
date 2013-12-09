@@ -12,8 +12,7 @@ use CommonApi\Database\DatabaseInterface;
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\MessagesInterface;
 use CommonApi\User\ActivityInterface;
-use CommonApi\User\ExceptionMessagesInterface;
-use Exception\User\ActivityException;
+use CommonApi\Exception\RuntimeException;
 
 /**
  * User Activity Class
@@ -63,7 +62,7 @@ class Activity implements ActivityInterface
      * @var    string
      * @since  1.0
      */
-    protected $default_exception = 'Exception\\User\\ActivityException';
+    protected $default_exception = 'Exception\\User\\RuntimeException';
 
     /**
      * activity_id
@@ -218,7 +217,6 @@ class Activity implements ActivityInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\ActivityException
      */
     public function get($key = null, $default = null)
     {
@@ -246,7 +244,6 @@ class Activity implements ActivityInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\ActivityException
      */
     public function set($key, $value = null)
     {
@@ -367,7 +364,7 @@ class Activity implements ActivityInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  DataException
+     * @throws  RuntimeException
      */
     public function deleteUser()
     {

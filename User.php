@@ -8,13 +8,9 @@
  */
 namespace Molajo\User;
 
-use Exception\User\DataException;
-use Exception\User\AuthorisationException;
-use Exception\User\CookieException;
-use Exception\User\SessionException;
+use CommonApi\Exception\RuntimeException;
 use CommonApi\User\UserInterface;
 use CommonApi\User\UserDataInterface;
-use CommonApi\User\AuthorisationInterface;
 use CommonApi\User\SessionInterface;
 use CommonApi\User\FlashMessageInterface;
 use CommonApi\User\ActivityInterface;
@@ -100,7 +96,6 @@ class User implements UserInterface
      *
      * @return  object  DateTime
      * @since   1.0
-     * @throws  \Exception\User\DataException
      */
     public function getDate()
     {
@@ -116,7 +111,6 @@ class User implements UserInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\DataException
      */
     public function getUserData($key = null, $secondary_key = null)
     {
@@ -131,7 +125,6 @@ class User implements UserInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\DataException
      */
     public function setUserData($key, $value = null)
     {
@@ -146,7 +139,6 @@ class User implements UserInterface
      *
      * @returns  $this
      * @since    1.0
-     * @throws   \Exception\User\DataException
      */
     public function getUserCustomfields($key, $default = null)
     {
@@ -161,7 +153,6 @@ class User implements UserInterface
      *
      * @return   $this
      * @since    1.0
-     * @throws   \Exception\User\DataException
      */
     public function setUserCustomfields($key, $value = null)
     {
@@ -176,7 +167,6 @@ class User implements UserInterface
      *
      * @returns  $this
      * @since    1.0
-     * @throws   \Exception\User\DataException
      */
     public function getUserParameters($key, $default = null)
     {
@@ -191,7 +181,6 @@ class User implements UserInterface
      *
      * @return   $this
      * @since    1.0
-     * @throws   \Exception\User\DataException
      */
     public function setUserParameters($key, $value = null)
     {
@@ -206,7 +195,6 @@ class User implements UserInterface
      *
      * @return   $this
      * @since    1.0
-     * @throws   \Exception\User\DataException
      */
     public function getUserMetadata($key, $default = null)
     {
@@ -221,7 +209,6 @@ class User implements UserInterface
      *
      * @return   $this
      * @since    1.0
-     * @throws   \Exception\User\DataException
      */
     public function setUserMetadata($key, $value = null)
     {
@@ -233,7 +220,6 @@ class User implements UserInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  DataException
      */
     public function updateUser()
     {
@@ -245,7 +231,6 @@ class User implements UserInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  DataException
      */
     public function deleteUser()
     {
@@ -259,7 +244,6 @@ class User implements UserInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\SessionException
      */
     public function getSession($key)
     {
@@ -274,7 +258,6 @@ class User implements UserInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\SessionException
      */
     public function setSession($key, $value)
     {
@@ -288,7 +271,6 @@ class User implements UserInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\SessionException
      */
     public function deleteSession($key)
     {
@@ -302,7 +284,6 @@ class User implements UserInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  \Exception\User\FlashMessageException
      */
     public function getFlashMessage($type = null)
     {
@@ -317,7 +298,6 @@ class User implements UserInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\FlashMessageException
      */
     public function setFlashMessage($type, $message)
     {
@@ -331,7 +311,6 @@ class User implements UserInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\FlashMessageException
      */
     public function deleteFlashMessage($type = null)
     {
@@ -394,7 +373,6 @@ class User implements UserInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  CookieException
      */
     public function deleteCookie($name)
     {
@@ -406,7 +384,6 @@ class User implements UserInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  CookieException
      */
     public function sendCookies()
     {
@@ -420,7 +397,6 @@ class User implements UserInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  CookieException
      */
     protected function sendCookie($cookie)
     {

@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Utilities;
 
-use Exception\User\SessionException;
+use CommonApi\Exception\RuntimeException;
 use CommonApi\User\SessionInterface;
 
 /**
@@ -27,7 +27,7 @@ class Session implements SessionInterface
      * @var    string
      * @since  1.0
      */
-    protected $session_exception = 'Molajo\\User\Exception\\SessionException';
+    protected $session_exception = 'Molajo\\User\Exception\\RuntimeException';
 
     /**
      * Constructor
@@ -70,7 +70,7 @@ class Session implements SessionInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\SessionException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getSession($key)
     {
@@ -100,7 +100,7 @@ class Session implements SessionInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\SessionException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setSession($key, $value)
     {
@@ -124,7 +124,7 @@ class Session implements SessionInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\SessionException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function deleteSession($key = null)
     {
@@ -150,7 +150,7 @@ class Session implements SessionInterface
      *
      * @return  object
      * @since   1.0
-     * @throws  \Exception\User\SessionException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function destroySession()
     {

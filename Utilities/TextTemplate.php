@@ -131,7 +131,7 @@ class TextTemplate implements TemplateInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\TemplateException
+     * @throws  \CommonApi\User\TemplateException
      */
     public function get($key, $default = null)
     {
@@ -157,7 +157,7 @@ class TextTemplate implements TemplateInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\TemplateException
+     * @throws  \CommonApi\User\TemplateException
      */
     public function set($key, $value = null)
     {

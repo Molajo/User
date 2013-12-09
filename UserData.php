@@ -12,7 +12,7 @@ namespace Molajo\User;
 
 use stdClass;
 use Exception;
-use Exception\User\DataException;
+use CommonApi\Exception\RuntimeException;
 use CommonApi\User\UserDataInterface;
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\MessagesInterface;
@@ -66,7 +66,7 @@ class UserData implements UserDataInterface
      * @var    string
      * @since  1.0
      */
-    protected $default_exception = 'Exception\\User\\DataException';
+    protected $default_exception = 'Exception\\User\\RuntimeException';
 
     /**
      * Session Key
@@ -155,8 +155,7 @@ class UserData implements UserDataInterface
             $this->default_exception = $default_exception;
         }
 
-        $this->guest = 0;
-
+        $this->guest          = 0;
         $this->user->id       = null;
         $this->user->username = null;
         $this->user->email    = null;
@@ -164,12 +163,15 @@ class UserData implements UserDataInterface
         if ($id !== null) {
             $this->user->id = $id;
             $this->getUser($this->user->id);
+
         } elseif ($username !== null) {
             $this->user->username = $username;
             $this->getUser($this->user->username, 'username');
+
         } elseif ($email !== null) {
             $this->user->email = $email;
             $this->getUser($this->user->email, 'email');
+
         } else {
             $this->guest = 1;
             $this->getUser(0, 'id');
@@ -181,7 +183,7 @@ class UserData implements UserDataInterface
      *
      * @return  object  DateTime
      * @since   1.0
-     * @throws  \Exception\User\DataException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getDate()
     {
@@ -197,7 +199,7 @@ class UserData implements UserDataInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\DataException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getUserData($key = null, $secondary_key = null)
     {
@@ -238,7 +240,7 @@ class UserData implements UserDataInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\DataException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function getDataCustomfield($customfieldgroup, $key = null)
     {
@@ -272,7 +274,7 @@ class UserData implements UserDataInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \Exception\User\DataException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function getChildObject($child, $key = null)
     {
@@ -306,7 +308,7 @@ class UserData implements UserDataInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  DataException
+     * @throws  RuntimeException
      */
     public function setUserData($key, $value = null)
     {
@@ -613,7 +615,7 @@ class UserData implements UserDataInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\DataException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function deleteUser()
     {

@@ -188,7 +188,7 @@ class Mailer implements MailerInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\MailerException
+     * @throws  \CommonApi\User\MailerException
      */
     public function render(
         $options = array(),
@@ -229,7 +229,7 @@ class Mailer implements MailerInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\MailerException
+     * @throws  \CommonApi\User\MailerException
      */
     public function send()
     {

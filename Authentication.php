@@ -109,7 +109,7 @@ class Authentication implements AuthenticationInterface
      * @var    string
      * @since  1.0
      */
-    protected $default_exception = 'Exception\\User\\AuthenticationException';
+    protected $default_exception = 'Exception\\User\\RuntimeException';
 
     /**
      * Today
@@ -162,16 +162,16 @@ class Authentication implements AuthenticationInterface
     /**
      * Construct
      *
-     * @param UserDataInterface     $userdata
-     * @param SessionInterface      $session
-     * @param CookieInterface       $cookie
-     * @param MailerInterface       $mailer
-     * @param MessagesInterface     $messages
-     * @param EncryptInterface      $encrypt
-     * @param RedirectInterface     $redirect
-     * @param FieldhandlerInterface $fieldhandler
-     * @param stdClass              $configuration
-     * @param null|string           $default_exception
+     * @param  UserDataInterface      $userdata
+     * @param  SessionInterface       $session
+     * @param  CookieInterface        $cookie
+     * @param  MailerInterface        $mailer
+     * @param  MessagesInterface      $messages
+     * @param  EncryptInterface       $encrypt
+     * @param  RedirectInterface      $redirect
+     * @param  FieldhandlerInterface  $fieldhandler
+     * @param  stdClass               $configuration
+     * @param  null|string            $default_exception
      *
      * @since  1.0
      */
@@ -232,7 +232,7 @@ class Authentication implements AuthenticationInterface
      * @param   string $password
      * @param   bool   $remember
      *
-     * @return  int          $id
+     * @return  int
      * @since   1.0
      */
     public function login($session_id, $username, $password, $remember = false)
@@ -418,7 +418,6 @@ class Authentication implements AuthenticationInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\AuthenticationException
      */
     protected function verifySession($session_id, $action)
     {
@@ -472,7 +471,7 @@ class Authentication implements AuthenticationInterface
      *
      * @return  int
      * @since   1.0
-     * @throws  \Exception\User\AuthenticationException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function verifyUser($action)
     {
@@ -539,7 +538,7 @@ class Authentication implements AuthenticationInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\AuthenticationException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function verifyFormToken($action)
     {
@@ -578,7 +577,7 @@ class Authentication implements AuthenticationInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\AuthenticationException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function verifyCredentials(
         $username = '',

@@ -74,7 +74,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Molajo\User\Persist\Session::get
-     * @expectedException  Exception\User\SessionException
+     * @expectedException  CommonApi\Exception\RuntimeException
      */
     public function testSaveToken()
     {
@@ -143,7 +143,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Molajo\User\Persist\Session::get
-     * @expectedException  Exception\User\SessionException
+     * @expectedException  CommonApi\Exception\RuntimeException
      */
     public function testGetFail()
     {
@@ -154,7 +154,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Molajo\User\Persist\Session::delete
-     * @expectedException  Exception\User\SessionException
+     * @expectedException  CommonApi\Exception\RuntimeException
      */
     public function testDelete()
     {

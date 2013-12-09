@@ -8,8 +8,6 @@
  */
 namespace Molajo\Service\Activity;
 
-use stdClass;
-use Exception;
 use Molajo\IoC\AbstractServiceProvider;
 use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
@@ -51,7 +49,7 @@ class ActivityServiceProvider extends AbstractServiceProvider implements Service
     {
         parent::onBeforeInstantiation($dependency_instances);
 
-        $this->dependencies['default_exception'] = 'Exception\\User\\ActivityException';
+        $this->dependencies['default_exception'] = 'Exception\\User\\RuntimeException';
         $this->dependencies['id']                = 0;
 
         return $this->dependencies;

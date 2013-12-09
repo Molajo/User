@@ -36,7 +36,7 @@ class SessionServiceProvider extends AbstractServiceProvider implements ServiceP
 
         parent::__construct($options);
 
-        $this->options['session_exception'] = 'Molajo\\User\Exception\\SessionException';
+        $this->options['session_exception'] = 'Molajo\\User\Exception\\RuntimeException';
         $this->options['flash_types']       = $this->setFlashTypes();
     }
 

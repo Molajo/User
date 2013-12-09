@@ -11,7 +11,7 @@ namespace Molajo\User\Utilities;
 use Exception;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\MessagesInterface;
-use Exception\User\EncryptException;
+use CommonApi\User\EncryptException;
 
 /**
  * Encryption
@@ -93,7 +93,7 @@ class Encrypt implements EncryptInterface
      *
      * @return  string
      * @since   1.0
-     * @throws  \Exception\User\EncryptException
+     * @throws  \CommonApi\User\EncryptException
      */
     public function createHashString($input)
     {
@@ -129,7 +129,7 @@ class Encrypt implements EncryptInterface
      *
      * @return  boolean
      * @since   1.0
-     * @throws  \Exception\User\EncryptException
+     * @throws  \CommonApi\User\EncryptException
      */
     public function verifyHashString($input, $hash)
     {

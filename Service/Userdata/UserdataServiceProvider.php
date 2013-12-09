@@ -67,7 +67,7 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
     {
         parent::onBeforeInstantiation($dependency_instances);
 
-        $this->dependencies['default_exception'] = 'Molajo\\User\Exception\\DataException';
+        $this->dependencies['default_exception'] = 'Molajo\\User\Exception\\RuntimeException';
         $this->dependencies['model_registry']    =
             $this->dependencies['Resource']->get('xml:///Molajo//Datasource//User.xml');
 

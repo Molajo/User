@@ -96,7 +96,7 @@ class FlashMessage implements FlashMessageInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  \Exception\User\SessionException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getFlashMessage($type = null)
     {
@@ -127,7 +127,7 @@ class FlashMessage implements FlashMessageInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\SessionException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setFlashMessage($type, $message)
     {
@@ -161,7 +161,7 @@ class FlashMessage implements FlashMessageInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\User\SessionException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function deleteFlashMessage($type = null)
     {

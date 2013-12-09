@@ -9,7 +9,7 @@
 namespace Molajo\User;
 
 use CommonApi\User\RegistrationInterface;
-use Exception\User\RegistrationException;
+use CommonApi\User\RegistrationException;
 
 /**
  * User Registration

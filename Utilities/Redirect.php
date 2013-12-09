@@ -11,7 +11,7 @@ namespace Molajo\User\Utilities;
 use Exception;
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\MessagesInterface;
-use Exception\User\RedirectException;
+use CommonApi\User\RedirectException;
 use CommonApi\Http\RedirectInterface;
 
 /**

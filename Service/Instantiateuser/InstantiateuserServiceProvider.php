@@ -41,12 +41,12 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
      *
      * @return  string
      * @since   1.0
-     * @throws  \Exception\IoC\ServiceItemException
      */
     public function setService()
     {
         $set         = array();
         $set['User'] = $this->service_instance;
+
         return $set;
     }
 

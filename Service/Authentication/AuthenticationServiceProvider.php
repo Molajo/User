@@ -52,11 +52,8 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
     {
         parent::setDependencies($reflection);
 
-        $options                          = array();
-        $this->dependencies['Activity']   = $options;
+        $options                           = array();
         $this->dependencies['Runtimedata'] = $options;
-        $this->dependencies['Request']    = $options;
-        $this->dependencies['Resource']  = $options;
 
         return $this->dependencies;
     }
@@ -133,7 +130,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
             case 'isGuest':
 
                 try {
-                    $id = $this->service_instance->$action($this->options['session_id']);
+                    $results = $this->service_instance->$action($this->options['session_id']);
                 } catch (Exception $e) {
                     throw new RuntimeException
                     ('User Authentication Service Provider isGuest Failed. Exception: ' . $e->getMessage());
@@ -143,7 +140,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
             case 'login':
 
                 try {
-                    $id = $this->service_instance->$action(
+                    $results = $this->service_instance->$action(
                         $this->options['session_id'],
                         $this->options['username'],
                         $this->options['password'],
@@ -160,7 +157,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
 
                 try {
 
-                    $id = $this->service_instance->$action(
+                    $results = $this->service_instance->$action(
                         $this->options['session_id'],
                         $this->options['username']
                     );
@@ -175,7 +172,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
 
                 try {
 
-                    $id = $this->service_instance->$action(
+                    $results = $this->service_instance->$action(
                         $this->options['session_id'],
                         $this->options['username'],
                         $this->options['password'],
@@ -194,14 +191,15 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
 
                 try {
 
-                    $id = $this->service_instance->$action(
+                    $results = $this->service_instance->$action(
                         $this->options['session_id'],
                         $this->options['username']
                     );
                 } catch (Exception $e) {
 
                     throw new RuntimeException
-                    ('User Authentication Service Provider requestPasswordReset Failed. Exception: ' . $e->getMessage());
+                    ('User Authentication Service Provider requestPasswordReset Failed. Exception: ' . $e->getMessage(
+                    ));
                 }
                 break;
 
@@ -209,7 +207,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
 
                 try {
 
-                    $id = $this->service_instance->$action(
+                    $results = $this->service_instance->$action(
                         $this->options['session_id'],
                         $this->options['username']
                     );
@@ -233,7 +231,12 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
                 ('User Authentication Service Provider: Invalid action: ' . $action);
         }
 
-        $this->options['id'] = $id;
+        if (is_object($results)) {
+            $this->redirect($results);
+
+        } else {
+            $this->options['id'] = (int)$results;
+        }
 
         return $this;
     }
@@ -246,10 +249,30 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
      */
     public function scheduleServices()
     {
-        $options                                   = array();
-        $options['id']                             = $this->options['id'];
-        $this->schedule_service['Instantiateuser'] = $options;
+        if (isset($this->schedule_service['redirect'])) {
+        } else {
+            $options                                   = array();
+            $options['id']                             = $this->options['id'];
+            $this->schedule_service['Instantiateuser'] = $options;
+        }
 
         return $this->schedule_service;
+    }
+
+    /**
+     * Schedule the Next Service
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    public function redirect($redirect_object)
+    {
+        $this->schedule_service             = array();
+        $options                            = array();
+        $options['url']                     = $redirect_object->url;
+        $options['status']                  = $redirect_object->code;
+        $this->schedule_service['Redirect'] = $options;
+
+        return $this;
     }
 }

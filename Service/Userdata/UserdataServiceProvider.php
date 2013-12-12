@@ -50,11 +50,8 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
     {
         parent::setDependencies($reflection);
 
-        $options                         = array();
+        $options                        = array();
         $this->dependencies['Resource'] = $options;
-        $this->dependencies['Database'] = $options;
-        $this->dependencies['Fieldhandler'] = $options;
-        $this->dependencies['Messages'] = $options;
 
         return $this->dependencies;
     }
@@ -87,32 +84,9 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
         }
 
         $this->dependencies['child_model_registries'] = $children;
+        $this->dependencies['default_exception']      = 'Exception\\User\\RuntimeException';
 
         return $this->dependencies;
-    }
-
-    /**
-     * Service Provider Controller triggers the Service Provider to create the Class for the Service
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
-     */
-    public function instantiateService()
-    {
-        $class = $this->service_namespace;
-
-        $this->service_instance = new $class(
-            $this->dependencies['Database'],
-            $this->dependencies['model_registry'],
-            $this->dependencies['child_model_registries'],
-            $this->dependencies['Fieldhandler'],
-            $this->dependencies['Messages'],
-            $default_exception = 'Exception\\User\\RuntimeException',
-            $id = null,
-            $this->options['username'],
-            $email = null
-        );
     }
 
     /**

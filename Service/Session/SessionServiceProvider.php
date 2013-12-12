@@ -37,4 +37,3 @@ class SessionServiceProvider extends AbstractServiceProvider implements ServiceP
         parent::__construct($options);
     }
 }
-

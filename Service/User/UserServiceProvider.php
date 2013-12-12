@@ -105,14 +105,18 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
      */
     public function setDependencies(array $reflection = null)
     {
+        // Intentionally not instantiating the class in this service provider
+        // Will be created in Instantiateuser
+        parent::setDependencies(null);
+
         $this->dependencies                 = array();
         $options                            = array();
         $this->dependencies['Request']      = $options;
         $this->dependencies['Cookie']       = $options;
         $this->dependencies['Session']      = $options;
         $this->dependencies['Flashmessage'] = $options;
-        $this->dependencies['Runtimedata']   = $options;
-        $this->dependencies['Resource']    = $options;
+        $this->dependencies['Runtimedata']  = $options;
+        $this->dependencies['Resource']     = $options;
 
         return $this->dependencies;
     }

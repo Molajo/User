@@ -18,7 +18,6 @@ use CommonApi\User\CookieInterface;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
-use CommonApi\Http\RedirectInterface;
 use CommonApi\Model\FieldhandlerInterface;
 
 /**
@@ -78,14 +77,6 @@ class Authentication implements AuthenticationInterface
      * @since  1.0
      */
     protected $encrypt;
-
-    /**
-     * Redirect Instance
-     *
-     * @var    object  CommonApi\Http\RedirectInterface
-     * @since  1.0
-     */
-    protected $redirect;
 
     /**
      * Fieldhandler Instance
@@ -162,16 +153,15 @@ class Authentication implements AuthenticationInterface
     /**
      * Construct
      *
-     * @param  UserDataInterface      $userdata
-     * @param  SessionInterface       $session
-     * @param  CookieInterface        $cookie
-     * @param  MailerInterface        $mailer
-     * @param  MessagesInterface      $messages
-     * @param  EncryptInterface       $encrypt
-     * @param  RedirectInterface      $redirect
-     * @param  FieldhandlerInterface  $fieldhandler
-     * @param  stdClass               $configuration
-     * @param  null|string            $default_exception
+     * @param  UserDataInterface     $userdata
+     * @param  SessionInterface      $session
+     * @param  CookieInterface       $cookie
+     * @param  MailerInterface       $mailer
+     * @param  MessagesInterface     $messages
+     * @param  EncryptInterface      $encrypt
+     * @param  FieldhandlerInterface $fieldhandler
+     * @param  stdClass              $configuration
+     * @param  null|string           $default_exception
      *
      * @since  1.0
      */
@@ -182,7 +172,6 @@ class Authentication implements AuthenticationInterface
         MailerInterface $mailer,
         MessagesInterface $messages,
         EncryptInterface $encrypt,
-        RedirectInterface $redirect,
         FieldhandlerInterface $fieldhandler,
         $configuration,
         $default_exception = null
@@ -194,7 +183,6 @@ class Authentication implements AuthenticationInterface
         $this->mailer        = $mailer;
         $this->messages      = $messages;
         $this->encrypt       = $encrypt;
-        $this->redirect      = $redirect;
         $this->fieldhandler  = $fieldhandler;
         $this->configuration = $configuration;
 
@@ -241,9 +229,14 @@ class Authentication implements AuthenticationInterface
         $this->verifyUser('login');
         $this->verifyFormToken('login');
         $this->verifyCredentials($username, $password);
+
         $this->error = false;
+
         if ($this->error === true) {
-            $this->redirect->redirect('401', $this->configuration->url_to_login);
+            $redirect       = new stdClass();
+            $redirect->code = 401;
+            $redirect->url  = $this->configuration->url_to_login;
+            return $redirect;
         }
 
         $this->setSessionLogin();
@@ -283,7 +276,10 @@ class Authentication implements AuthenticationInterface
         $this->verifyFormToken('isLoggedOn');
 
         if ($this->error === true) {
-            $this->redirect->redirect('401', $this->configuration->url_to_login);
+            $redirect       = new stdClass();
+            $redirect->code = 401;
+            $redirect->url  = $this->configuration->url_to_login;
+            return $redirect;
         }
 
         $this->updates['last_activity_datetime'] = $this->today;
@@ -320,7 +316,10 @@ class Authentication implements AuthenticationInterface
         $this->verifyCredentials($username, $password, $reset_password_code);
 
         if ($this->error === true) {
-            $this->redirect->redirect('401', $this->configuration->url_to_login);
+            $redirect       = new stdClass();
+            $redirect->code = 401;
+            $redirect->url  = $this->configuration->url_to_login;
+            return $redirect;
         }
 
         //$hash                                       = $this->encrypt->createHashString($new_password);
@@ -357,7 +356,10 @@ class Authentication implements AuthenticationInterface
         $this->verifyFormToken('requestPasswordReset');
 
         if ($this->error === true) {
-            $this->redirect->redirect('401', $this->configuration->url_to_login);
+            $redirect       = new stdClass();
+            $redirect->code = 401;
+            $redirect->url  = $this->configuration->url_to_login;
+            return $redirect;
         }
 
         if ($this->userdata->getUserData('reset_password_code') == '') {
@@ -397,7 +399,10 @@ class Authentication implements AuthenticationInterface
         $this->verifyFormToken('logout');
 
         if ($this->error === true) {
-            $this->redirect->redirect('401', $this->configuration->url_to_login);
+            $redirect       = new stdClass();
+            $redirect->code = 401;
+            $redirect->url  = $this->configuration->url_to_login;
+            return $redirect;
         }
 
         $this->updates['last_activity_datetime'] = $this->today;
@@ -405,7 +410,10 @@ class Authentication implements AuthenticationInterface
         $this->session->destroySession();
         //$this->cookie->forget();
 
-        $this->redirect->redirect('401', $this->configuration->url_for_home);
+        $redirect       = new stdClass();
+        $redirect->code = 401;
+        $redirect->url  = $this->configuration->url_for_home;
+        return $redirect;
 
         return;
     }

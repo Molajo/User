@@ -39,23 +39,6 @@ class FlashmessageServiceProvider extends AbstractServiceProvider implements Ser
     }
 
     /**
-     * Define Dependencies for Service
-     *
-     * @return  array
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
-     */
-    public function setDependencies(array $reflection = null)
-    {
-        parent::setDependencies($reflection);
-
-        $options                       = array();
-        $this->dependencies['Session'] = $options;
-
-        return $this->dependencies;
-    }
-
-    /**
      * Service Provider Controller triggers the Service Provider to create the Class for the Service
      *
      * @return  $this

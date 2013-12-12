@@ -30,11 +30,32 @@ class CookieServiceProvider extends AbstractServiceProvider implements ServicePr
      */
     public function __construct(array $options = array())
     {
-        $this->store_instance_indicator      = true;
         $options['service_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
         $options['service_namespace']        = 'Molajo\\User\\Utilities\\Cookie';
 
         parent::__construct($options);
+    }
+
+    /**
+     * Service Provider Controller triggers the Service Provider to create the Class for the Service
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException;
+     */
+    public function instantiateService()
+    {
+        $class = $this->service_namespace;
+
+        $this->service_instance = new $class(
+            $request_cookies = $_COOKIE,
+            $response_cookies = null,
+            $expire = 2628000,
+            $path = null,
+            $domain = null,
+            $secure = null,
+            $http_only = false
+        );
     }
 }

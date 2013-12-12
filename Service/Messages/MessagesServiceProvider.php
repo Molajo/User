@@ -68,8 +68,27 @@ class MessagesServiceProvider extends AbstractServiceProvider implements Service
         parent::onBeforeInstantiation($dependency_instances);
 
         $this->dependencies['messages'] = $this->setMessages();
+        $this->dependencies['messages_exception'] = 'Exception\\User\\MessagesException';
 
         return $this->dependencies;
+    }
+
+    /**
+     * Service Provider Controller triggers the Service Provider to create the Class for the Service
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException;
+     */
+    public function instantiateService()
+    {
+        $class = $this->service_namespace;
+
+        $this->service_instance = new $class(
+            $this->dependencies['Flashmessage'],
+            $this->dependencies['messages'],
+            $this->dependencies['messages_exception']
+        );
     }
 
     /**

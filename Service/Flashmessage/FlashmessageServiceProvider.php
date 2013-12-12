@@ -49,26 +49,28 @@ class FlashmessageServiceProvider extends AbstractServiceProvider implements Ser
     {
         parent::setDependencies($reflection);
 
-        $options                         = array();
-        $this->dependencies['Resource'] = $options;
+        $options                       = array();
+        $this->dependencies['Session'] = $options;
+
         return $this->dependencies;
     }
 
     /**
-     * Set Dependencies for Instantiation
+     * Service Provider Controller triggers the Service Provider to create the Class for the Service
      *
-     * @return  array
+     * @return  $this
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function instantiateService()
     {
-        parent::onBeforeInstantiation($dependency_instances);
+        $class = $this->service_namespace;
 
-        $this->dependencies['flash_message_exception'] = 'Molajo\\User\Exception\\FlashMessageException';
-        $this->dependencies['flash_types']             = $this->setFlashTypes();
-
-        return $this->dependencies;
+        $this->service_instance = new $class(
+            $session = $this->dependencies['Session'],
+            $flash_types = $this->setFlashTypes(),
+            $flash_message_exception = 'Molajo\\User\Exception\\FlashMessageException'
+        );
     }
 
     /**
@@ -83,4 +85,5 @@ class FlashmessageServiceProvider extends AbstractServiceProvider implements Ser
         $flash_types = array('Success', 'Notice', 'Warning', 'Error');
         return $flash_types;
     }
+
 }

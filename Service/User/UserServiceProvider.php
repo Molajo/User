@@ -130,7 +130,7 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
             $this->dependencies[$service] = $instance;
         }
 
-        $query_string = $this->dependencies['Request']->query_string;
+        $query_string = $this->dependencies['Request']->query;
 
         foreach ($this->request_variables as $variable) {
             if (isset($query_string[$variable])) {

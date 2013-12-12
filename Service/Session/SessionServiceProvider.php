@@ -35,20 +35,6 @@ class SessionServiceProvider extends AbstractServiceProvider implements ServiceP
         $options['service_namespace']        = 'Molajo\\User\\Utilities\\Session';
 
         parent::__construct($options);
-
-        $this->options['session_exception'] = 'Molajo\\User\Exception\\RuntimeException';
-        $this->options['flash_types']       = $this->setFlashTypes();
-    }
-
-    /**
-     * System Messages for User Subsystem
-     *
-     * @return  array
-     * @since   1.0
-     */
-    protected function setFlashTypes()
-    {
-        $flash_types = array('Success', 'Notice', 'Warning', 'Error');
-        return $flash_types;
     }
 }
+

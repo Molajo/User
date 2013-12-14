@@ -61,6 +61,7 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
         $options = array();
 
         $options['User']                         = $this->service_instance;
+
         $this->schedule_service['Language']      = $options;
         $this->schedule_service['Authorisation'] = $options;
 

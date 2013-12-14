@@ -140,12 +140,14 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
             case 'login':
 
                 try {
+
                     $results = $this->service_instance->$action(
                         $this->options['session_id'],
                         $this->options['username'],
                         $this->options['password'],
                         $this->options['remember']
                     );
+
                 } catch (Exception $e) {
 
                     throw new RuntimeException
@@ -250,6 +252,7 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
     public function scheduleServices()
     {
         if (isset($this->schedule_service['redirect'])) {
+
         } else {
             $options                                   = array();
             $options['id']                             = $this->options['id'];

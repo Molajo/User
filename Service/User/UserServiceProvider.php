@@ -90,7 +90,6 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
     public function __construct(array $options = array())
     {
         $options['service_name']             = basename(__DIR__);
-        $options['store_instance_indicator'] = false;
         $options['service_namespace']        = 'Molajo\\User\\User';
 
         parent::__construct($options);
@@ -128,9 +127,9 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_values = null)
     {
-        foreach ($dependency_instances as $service => $instance) {
+        foreach ($dependency_values as $service => $instance) {
             $this->dependencies[$service] = $instance;
         }
 

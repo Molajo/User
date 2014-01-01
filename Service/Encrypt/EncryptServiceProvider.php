@@ -1,26 +1,27 @@
 <?php
 /**
- * Mailer Service Provider
+ * Encrypt Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Service\Mailer;
+namespace Molajo\Service\Encrypt;
 
+use Exception;
 use Molajo\IoC\AbstractServiceProvider;
 use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * Mailer Service Provider
+ * User Encrypt Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class MailerServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
+class EncryptServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -33,7 +34,7 @@ class MailerServiceProvider extends AbstractServiceProvider implements ServicePr
     {
         $options['service_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['service_namespace']        = 'Molajo\\User\\Utilities\\Mailer';
+        $options['service_namespace']        = 'Molajo\\User\\Utilities\\Encrypt';
 
         parent::__construct($options);
     }
@@ -45,15 +46,12 @@ class MailerServiceProvider extends AbstractServiceProvider implements ServicePr
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_values = null)
     {
-        parent::onBeforeInstantiation($dependency_instances);
+        parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception']   = 'Exception\\User\\MailerException';
-        $this->dependencies['from']                = 'AmyStephen@Molajo.org,Amy Stephen';
-        $this->dependencies['reply_to']            = 'AmyStephen@Molajo.org,Amy Stephen';
-        $this->dependencies['mailer_html_or_text'] = 'text';
+        $this->dependencies['encrypt_exception'] = 'Exception\\User\\EncryptException';
 
-        return $this->dependencies;
+        return $this;
     }
 }

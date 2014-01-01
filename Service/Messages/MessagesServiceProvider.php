@@ -63,9 +63,9 @@ class MessagesServiceProvider extends AbstractServiceProvider implements Service
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_values = null)
     {
-        parent::onBeforeInstantiation($dependency_instances);
+        parent::onBeforeInstantiation($dependency_values);
 
         $this->dependencies['messages'] = $this->setMessages();
         $this->dependencies['messages_exception'] = 'Exception\\User\\MessagesException';

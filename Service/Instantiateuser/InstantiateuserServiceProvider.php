@@ -37,6 +37,32 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
     }
 
     /**
+     * Instantiate a new handler and inject it into the Adapter for the ServiceProviderInterface
+     * Retrieve a list of Interface dependencies and return the data ot the controller.
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException;
+     */
+    public function setDependencies(array $reflection = null)
+    {
+        parent::setDependencies($reflection);
+
+        return $this->dependencies;
+    }
+
+    /**
+     * Service Provider Controller triggers the Service Provider to create the Class for the Service
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException;
+     */
+    public function instantiateService()
+    {
+        parent::instantiateService();
+    }
+    /**
      * Following Class creation, Service Provider requests the Service Provider Controller set Services in the Container
      *
      * @return  string
@@ -45,7 +71,7 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
     public function setService()
     {
         $set         = array();
-        $set['User'] = $this->service_instance;
+        $set['Molajo\Service\User'] = $this->service_instance;
 
         return $set;
     }

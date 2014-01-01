@@ -1,27 +1,26 @@
 <?php
 /**
- * Encrypt Service Provider
+ * Activity Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Service\Encrypt;
+namespace Molajo\Service\Activity;
 
-use Exception;
 use Molajo\IoC\AbstractServiceProvider;
 use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * User Encrypt Service Provider
+ * Activity Services
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class EncryptServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
+class ActivityServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -34,7 +33,7 @@ class EncryptServiceProvider extends AbstractServiceProvider implements ServiceP
     {
         $options['service_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['service_namespace']        = 'Molajo\\User\\Utilities\\Encrypt';
+        $options['service_namespace']        = 'Molajo\\User\\Activity';
 
         parent::__construct($options);
     }
@@ -46,12 +45,13 @@ class EncryptServiceProvider extends AbstractServiceProvider implements ServiceP
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_values = null)
     {
-        parent::onBeforeInstantiation($dependency_instances);
+        parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['encrypt_exception'] = 'Exception\\User\\EncryptException';
+        $this->dependencies['default_exception'] = 'Exception\\User\\RuntimeException';
+        $this->dependencies['id']                = 0;
 
-        return $this;
+        return $this->dependencies;
     }
 }

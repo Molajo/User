@@ -63,11 +63,11 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_values = null)
     {
-        parent::onBeforeInstantiation($dependency_instances);
+        parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception'] = 'Molajo\\User\Exception\\RuntimeException';
+        $this->dependencies['default_exception'] = 'Molajo\\User\\Exception\\RuntimeException';
         $this->dependencies['model_registry']    =
             $this->dependencies['Resource']->get('xml:///Molajo//Datasource//User.xml');
 

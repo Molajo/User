@@ -1,26 +1,26 @@
 <?php
 /**
- * Activity Service Provider
+ * Mailer Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Service\Activity;
+namespace Molajo\Service\Mailer;
 
 use Molajo\IoC\AbstractServiceProvider;
 use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * Activity Services
+ * Mailer Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class ActivityServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
+class MailerServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -33,7 +33,7 @@ class ActivityServiceProvider extends AbstractServiceProvider implements Service
     {
         $options['service_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['service_namespace']        = 'Molajo\\User\\Activity';
+        $options['service_namespace']        = 'Molajo\\User\\Utilities\\Mailer';
 
         parent::__construct($options);
     }
@@ -45,12 +45,14 @@ class ActivityServiceProvider extends AbstractServiceProvider implements Service
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_values = null)
     {
-        parent::onBeforeInstantiation($dependency_instances);
+        parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception'] = 'Exception\\User\\RuntimeException';
-        $this->dependencies['id']                = 0;
+        $this->dependencies['default_exception']   = 'Exception\\User\\MailerException';
+        $this->dependencies['from']                = 'AmyStephen@Molajo.org,Amy Stephen';
+        $this->dependencies['reply_to']            = 'AmyStephen@Molajo.org,Amy Stephen';
+        $this->dependencies['mailer_html_or_text'] = 'text';
 
         return $this->dependencies;
     }

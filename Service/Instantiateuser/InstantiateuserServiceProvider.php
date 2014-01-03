@@ -4,7 +4,7 @@
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2013 Amy Stephen. All rights reserved.
+ * @copyright  2014 Amy Stephen. All rights reserved.
  */
 namespace Molajo\Service\Instantiateuser;
 
@@ -16,7 +16,7 @@ use CommonApi\IoC\ServiceProviderInterface;
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2013 Amy Stephen. All rights reserved.
+ * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
 class InstantiateuserServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
@@ -62,6 +62,7 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
     {
         parent::instantiateService();
     }
+
     /**
      * Following Class creation, Service Provider requests the Service Provider Controller set Services in the Container
      *
@@ -70,7 +71,7 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
      */
     public function setService()
     {
-        $set         = array();
+        $set                        = array();
         $set['Molajo\Service\User'] = $this->service_instance;
 
         return $set;
@@ -86,7 +87,7 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
     {
         $options = array();
 
-        $options['User']                         = $this->service_instance;
+        $options['User'] = $this->service_instance;
 
         $this->schedule_service['Language']      = $options;
         $this->schedule_service['Authorisation'] = $options;

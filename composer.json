@@ -21,7 +21,7 @@
         "source": "https://github.com/Molajo/User"
     },
     "require": {
-        "php": ">=5.3.10",
+        "php": ">=5.4",
         "commonapi/user": "dev-master",
         "commonapi/model": "dev-master"
     },
@@ -30,7 +30,7 @@
         "molajo/fieldhandler": "Molajo Fieldhandler Services"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Molajo\\Service": "./Service/",
             "Molajo\\User": "./Source/"
         }

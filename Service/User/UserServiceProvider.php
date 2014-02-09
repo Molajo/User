@@ -223,8 +223,8 @@ class UserServiceProvider extends AbstractServiceProvider implements ServiceProv
             $options[$key] = $value;
         }
         $options['registration_actions']    = $this->registration_actions;
-        $this->schedule_service['Userdata'] = $options;
+        $this->schedule_services['Userdata'] = $options;
 
-        return $this->schedule_service;
+        return $this->schedule_services;
     }
 }

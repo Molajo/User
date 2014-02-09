@@ -251,15 +251,15 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
      */
     public function scheduleServices()
     {
-        if (isset($this->schedule_service['redirect'])) {
+        if (isset($this->schedule_services['redirect'])) {
 
         } else {
             $options                                   = array();
             $options['id']                             = $this->options['id'];
-            $this->schedule_service['Instantiateuser'] = $options;
+            $this->schedule_services['Instantiateuser'] = $options;
         }
 
-        return $this->schedule_service;
+        return $this->schedule_services;
     }
 
     /**
@@ -270,11 +270,11 @@ class AuthenticationServiceProvider extends AbstractServiceProvider implements S
      */
     public function redirect($redirect_object)
     {
-        $this->schedule_service             = array();
+        $this->schedule_services             = array();
         $options                            = array();
         $options['url']                     = $redirect_object->url;
         $options['status']                  = $redirect_object->code;
-        $this->schedule_service['Redirect'] = $options;
+        $this->schedule_services['Redirect'] = $options;
 
         return $this;
     }

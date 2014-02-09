@@ -48,50 +48,24 @@ class InstantiateuserServiceProvider extends AbstractServiceProvider implements 
     {
         parent::setDependencies($reflection);
 
+        $this->dependencies['Runtimedata'] = array();
+
         return $this->dependencies;
     }
 
     /**
-     * Service Provider Controller triggers the Service Provider to create the Class for the Service
+     * Service Provider Controller requests any Services (other than the current service) to be saved
      *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
-     */
-    public function instantiateService()
-    {
-        parent::instantiateService();
-    }
-
-    /**
-     * Following Class creation, Service Provider requests the Service Provider Controller set Services in the Container
-     *
-     * @return  string
+     * @return  array
      * @since   1.0
      */
-    public function setService()
+    public function setServices()
     {
-        $set                        = array();
-        $set['Molajo\Service\User'] = $this->service_instance;
+        $this->dependencies['Runtimedata']->user
+                                    = $this->sortObject($this->service_instance->getUserData('*'));
+        $this->set_services['Runtimedata'] = $this->dependencies['Runtimedata'];
+        $this->set_services['Molajo\Service\User'] = $this->service_instance;
 
-        return $set;
-    }
-
-    /**
-     * Schedule the Next Service
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    public function scheduleServices()
-    {
-        $options = array();
-
-        $options['User'] = $this->service_instance;
-
-        $this->schedule_service['Language']      = $options;
-        $this->schedule_service['Authorisation'] = $options;
-
-        return $this->schedule_service;
+        return $this->set_services;
     }
 }

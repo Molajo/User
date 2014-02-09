@@ -103,11 +103,11 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
         }
 
         if (in_array($this->options['action'], $this->options['registration_actions'])) {
-            $this->schedule_service['Registration'] = $options;
+            $this->schedule_services['Registration'] = $options;
         } else {
-            $this->schedule_service['Authentication'] = $options;
+            $this->schedule_services['Authentication'] = $options;
         }
 
-        return $this->schedule_service;
+        return $this->schedule_services;
     }
 }

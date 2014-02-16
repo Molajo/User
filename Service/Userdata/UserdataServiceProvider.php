@@ -69,7 +69,7 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
 
         $this->dependencies['default_exception'] = 'Molajo\\User\\Exception\\RuntimeException';
         $this->dependencies['model_registry']    =
-            $this->dependencies['Resource']->get('xml:///Molajo//Datasource//User.xml');
+            $this->dependencies['Resource']->get('xml:///Molajo//Model//Datasource//User.xml');
 
         $xml = $this->dependencies['model_registry']['children'];
 
@@ -78,7 +78,7 @@ class UserdataServiceProvider extends AbstractServiceProvider implements Service
             foreach ($xml as $child) {
                 $name                 = (string)$child['name'];
                 $name                 = ucfirst(strtolower($name));
-                $child_model_registry = 'xml:///Molajo//Datasource//' . $name . '.xml';
+                $child_model_registry = 'xml:///Molajo//Model//Datasource//' . $name . '.xml';
                 $children[$name]      = $this->dependencies['Resource']->get($child_model_registry);
             }
         }

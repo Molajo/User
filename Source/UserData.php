@@ -29,6 +29,16 @@ use CommonApi\Database\DatabaseInterface;
 class UserData implements UserDataInterface
 {
     /**
+     * User Group Constants
+     *
+     * @since  1.0
+     */
+    const GROUP_ADMINISTRATOR = 1;
+    const GROUP_PUBLIC = 2;
+    const GROUP_GUEST = 3;
+    const GROUP_REGISTERED = 4;
+
+    /**
      * Database Instance
      *
      * @var    object  CommonApi\Database\DatabaseInterface
@@ -425,7 +435,7 @@ class UserData implements UserDataInterface
         $this->user->guest  = $this->guest;
         $this->user->public = 1;
 
-        if (in_array(GROUP_ADMINISTRATOR, $this->user->groups)) {
+        if (in_array(self::GROUP_ADMINISTRATOR, $this->user->groups)) {
             $this->user->administrator = 1;
         } else {
             $this->user->administrator = 0;

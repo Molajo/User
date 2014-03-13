@@ -34,9 +34,9 @@ class UserData implements UserDataInterface
      * @since  1.0
      */
     const GROUP_ADMINISTRATOR = 1;
-    const GROUP_PUBLIC = 2;
-    const GROUP_GUEST = 3;
-    const GROUP_REGISTERED = 4;
+    const GROUP_PUBLIC        = 2;
+    const GROUP_GUEST         = 3;
+    const GROUP_REGISTERED    = 4;
 
     /**
      * Database Instance

@@ -9,9 +9,9 @@
 namespace Molajo\Factories\Userdata;
 
 use CommonApi\Exception\RuntimeException;
-use CommonApi\IoC\FactoryMethodInterface;
-use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
-use Molajo\IoC\FactoryBase;
+use CommonApi\IoC\FactoryBatchInterface;
+use CommonApi\IoC\FactoryInterface;
+use Molajo\IoC\FactoryMethodBase;
 
 /**
  * User Data Services
@@ -21,7 +21,7 @@ use Molajo\IoC\FactoryBase;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class UserdataFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
+class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
     /**
      * Constructor
@@ -40,8 +40,7 @@ class UserdataFactoryMethod extends FactoryBase implements FactoryMethodInterfac
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the FactoryMethodInterface
-     * Retrieve a list of Interface dependencies and return the data ot the controller.
+     * Instantiate a new handler and inject it into the Adapter for the FactoryInterface
      *
      * @return  array
      * @since   1.0
@@ -62,7 +61,7 @@ class UserdataFactoryMethod extends FactoryBase implements FactoryMethodInterfac
      *
      * @return  array
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onBeforeInstantiation(array $dependency_values = null)
     {
@@ -88,6 +87,37 @@ class UserdataFactoryMethod extends FactoryBase implements FactoryMethodInterfac
         $this->dependencies['default_exception']      = 'Exception\\User\\RuntimeException';
 
         return $this->dependencies;
+    }
+
+    /**
+     * Process Authenticate: isGuest, login, isLoggedOn, changePassword,
+     *   requestPasswordReset, logout, register, confirmRegistration
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException;
+     */
+    public function onAfterInstantiation()
+    {
+        $key   = null;
+        $value = null;
+
+        if (isset($this->options['id'])) {
+            $key   = 'id';
+            $value = $this->options['id'];
+
+        } elseif (isset($this->options['email'])) {
+            $key   = 'email';
+            $value = $this->options['email'];
+
+        } elseif (isset($this->options['username'])) {
+            $key   = 'username';
+            $value = $this->options['username'];
+        }
+
+        $this->product_result->load($value, $key);
+
+        return $this;
     }
 
     /**

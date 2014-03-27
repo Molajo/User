@@ -8,13 +8,12 @@
  */
 namespace Molajo\User;
 
-use CommonApi\Exception\RuntimeException;
-use CommonApi\User\UserInterface;
-use CommonApi\User\UserDataInterface;
-use CommonApi\User\SessionInterface;
-use CommonApi\User\FlashMessageInterface;
 use CommonApi\User\ActivityInterface;
 use CommonApi\User\CookieInterface;
+use CommonApi\User\FlashMessageInterface;
+use CommonApi\User\SessionInterface;
+use CommonApi\User\UserDataInterface;
+use CommonApi\User\UserInterface;
 
 /**
  * User Facade to access to all user functions and data
@@ -24,7 +23,7 @@ use CommonApi\User\CookieInterface;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class User implements UserInterface
+class Facade implements UserInterface
 {
     /**
      * User Data
@@ -32,7 +31,7 @@ class User implements UserInterface
      * @var     object  CommonApi\User\UserDataInterface
      * @since   1.0
      */
-    protected $userdata;
+    protected $data;
 
     /**
      * Session
@@ -84,7 +83,7 @@ class User implements UserInterface
         CookieInterface $cookie = null,
         ActivityInterface $activity = null
     ) {
-        $this->data         = $userdata;
+        $this->userdata     = $userdata;
         $this->session      = $session;
         $this->flashmessage = $flashmessage;
         $this->cookie       = $cookie;
@@ -92,149 +91,64 @@ class User implements UserInterface
     }
 
     /**
-     * GetDate
+     * Get user data using a value for id, username, email or initialize new user
      *
-     * @return  object  DateTime
-     * @since   1.0
-     */
-    public function getDate()
-    {
-        $this->data->getDate();
-    }
-
-    /**
-     * Get the current value (or default) of the specified key or all User Data for null key
-     * The secondary key can be used to designate a customfield group or child object
-     *
+     * @param   null|string $value
      * @param   null|string $key
-     * @param   null|string $secondary_key
      *
-     * @return  mixed
-     * @since   1.0
+     * @return  $this
      */
-    public function getUserData($key = null, $secondary_key = null)
+    public function load($value = null, $key = 'username')
     {
-        return $this->data->getUserData($key, $secondary_key);
+        return $this->userdata->load($value, $key);
     }
 
     /**
-     * Set the value of a specified key
+     * Get User Data
      *
-     * @param   string $key
-     * @param   mixed  $value
+     * @return  object
+     * @since   1.0
+     */
+    public function getUserData()
+    {
+        return $this->userdata->getUserData();
+    }
+
+    /**
+     * Insert User
+     *
+     * @param   array $data
+     *
+     * @return  object
+     * @since   1.0
+     */
+    public function insertUserData(array $data = array())
+    {
+        return $this->userdata->insertUserData($data);
+    }
+
+    /**
+     * Update User Data for loaded User
+     *
+     * @param   array $updates
+     *
+     * @return  object
+     * @since   1.0
+     */
+    public function updateUserData(array $updates = array())
+    {
+        return $this->userdata->updateUserData($updates);
+    }
+
+    /**
+     * Delete User Data
      *
      * @return  $this
      * @since   1.0
      */
-    public function setUserData($key, $value = null)
+    public function deleteUserData()
     {
-        return $this->data->setUserData($key, $value);
-    }
-
-    /**
-     * Get User Customfields
-     *
-     * @param    string $key
-     * @param    mixed  $default
-     *
-     * @returns  $this
-     * @since    1.0
-     */
-    public function getUserCustomfields($key, $default = null)
-    {
-        return $this->data->getUserCustomfields($key, $default);
-    }
-
-    /**
-     * Set User Customfields
-     *
-     * @param    string $key
-     * @param    mixed  $value
-     *
-     * @return   $this
-     * @since    1.0
-     */
-    public function setUserCustomfields($key, $value = null)
-    {
-        return $this->data->setUserCustomfields($key, $value);
-    }
-
-    /**
-     * Get User Parameters
-     *
-     * @param    string $key
-     * @param    mixed  $default
-     *
-     * @returns  $this
-     * @since    1.0
-     */
-    public function getUserParameters($key, $default = null)
-    {
-        return $this->data->getUserParameters($key, $default);
-    }
-
-    /**
-     * Set User Parameters
-     *
-     * @param    string $key
-     * @param    mixed  $value
-     *
-     * @return   $this
-     * @since    1.0
-     */
-    public function setUserParameters($key, $value = null)
-    {
-        return $this->data->setUserParameters($key, $value);
-    }
-
-    /**
-     * Get User Metadata
-     *
-     * @param    string $key
-     * @param    mixed  $default
-     *
-     * @return   $this
-     * @since    1.0
-     */
-    public function getUserMetadata($key, $default = null)
-    {
-        return $this->data->getUserMetadata($key, $default);
-    }
-
-    /**
-     * Set User Metadata
-     *
-     * @param    string $key
-     * @param    mixed  $value
-     *
-     * @return   $this
-     * @since    1.0
-     */
-    public function setUserMetadata($key, $value = null)
-    {
-        return $this->data->setUserMetadata($key, $value);
-    }
-
-    /**
-     * Save the User
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    public function updateUser()
-    {
-        return $this->data->updateUser();
-    }
-
-    /**
-     * Delete the User
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    public function deleteUser()
-    {
-        return $this->data->deleteUser();
+        return $this->userdata->deleteUserData();
     }
 
     /**

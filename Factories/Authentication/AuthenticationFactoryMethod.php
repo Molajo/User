@@ -10,9 +10,9 @@ namespace Molajo\Factories\Authentication;
 
 use Exception;
 use CommonApi\Exception\RuntimeException;
-use CommonApi\IoC\FactoryMethodInterface;
-use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
-use Molajo\IoC\FactoryBase;
+use CommonApi\IoC\FactoryInterface;
+use CommonApi\IoC\FactoryBatchInterface;
+use Molajo\IoC\FactoryMethodBase;
 use stdClass;
 
 /**
@@ -23,7 +23,7 @@ use stdClass;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class AuthenticationFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
+class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
     /**
      * Constructor
@@ -42,7 +42,6 @@ class AuthenticationFactoryMethod extends FactoryBase implements FactoryMethodIn
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the FactoryMethodInterface
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
@@ -55,6 +54,7 @@ class AuthenticationFactoryMethod extends FactoryBase implements FactoryMethodIn
 
         $options                           = array();
         $this->dependencies['Runtimedata'] = $options;
+        $this->dependencies['Userdata']    = $options;
 
         return $this->dependencies;
     }
@@ -71,47 +71,39 @@ class AuthenticationFactoryMethod extends FactoryBase implements FactoryMethodIn
         parent::onBeforeInstantiation($dependency_values);
 
         $this->dependencies['default_exception'] = 'Exception\\User\\RuntimeException';
-        $this->dependencies['configuration']     = $this->getConfiguration();
+        $this->dependencies['Configuration']     = $this->getConfiguration();
 
         return $this->dependencies;
     }
 
+
     /**
-     * Get Configuration
+     * Factory Method Controller triggers the Factory Method to create the Class for the Service
      *
-     * @return  object
+     * @return  $this
      * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function getConfiguration()
+    public function instantiateClass()
     {
-        $configuration                                          = new stdClass();
-        $configuration->authentication_types                    = array('database');
-        $configuration->from_email_address                      = true;
-        $configuration->from_email_name                         = true;
-        $configuration->max_login_attempts                      = 10;
-        $configuration->password_alpha_character_required       = false;
-        $configuration->password_expiration_days                = 0;
-        $configuration->password_lock_out_days                  = 1;
-        $configuration->password_minimum_password_length        = 5;
-        $configuration->password_maximum_password_length        = 50;
-        $configuration->password_mixed_case_required            = false;
-        $configuration->password_must_not_match_last_password   = true;
-        $configuration->password_must_not_match_username        = false;
-        $configuration->password_numeric_character_required     = false;
-        $configuration->password_send_email_for_password_blocks = false;
-        $configuration->password_special_character_required     = false;
-        $configuration->password_email_address_as_username      = false;
-        $configuration->session_expires_minutes                 = 30;
-        $configuration->site_is_offline                         = false;
+        $class = $this->product_namespace;
 
-        $application_base_url = $this->dependencies['Runtimedata']->application->base_url;
+        $this->product_result = new $class(
+            $this->dependencies['Userdata'],
+            $this->dependencies['Session'],
+            $this->dependencies['Cookie'],
+            $this->dependencies['Mailer'],
+            $this->dependencies['Messages'],
+            $this->dependencies['Encrypt'],
+            $this->dependencies['Fieldhandler'],
+            $this->dependencies['Configuration'],
+            $_SERVER,
+            $_POST,
+            session_id(),
+            null
+        );
 
-        $configuration->url_for_home           = $application_base_url;
-        $configuration->url_to_change_password = $application_base_url . '/' . 'password';
-        $configuration->url_to_login           = $application_base_url . '/' . 'login';
-        $configuration->url_to_registration    = $application_base_url . '/' . 'registration';
-
-        return $configuration;
+        return $this;
     }
 
     /**
@@ -132,6 +124,7 @@ class AuthenticationFactoryMethod extends FactoryBase implements FactoryMethodIn
 
                 try {
                     $results = $this->product_result->$action($this->options['session_id']);
+
                 } catch (Exception $e) {
                     throw new RuntimeException
                     ('User Authentication Factory Method isGuest Failed. Exception: ' . $e->getMessage());
@@ -254,12 +247,50 @@ class AuthenticationFactoryMethod extends FactoryBase implements FactoryMethodIn
         if (isset($this->schedule_factory_methods['redirect'])) {
 
         } else {
-            $options                                    = array();
-            $options['id']                              = $this->options['id'];
+            $options                                           = array();
+            $options['id']                                     = $this->options['id'];
             $this->schedule_factory_methods['Instantiateuser'] = $options;
         }
 
         return $this->schedule_factory_methods;
+    }
+
+    /**
+     * Get Configuration
+     *
+     * @return  object
+     * @since   1.0
+     */
+    protected function getConfiguration()
+    {
+        $configuration                                          = new stdClass();
+        $configuration->authentication_types                    = array('database');
+        $configuration->from_email_address                      = true;
+        $configuration->from_email_name                         = true;
+        $configuration->max_login_attempts                      = 10;
+        $configuration->password_alpha_character_required       = false;
+        $configuration->password_expiration_days                = 0;
+        $configuration->password_lock_out_days                  = 1;
+        $configuration->password_minimum_password_length        = 5;
+        $configuration->password_maximum_password_length        = 50;
+        $configuration->password_mixed_case_required            = false;
+        $configuration->password_must_not_match_last_password   = true;
+        $configuration->password_must_not_match_username        = false;
+        $configuration->password_numeric_character_required     = false;
+        $configuration->password_send_email_for_password_blocks = false;
+        $configuration->password_special_character_required     = false;
+        $configuration->password_email_address_as_username      = false;
+        $configuration->session_expires_minutes                 = 30;
+        $configuration->site_is_offline                         = false;
+
+        $application_base_url = $this->dependencies['Runtimedata']->application->base_url;
+
+        $configuration->url_for_home           = $application_base_url;
+        $configuration->url_to_change_password = $application_base_url . '/' . 'password';
+        $configuration->url_to_login           = $application_base_url . '/' . 'login';
+        $configuration->url_to_registration    = $application_base_url . '/' . 'registration';
+
+        return $configuration;
     }
 
     /**
@@ -268,12 +299,12 @@ class AuthenticationFactoryMethod extends FactoryBase implements FactoryMethodIn
      * @return  $this
      * @since   1.0
      */
-    public function redirect($redirect_object)
+    protected function redirect($redirect_object)
     {
         $this->schedule_factory_methods             = array();
-        $options                             = array();
-        $options['url']                      = $redirect_object->url;
-        $options['status']                   = $redirect_object->code;
+        $options                                    = array();
+        $options['url']                             = $redirect_object->url;
+        $options['status']                          = $redirect_object->code;
         $this->schedule_factory_methods['Redirect'] = $options;
 
         return $this;

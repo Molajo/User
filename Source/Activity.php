@@ -9,9 +9,9 @@
 namespace Molajo\User;
 
 use CommonApi\Database\DatabaseInterface;
-use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\MessagesInterface;
 use CommonApi\User\ActivityInterface;
+use CommonApi\Query\QueryInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
@@ -41,12 +41,12 @@ class Activity implements ActivityInterface
     protected $database;
 
     /**
-     * Fieldhandler Instance
+     * Query Instance
      *
-     * @var    object  CommonApi\Model\FieldhandlerInterface
+     * @var    object  CommonApi\Query\QueryInterface
      * @since  1.0
      */
-    protected $fieldhandler;
+    protected $query;
 
     /**
      * Messages Instance
@@ -165,24 +165,24 @@ class Activity implements ActivityInterface
     /**
      * Construct
      *
-     * @param  DatabaseInterface     $database
-     * @param  FieldhandlerInterface $fieldhandler
-     * @param  MessagesInterface     $messages
-     * @param  null                  $default_exception
-     * @param  null                  $id
+     * @param  DatabaseInterface $database
+     * @param  QueryInterface    $query
+     * @param  MessagesInterface $messages
+     * @param  null              $default_exception
+     * @param  int               $id
      *
      * @since  1.0
      */
     public function __construct(
         DatabaseInterface $database,
-        FieldhandlerInterface $fieldhandler,
+        QueryInterface $query,
         MessagesInterface $messages,
         $default_exception = null,
         $id = 0
     ) {
-        $this->database     = $database;
-        $this->fieldhandler = $fieldhandler;
-        $this->messages     = $messages;
+        $this->database = $database;
+        $this->query    = $query;
+        $this->messages = $messages;
 
         if ($default_exception === null) {
         } else {
@@ -206,7 +206,7 @@ class Activity implements ActivityInterface
      */
     public function getDate()
     {
-        return $this->database->getDate();
+        return $this->query->getDate();
     }
 
     /**
@@ -279,7 +279,7 @@ class Activity implements ActivityInterface
 
     /**
      * Retrieve User View Groups
-     * echo $this->database->getQueryString();
+     * echo $this->database->getSQL();
      *
      * @param   string $id
      *
@@ -292,17 +292,14 @@ class Activity implements ActivityInterface
 
         if ($this->guest === false) {
 
-            $query = $this->database->getQueryObject();
+            $this->query->clearQuery();
 
-            $query->select('*');
-            $query->from($this->database->qn('#__user_activity'));
-            $query->where(
-                $this->database->qn('user_id')
-                . ' = ' . $this->database->q($id)
-            );
-            $query->order('activity_datetime');
+            $this->query->select('*');
+            $this->query->from('#__user_activity');
+            $this->query->where('column', 'user_id', '=', 'integer', $id);
+            $this->query->order('activity_datetime', 'DESC');
 
-            $data = $this->database->loadObjectList();
+            $data = $this->database->loadObjectList($this->query->getSQL());
         }
 
         if (is_array($data) && count($data) > 0) {
@@ -328,25 +325,19 @@ class Activity implements ActivityInterface
             return $this;
         }
 
-        $query = $this->database->getQueryObject();
+        $this->query->clearQuery();
 
-        $query->update($this->database->qn('#__user_activity'));
+        $this->query->setType('update');
 
         foreach ($this->updates as $field => $value) {
-            $query->set(
-                $this->database->qn($field)
-                . ' = ' . $this->database->q($value)
-            );
+            $this->query->select($field, null, $value);
         }
+        $this->query->from('#__user_activity');
+        $this->query->where('column', 'id', '=', 'integer', (int)$this->activity_id);
 
-        $query->where(
-            $this->database->qn('id')
-            . ' = ' . $this->database->q($this->activity_id)
-        );
+//echo $this->query->getSQL();
 
-//echo $this->database->getQueryString();
-
-        $results = $this->database->execute();
+        $results = $this->database->execute($this->query->getSQL());
 
         if ($results === false) {
             $this->messages->throwException(1700, array(), $this->default_exception);
@@ -366,18 +357,15 @@ class Activity implements ActivityInterface
      * @since   1.0
      * @throws  RuntimeException
      */
-    public function deleteUser()
+    public function deleteUserActivity()
     {
-        $query = $this->database->getQueryObject();
+        $this->query->clearQuery();
 
-        $query->delete($this->database->qn('#__user_activity'));
+        $this->query->setType('delete');
+        $this->query->from('#__user_activity');
+        $this->query->where('column', 'id', '=', 'integer', (int)$this->activity_id);
 
-        $query->where(
-            $this->database->qn('id')
-            . ' = ' . $this->database->q($this->activity_id)
-        );
-
-        $results = $this->database->execute();
+        $results = $this->database->execute($this->query->getSQL());
 
         if ($results === false) {
             $this->messages->throwException(1800, array(), $this->default_exception);

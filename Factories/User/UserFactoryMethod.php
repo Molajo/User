@@ -9,9 +9,9 @@
 namespace Molajo\Factories\User;
 
 use CommonApi\Exception\RuntimeException;
-use CommonApi\IoC\FactoryMethodInterface;
-use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
-use Molajo\IoC\FactoryBase;
+use CommonApi\IoC\FactoryBatchInterface;
+use CommonApi\IoC\FactoryInterface;
+use Molajo\IoC\FactoryMethodBase;
 
 /**
  * User Factory Method
@@ -21,7 +21,7 @@ use Molajo\IoC\FactoryBase;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class UserFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
+class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
     /**
      * Actions Array
@@ -91,7 +91,7 @@ class UserFactoryMethod extends FactoryBase implements FactoryMethodInterface, F
     public function __construct(array $options = array())
     {
         $options['product_name']      = basename(__DIR__);
-        $options['product_namespace'] = 'Molajo\\User\\User';
+        $options['product_namespace'] = 'Molajo\\User\\Facade';
 
         parent::__construct($options);
     }
@@ -185,8 +185,10 @@ class UserFactoryMethod extends FactoryBase implements FactoryMethodInterface, F
      */
     public function getSessionInput()
     {
-        $session_id                  = $this->dependencies['Session']->getSession('session_id');
+        $session_id = $this->dependencies['Session']->getSession('session_id');
+
         $this->options['session_id'] = $session_id;
+
         if ($this->options['action'] == 'login'
             || $this->options['action'] == 'changePassword'
             || $this->options['action'] == 'requestPasswordReset'
@@ -194,6 +196,7 @@ class UserFactoryMethod extends FactoryBase implements FactoryMethodInterface, F
             || $this->options['action'] == 'register'
             || $this->options['action'] == 'confirmRegistration'
         ) {
+
         } else {
 
             $this->options['password']                       = '';
@@ -223,7 +226,7 @@ class UserFactoryMethod extends FactoryBase implements FactoryMethodInterface, F
         foreach ($this->options as $key => $value) {
             $options[$key] = $value;
         }
-        $options['registration_actions']     = $this->registration_actions;
+        $options['registration_actions']            = $this->registration_actions;
         $this->schedule_factory_methods['Userdata'] = $options;
 
         return $this->schedule_factory_methods;

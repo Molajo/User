@@ -9,9 +9,9 @@
 namespace Molajo\Factories\Activity;
 
 use CommonApi\Exception\RuntimeException;
-use CommonApi\IoC\FactoryMethodInterface;
-use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
-use Molajo\IoC\FactoryBase;
+use CommonApi\IoC\FactoryInterface;
+use CommonApi\IoC\FactoryBatchInterface;
+use Molajo\IoC\FactoryMethodBase;
 
 /**
  * Activity Factory Method
@@ -21,7 +21,7 @@ use Molajo\IoC\FactoryBase;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class ActivityFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
+class ActivityFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
     /**
      * Constructor

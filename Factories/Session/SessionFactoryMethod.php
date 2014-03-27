@@ -8,9 +8,9 @@
  */
 namespace Molajo\Factories\Session;
 
-use CommonApi\IoC\FactoryMethodInterface;
-use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
-use Molajo\IoC\FactoryBase;
+use CommonApi\IoC\FactoryBatchInterface;
+use CommonApi\IoC\FactoryInterface;
+use Molajo\IoC\FactoryMethodBase;
 
 /**
  * Session Factory Method
@@ -20,7 +20,7 @@ use Molajo\IoC\FactoryBase;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class SessionFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
+class SessionFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
     /**
      * Constructor
@@ -33,7 +33,7 @@ class SessionFactoryMethod extends FactoryBase implements FactoryMethodInterface
     {
         $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['product_namespace']        = 'Molajo\\User\\Utilities\\Session';
+        $options['product_namespace']        = 'Molajo\\User\\Session';
 
         parent::__construct($options);
     }

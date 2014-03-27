@@ -24,12 +24,15 @@
         "php": ">=5.4",
         "commonapi/database": "dev-master",
         "commonapi/model": "dev-master",
-        "commonapi/user": "dev-master"
+        "commonapi/query": "dev-master",
+        "commonapi/user": "dev-master",
+        "ircmaxell/password-compat": "dev-master"
     },
     "suggest": {
         "molajo/email": "Molajo Email Services",
+        "molajo/database": "Molajo Database Services",
         "molajo/fieldhandler": "Molajo Fieldhandler Services",
-        "molajo/database": "Molajo Database Services"
+        "molajo/query": "Molajo Query Services"
     },
     "autoload": {
         "psr-4": {

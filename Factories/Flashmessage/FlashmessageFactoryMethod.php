@@ -1,6 +1,6 @@
 <?php
 /**
- * User FlashMessage Factory Method
+ * FlashMessage Factory Method
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -9,9 +9,9 @@
 namespace Molajo\Factories\Flashmessage;
 
 use CommonApi\Exception\RuntimeException;
-use CommonApi\IoC\FactoryMethodInterface;
-use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
-use Molajo\IoC\FactoryBase;
+use CommonApi\IoC\FactoryBatchInterface;
+use CommonApi\IoC\FactoryInterface;
+use Molajo\IoC\FactoryMethodBase;
 
 /**
  * FlashMessage Factory Method
@@ -21,7 +21,7 @@ use Molajo\IoC\FactoryBase;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class FlashmessageFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
+class FlashmessageFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
     /**
      * Constructor
@@ -34,7 +34,7 @@ class FlashmessageFactoryMethod extends FactoryBase implements FactoryMethodInte
     {
         $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['product_namespace']        = 'Molajo\\User\\Utilities\\FlashMessage';
+        $options['product_namespace']        = 'Molajo\\User\\FlashMessage';
 
         parent::__construct($options);
     }

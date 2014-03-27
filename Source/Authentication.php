@@ -8,17 +8,17 @@
  */
 namespace Molajo\User;
 
-use stdClass;
 use DateTime;
 use Exception;
+use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
-use CommonApi\User\UserDataInterface;
-use CommonApi\User\SessionInterface;
 use CommonApi\User\CookieInterface;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\User\SessionInterface;
+use CommonApi\User\UserDataInterface;
+use stdClass;
 
 /**
  * Authentication Class
@@ -37,6 +37,14 @@ class Authentication implements AuthenticationInterface
      * @since  1.0
      */
     protected $userdata;
+
+    /**
+     * User Data
+     *
+     * @var    object
+     * @since  1.0
+     */
+    protected $user;
 
     /**
      * Session Instance
@@ -93,6 +101,30 @@ class Authentication implements AuthenticationInterface
      * @since  1.0
      */
     protected $configuration;
+
+    /**
+     * $_SERVER OBJECT
+     *
+     * @var    object
+     * @since  1.0
+     */
+    protected $server;
+
+    /**
+     * $_POST OBJECT
+     *
+     * @var    object
+     * @since  1.0
+     */
+    protected $post;
+
+    /**
+     * Session ID
+     *
+     * @var    string
+     * @since  1.0
+     */
+    protected $external_session_id;
 
     /**
      * Default Exception
@@ -161,6 +193,9 @@ class Authentication implements AuthenticationInterface
      * @param  EncryptInterface      $encrypt
      * @param  FieldhandlerInterface $fieldhandler
      * @param  stdClass              $configuration
+     * @param  object                $server
+     * @param  object                $post
+     * @param  string                $external_session_id
      * @param  null|string           $default_exception
      *
      * @since  1.0
@@ -174,17 +209,24 @@ class Authentication implements AuthenticationInterface
         EncryptInterface $encrypt,
         FieldhandlerInterface $fieldhandler,
         $configuration,
+        $server,
+        $post,
+        $external_session_id,
         $default_exception = null
     ) {
-        $this->userdata      = $userdata;
-        $this->today         = $this->userdata->getDate();
-        $this->session       = $session;
-        $this->cookie        = $cookie;
-        $this->mailer        = $mailer;
-        $this->messages      = $messages;
-        $this->encrypt       = $encrypt;
-        $this->fieldhandler  = $fieldhandler;
-        $this->configuration = $configuration;
+        $this->userdata            = $userdata;
+        $this->user                = $this->userdata->getUserData();
+        $this->today               = $this->user->today;
+        $this->session             = $session;
+        $this->cookie              = $cookie;
+        $this->mailer              = $mailer;
+        $this->messages            = $messages;
+        $this->encrypt             = $encrypt;
+        $this->fieldhandler        = $fieldhandler;
+        $this->configuration       = $configuration;
+        $this->server              = $server;
+        $this->post                = $post;
+        $this->external_session_id = $external_session_id;
 
         if ($default_exception === null) {
         } else {
@@ -197,7 +239,7 @@ class Authentication implements AuthenticationInterface
      *
      * @param   string $session_id
      *
-     * @return  int   $id
+     * @return  int
      * @since   1.0
      */
     public function isGuest($session_id)
@@ -225,17 +267,18 @@ class Authentication implements AuthenticationInterface
      */
     public function login($session_id, $username, $password, $remember = false)
     {
+        $this->error = false;
+
         $this->verifySession($session_id, 'login');
         $this->verifyUser('login');
         $this->verifyFormToken('login');
         $this->verifyCredentials($username, $password);
 
-        $this->error = false;
-
         if ($this->error === true) {
             $redirect       = new stdClass();
             $redirect->code = 401;
             $redirect->url  = $this->configuration->url_to_login;
+
             return $redirect;
         }
 
@@ -251,12 +294,12 @@ class Authentication implements AuthenticationInterface
 
         $this->clearLoginAttempts();
         $this->clearResetPasswordCode();
-        $this->updates['last_visit_datetime']    = $this->today;
-        $this->updates['last_activity_datetime'] = $this->today;
+        $this->updates['#__users.last_visit_datetime']    = $this->today;
+        $this->updates['#__users.last_activity_datetime'] = $this->today;
 
         $this->updateUser();
 
-        return $this->userdata->getUserData('id');
+        return $this->user->id;
     }
 
     /**
@@ -282,10 +325,10 @@ class Authentication implements AuthenticationInterface
             return $redirect;
         }
 
-        $this->updates['last_activity_datetime'] = $this->today;
-        $this->updateUser();
+        $this->updates['#__users.last_activity_datetime'] = $this->today;
+        $this->user                                       = $this->updateUser();
 
-        return $this->userdata->getUserData('id');
+        return $this->user->id;
     }
 
     /**
@@ -296,7 +339,7 @@ class Authentication implements AuthenticationInterface
      * @param   string $password
      * @param   string $new_password
      * @param   string $reset_password_code
-     * @param   bool   $remember $remember
+     * @param   bool   $remember
      *
      * @return  $this
      * @since   1.0
@@ -323,21 +366,21 @@ class Authentication implements AuthenticationInterface
         }
 
         //$hash                                       = $this->encrypt->createHashString($new_password);
-        $this->updates['password']                  = $new_password; //$hash;
-        $this->updates['password_changed_datetime'] = $this->today;
-        $this->updates['last_visit_datetime']       = $this->today;
-        $this->updates['last_activity_datetime']    = $this->today;
+        $this->updates['#__users.password']                  = $new_password; //$hash;
+        $this->updates['#__users.password_changed_datetime'] = $this->today;
+        $this->updates['#__users.last_visit_datetime']       = $this->today;
+        $this->updates['#__users.last_activity_datetime']    = $this->today;
 
         $this->clearLoginAttempts();
         $this->clearResetPasswordCode();
 
-        $this->updateUser();
+        $this->user = $this->updateUser();
 
         if ((int)$this->remember == true) {
             //$this->saveRememberMeCookie();
         }
 
-        return $this->userdata->getUserData('id');
+        return $this->user;
     }
 
     /**
@@ -362,20 +405,20 @@ class Authentication implements AuthenticationInterface
             return $redirect;
         }
 
-        if ($this->userdata->getUserData('reset_password_code') == '') {
+        if ($this->user->reset_password_code == '') {
             $this->setResetPasswordCode();
         }
-        $this->updates['last_activity_datetime'] = $this->today;
-        $this->updateUser();
+        $this->updates['#__users.last_activity_datetime'] = $this->today;
+        $this->user                                       = $this->updateUser();
 
         $options          = array();
         $options['type']  = 'password_reset_request';
         $options['link']  = $this->configuration->url_to_change_password
-            . '?reset_password_code=' . $this->userdata->getUserData('reset_password_code');
-        $options['name']  = $this->userdata->getUserData('full_name');
+            . '?reset_password_code=' . $this->user->reset_password_code;
+        $options['name']  = $this->user->full_name;
         $options['today'] = $this->today;
-        $options['to']    = $this->userdata->getUserData('email')
-            . ', ' . $this->userdata->getUserData('full_name');
+        $options['to']    = $this->user->email
+            . ', ' . $$this->user->full_name;
 
         $this->mailer->render($options)->send();
 
@@ -405,8 +448,8 @@ class Authentication implements AuthenticationInterface
             return $redirect;
         }
 
-        $this->updates['last_activity_datetime'] = $this->today;
-        $this->updateUser();
+        $this->updates['#__users.last_activity_datetime'] = $this->today;
+        $this->user                                       = $this->updateUser();
         $this->session->destroySession();
         //$this->cookie->forget();
 
@@ -435,40 +478,42 @@ class Authentication implements AuthenticationInterface
 
         if ($action == 'isGuest') {
 
-            if (session_id() == $session_id
-                && $this->userdata->getUserData('username') == ''
+            if ($this->external_session_id == $session_id
+                && $this->user->username == ''
             ) {
                 $this->session_id = $session_id;
                 return $this;
-            } else {
-                $this->messages->throwException(1800, array(), $this->default_exception);
             }
+
+            $this->messages->throwException(1800, array(), $this->default_exception);
+
         } elseif ($action == 'login' || $action == 'changePassword' || $action == 'requestPasswordReset') {
 
-            if (session_id() == $session_id) {
+            if ($this->external_session_id == $session_id) {
                 $this->session_id = $session_id;
                 return $this;
-            } else {
-                $values           = array();
-                $values['action'] = $action;
-                $this->messages->throwException(1805, $values, $this->default_exception);
             }
+
+            $values           = array();
+            $values['action'] = $action;
+            $this->messages->throwException(1805, $values, $this->default_exception);
+
         } else {
 
-            if (session_id()
+            if ($this->external_session_id
                 == $session_id
                 && $this->session->getSession($session_id)
-                == $this->userdata->getUserData('username')
-                && $this->session->getSession($this->userdata->getUserData('username'))
-                == $this->userdata->getUserData('session_key')
+                == $this->user->username
+                && $this->session->getSession($this->user->username)
+                == $this->user->session_id
             ) {
-
                 $this->session_id = $session_id;
                 return $this;
             };
         }
 
         $this->messages->throwException(1900, array(), $this->default_exception);
+
         return $this;
     }
 
@@ -485,24 +530,26 @@ class Authentication implements AuthenticationInterface
     {
         $today_datetime = new DateTime();
 
-        if ($this->userdata->getUserData('activation_datetime') == '0000-00-00 00:00:00') {
+        if ($this->user->activation_datetime == '0000-00-00 00:00:00') {
             $this->error = true;
             $this->messages->setFlashMessage(600);
         }
 
         if ($action == 'login' || $action == 'changePassword' || 'requestPasswordReset') {
-            if ($this->userdata->getUserData('login_attempts') > $this->configuration->max_login_attempts) {
 
-                $last_activity_date = new DateTime($this->userdata->getUserData('last_activity_datetime'));
+            if ($this->user->login_attempts > $this->configuration->max_login_attempts) {
+
+                $last_activity_date = new DateTime($this->user->last_activity_datetime);
                 $day_object         = $last_activity_date->diff($today_datetime);
 
                 if ($day_object->days > $this->configuration->password_lock_out_days) {
 
-                    $this->updates['login_attempts']         = 0;
-                    $this->updates['block']                  = 0;
-                    $this->updates['last_activity_datetime'] = $this->today;
+                    $this->updates['#__users.login_attempts']         = 0;
+                    $this->updates['#__users.block']                  = 0;
+                    $this->updates['#__users.last_activity_datetime'] = $this->today;
 
-                    $this->updateUser();
+                    $this->user = $this->updateUser();
+
                 } else {
                     $this->error = true;
                     $this->messages->setFlashMessage(800);
@@ -510,21 +557,22 @@ class Authentication implements AuthenticationInterface
             }
         }
 
-        if ($this->userdata->getUserData('block') == 1) {
+        if ($this->user->block == 1) {
             $this->error = true;
             $this->messages->setFlashMessage(1100);
         }
 
-        $password_changed_datetime = new DateTime($this->userdata->getUserData('password_changed_datetime'));
+        $password_changed_datetime = new DateTime($this->user->password_changed_datetime);
         $day_object                = $password_changed_datetime->diff($today_datetime);
 
         if ($day_object->days > (int)$this->configuration->password_expiration_days
             && (int)$this->configuration->password_expiration_days > 0
         ) {
 
-            $this->updates['block']                  = 1;
-            $this->updates['last_activity_datetime'] = $this->today;
-            $this->updateUser();
+            $this->updates['#__users.block']                  = 1;
+            $this->updates['#__users.last_activity_datetime'] = $this->today;
+
+            $this->user = $this->updateUser();
 
             $this->error = true;
             $this->messages->setFlashMessage(1200);
@@ -550,11 +598,10 @@ class Authentication implements AuthenticationInterface
      */
     protected function verifyFormToken($action)
     {
-
         if ($action == 'isLoggedon' || $action == 'isGuest') {
         } else {
             /**
-             * if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT', 'DELETE'))) {
+             * if (in_array($this->server['REQUEST_METHOD'], array('POST', 'PUT', 'DELETE'))) {
              * } else {
              * $values           = array();
              * $values['action'] = $action;
@@ -563,9 +610,9 @@ class Authentication implements AuthenticationInterface
              */
         }
 
-        if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT', 'DELETE'))) {
+        if (in_array($this->server['REQUEST_METHOD'], array('POST', 'PUT', 'DELETE'))) {
 
-            if (isset($_POST[$this->session->getSession('form_token')])) {
+            if (isset($this->post[$this->session->getSession('form_token')])) {
             } else {
                 $this->session->destroy();
                 //$this->cookie->forget();
@@ -592,15 +639,14 @@ class Authentication implements AuthenticationInterface
         $password = '',
         $reset_password_code = ''
     ) {
-
         if ($this->configuration->password_email_address_as_username == true) {
-            if ($username == $this->userdata->getUserData('email')) {
+            if ($username == $this->user->email) {
             } else {
                 $this->error = true;
                 $this->messages->setFlashMessage(1310);
             }
         } else {
-            if ($username == $this->userdata->getUserData('username')) {
+            if ($username == $this->user->username) {
             } else {
                 $this->error = true;
                 $this->messages->setFlashMessage(1300);
@@ -613,7 +659,7 @@ class Authentication implements AuthenticationInterface
         }
 
         if ($password == '') {
-            if ($reset_password_code == $this->userdata->getUserData('reset_password_code')) {
+            if ($reset_password_code == $this->user->reset_password_code) {
             } else {
                 $this->setFailedLoginAttempt();
                 $this->error = true;
@@ -623,7 +669,7 @@ class Authentication implements AuthenticationInterface
 
             //$test = $this->encrypt->verifyHashString(
             //    $password,
-            //    $this->userdata->getUserData('password')
+            //    $this->user->password
             //);
             $test = true;
             if ($test === true) {
@@ -646,7 +692,7 @@ class Authentication implements AuthenticationInterface
      */
     protected function verifySessionNotTimedOut()
     {
-        if (session_id() == $this->session_id
+        if ($this->external_session_id == $this->session_id
             && $this->session->getSession('last_activity_datetime')
             + ($this->configuration->session_expires_minutes * 60)
             < time()
@@ -707,7 +753,7 @@ class Authentication implements AuthenticationInterface
 
             try {
                 $options              = array();
-                $options['not_equal'] = $this->userdata->getUserData('username');
+                $options['not_equal'] = $this->user->username;
 
                 $this->fieldhandler->validate('Password', $new_password, 'Notequal', $options);
             } catch (Exception $e) {
@@ -721,7 +767,7 @@ class Authentication implements AuthenticationInterface
 
             $test = $this->encrypt->verifyHashString(
                 $new_password,
-                $this->userdata->getUserData('password')
+                $this->user->password
             );
 
             if ($test == 1) {
@@ -805,24 +851,11 @@ class Authentication implements AuthenticationInterface
     {
         $this->session->destroySession();
         $this->session_id = $this->session->getSession('session_id');
-        $this->session->setSession(
-            session_id(),
-            $this->userdata->getUserData('username')
-        );
-        $this->updates['session_key']
-            = $this->userdata->getUserData('session_key');
-        $this->session->setSession(
-            $this->userdata->getUserData('username'),
-            $this->userdata->getUserData('session_key')
-        );
-        $this->session->setSession(
-            'login_datetime',
-            time()
-        );
-        $this->session->setSession(
-            'last_activity_datetime',
-            time()
-        );
+        $this->session->setSession($this->external_session_id, $this->user->username);
+        $this->updates['#__users.session_id'] = $this->external_session_id;
+        $this->session->setSession($this->user->username, $this->user->session_id);
+        $this->session->setSession('login_datetime', time());
+        $this->session->setSession('last_activity_datetime', time());
 
         return $this;
     }
@@ -835,15 +868,15 @@ class Authentication implements AuthenticationInterface
      */
     protected function setFailedLoginAttempt()
     {
-        $this->updates['login_attempts'] = $this->userdata->getUserData('login_attempts') + 1;
-        if ((int)$this->userdata->getUserData('login_attempts')
+        $this->updates['#__users.login_attempts'] = $this->user->login_attempts + 1;
+        if ((int)$this->user->login_attempts
             > (int)$this->configuration->max_login_attempts
         ) {
-            $this->updates['block'] = 1;
+            $this->updates['#__users.block'] = 1;
         }
-        $this->updates['last_activity_datetime'] = $this->today;
+        $this->updates['#__users.last_activity_datetime'] = $this->today;
 
-        $this->updateUser();
+        $this->user = $this->updateUser();
         return $this;
     }
 
@@ -856,10 +889,7 @@ class Authentication implements AuthenticationInterface
     protected function setFormToken()
     {
         if ($this->session->getSession('form_token') === false) {
-            $this->session->setSession(
-                'form_token',
-                $this->encrypt->getRandomToken(64)
-            );
+            $this->session->setSession('form_token', $this->encrypt->getRandomToken(64));
         }
 
         return $this;
@@ -873,7 +903,7 @@ class Authentication implements AuthenticationInterface
      */
     protected function setResetPasswordCode()
     {
-        $this->updates['reset_password_code'] = $this->encrypt->getRandomToken(16);
+        $this->updates['#__users.reset_password_code'] = $this->encrypt->getRandomToken(16);
 
         return $this;
     }
@@ -886,11 +916,11 @@ class Authentication implements AuthenticationInterface
      */
     protected function clearLoginAttempts()
     {
-        if ($this->userdata->getUserData('login_attempts') === 0) {
+        if ($this->user->login_attempts === 0) {
             return $this;
         }
 
-        $this->updates['login_attempts'] = 0;
+        $this->updates['#__users.login_attempts'] = 0;
 
         return $this;
     }
@@ -903,11 +933,11 @@ class Authentication implements AuthenticationInterface
      */
     protected function clearResetPasswordCode()
     {
-        if ($this->userdata->getUserData('reset_password_code') == '') {
+        if ($this->user->reset_password_code == '') {
             return $this;
         }
 
-        $this->updates['reset_password_code'] = null;
+        $this->updates['#__users.reset_password_code'] = null;
 
         return $this;
     }
@@ -920,7 +950,9 @@ class Authentication implements AuthenticationInterface
      */
     protected function updateUser()
     {
-        $this->userdata->updateUser($this->updates);
+        $this->userdata->updateUserData($this->updates);
+
+        return $this;
     }
 
     /**

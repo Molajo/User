@@ -20,7 +20,7 @@ $classmap = createClassMap($base . '/vendor/commonapi/user', 'CommonApi\\User\\'
 $results  = createClassMap($base . '/vendor/commonapi/exception', 'CommonApi\\Exception\\');
 $classmap = array_merge($classmap, $results);
 
-$results  = createClassMap($base . '/Source/Handler', 'Molajo\\Render\\Handler\\');
+$results  = createClassMap($base . '/Source/Handler', 'Molajo\\Render\\Adapter\\');
 $classmap = array_merge($classmap, $results);
 
 $classmap['Molajo\\Render\\Adapter'] = $base . '/Source/Adapter.php';

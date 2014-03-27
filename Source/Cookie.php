@@ -6,7 +6,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\User\Utilities;
+namespace Molajo\User;
 
 use stdClass;
 use Exception;
@@ -124,12 +124,6 @@ class Cookie implements CookieInterface
             $this->request_cookies = array();
         }
 
-        if (is_array($response_cookies)) {
-            $this->response_cookies = $response_cookies;
-        } else {
-            $this->response_cookies = array();
-        }
-
         if ($expire === null) {
             $expire = 2628000;
         }
@@ -153,13 +147,6 @@ class Cookie implements CookieInterface
         if ($http_only === true) {
         } else {
             $this->http_only = false;
-        }
-
-        if (is_array($this->request_cookies)
-            && count($this->request_cookies) > 0
-        ) {
-        } else {
-            $this->request_cookies = $_COOKIE;
         }
     }
 

@@ -8,7 +8,6 @@
  */
 namespace Molajo\User\Utilities;
 
-use Exception;
 use CommonApi\Model\FieldhandlerInterface as UserFieldhandlerInterface;
 use CommonApi\User\MessagesInterface;
 use CommonApi\Model\FieldhandlerInterface;

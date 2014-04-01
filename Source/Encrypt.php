@@ -6,7 +6,7 @@
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\User\Utilities;
+namespace Molajo\User;
 
 use Exception;
 use CommonApi\User\EncryptInterface;
@@ -61,7 +61,7 @@ class Encrypt implements EncryptInterface
      * @var    string
      * @since  1.0
      */
-    protected $default_exception = 'Exception\\User\\EncryptException';
+    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * Construct

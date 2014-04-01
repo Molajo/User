@@ -8,8 +8,8 @@
  */
 namespace Molajo\User;
 
-use CommonApi\User\FlashMessageInterface;
 use CommonApi\User\MessagesInterface;
+use CommonApi\User\FlashMessageInterface;
 
 /**
  * Error Message Class
@@ -44,7 +44,7 @@ class Messages implements MessagesInterface
      * @var    string
      * @since  1.0
      */
-    protected $messages_exception = 'Exception\\User\\MessagesException';
+    protected $messages_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * Construct
@@ -58,8 +58,8 @@ class Messages implements MessagesInterface
     public function __construct(
         FlashMessageInterface $flashmessage,
         array $messages = array(),
-        $messages_exception = null
-    ) {
+        $messages_exception = null)
+    {
         $this->flashmessage = $flashmessage;
 
         if (count($messages) > 0) {
@@ -147,27 +147,16 @@ class Messages implements MessagesInterface
     {
         $message = $this->formatMessage($message_id, $values);
 
-        if ((bool)strrpos($exception, '\\') === true) {
-        } else {
-            $exception = 'Exception\\User\\' . $exception;
-        }
-
         if ($exception == null) {
-            $exception = $this->messages_exception;
+        } else {
+            $this->messages_exception = $exception;
         }
 
         if (class_exists($exception)) {
             $class = $exception;
         } else {
-            $class = 'Exception\\User\\' . $exception;
+            $class = 'CommonApi\\Exception\\RuntimeException';
         }
-
-        if (class_exists($class)) {
-        } else {
-            $class = $this->messages_exception;
-        }
-        //todo: remove after development ;)
-        echo $message;
 
         throw new $class ($message);
     }

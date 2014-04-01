@@ -84,7 +84,7 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
         }
 
         $this->dependencies['child_model_registries'] = $children;
-        $this->dependencies['default_exception']      = 'Exception\\User\\RuntimeException';
+        $this->dependencies['default_exception']      = 'CommonApi\\Exception\\RuntimeException';
 
         return $this->dependencies;
     }

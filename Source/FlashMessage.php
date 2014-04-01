@@ -35,7 +35,7 @@ class FlashMessage implements FlashMessageInterface
      * @var    string
      * @since  1.0
      */
-    protected $flash_message_exception = 'Exception\\User\\FlashMessageException';
+    protected $flash_message_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * Valid Flash Types

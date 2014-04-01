@@ -6,7 +6,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\User\Utilities;
+namespace Molajo\User;
 
 use stdClass;
 use CommonApi\Model\FieldhandlerInterface;
@@ -45,7 +45,7 @@ class TextTemplate implements TemplateInterface
      * @var    string
      * @since  1.0
      */
-    protected $default_exception = 'Exception\\User\\TemplateException';
+    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * Input

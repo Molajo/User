@@ -6,7 +6,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\User\Utilities;
+namespace Molajo\User;
 
 use CommonApi\User\MailerInterface;
 use CommonApi\User\TemplateInterface;
@@ -44,7 +44,7 @@ class Mailer implements MailerInterface
      * @var    string
      * @since  1.0
      */
-    protected $default_exception = 'Exception\\User\\MailerException';
+    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * Email To (Email address, Name)

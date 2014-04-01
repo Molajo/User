@@ -35,7 +35,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     {
         $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['product_namespace']        = 'Molajo\\User\\Utilities\\TextTemplate';
+        $options['product_namespace']        = 'Molajo\\User\\TextTemplate';
 
         parent::__construct($options);
     }
@@ -52,7 +52,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
         parent::onBeforeInstantiation($dependency_values);
 
         $this->dependencies['templates']         = $this->getTemplates();
-        $this->dependencies['default_exception'] = 'Exception\\User\\TemplateException';
+        $this->dependencies['default_exception'] = 'CommonApi\\Exception\\RuntimeException';
         $this->dependencies['data']              = array();
 
         return $this;
@@ -87,7 +87,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
             } else {
 
                 throw new RuntimeException
-                ('IoC Factory Method Adapter Instance Failed for Molajo\User\Utilities\TextTemplate '
+                ('IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
                 . 'Template folder does not exist ' . $template_folder);
             }
         }
@@ -111,7 +111,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
         if (count($template_files) > 0) {
         } else {
             throw new RuntimeException
-            ('IoC Factory Method Adapter Instance Failed for Molajo\User\Utilities\TextTemplate '
+            ('IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
             . 'Template folder does not contain templates: ' . $template_folder);
         }
 
@@ -130,7 +130,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
 
             } else {
                 throw new RuntimeException
-                ('IoC Factory Method Adapter Instance Failed for Molajo\User\Utilities\TextTemplate '
+                ('IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
                 . ' Template File does not exist. (This should never happen.');
             }
         }

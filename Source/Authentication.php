@@ -132,7 +132,7 @@ class Authentication implements AuthenticationInterface
      * @var    string
      * @since  1.0
      */
-    protected $default_exception = 'Exception\\User\\RuntimeException';
+    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * Today
@@ -614,7 +614,7 @@ class Authentication implements AuthenticationInterface
 
             if (isset($this->post[$this->session->getSession('form_token')])) {
             } else {
-                $this->session->destroy();
+                $this->session->destroySession();
                 //$this->cookie->forget();
                 $this->messages->throwException(2000);
             }

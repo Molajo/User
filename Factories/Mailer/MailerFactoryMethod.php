@@ -34,7 +34,7 @@ class MailerFactoryMethod extends FactoryMethodBase implements FactoryInterface,
     {
         $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['product_namespace']        = 'Molajo\\User\\Utilities\\Mailer';
+        $options['product_namespace']        = 'Molajo\\User\\Mailer';
 
         parent::__construct($options);
     }
@@ -50,7 +50,7 @@ class MailerFactoryMethod extends FactoryMethodBase implements FactoryInterface,
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception']   = 'Exception\\User\\MailerException';
+        $this->dependencies['default_exception']   = 'CommonApi\\Exception\\RuntimeException';
         $this->dependencies['from']                = 'AmyStephen@Molajo.org,Amy Stephen';
         $this->dependencies['reply_to']            = 'AmyStephen@Molajo.org,Amy Stephen';
         $this->dependencies['mailer_html_or_text'] = 'text';

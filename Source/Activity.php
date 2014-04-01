@@ -62,7 +62,7 @@ class Activity implements ActivityInterface
      * @var    string
      * @since  1.0
      */
-    protected $default_exception = 'Exception\\User\\RuntimeException';
+    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * activity_id
@@ -297,7 +297,7 @@ class Activity implements ActivityInterface
             $this->query->select('*');
             $this->query->from('#__user_activity');
             $this->query->where('column', 'user_id', '=', 'integer', $id);
-            $this->query->order('activity_datetime', 'DESC');
+            $this->query->orderBy('activity_datetime', 'DESC');
 
             $data = $this->database->loadObjectList($this->query->getSQL());
         }

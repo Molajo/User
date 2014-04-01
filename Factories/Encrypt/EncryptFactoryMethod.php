@@ -34,7 +34,7 @@ class EncryptFactoryMethod extends FactoryMethodBase implements FactoryInterface
     {
         $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['product_namespace']        = 'Molajo\\User\\Utilities\\Encrypt';
+        $options['product_namespace']        = 'Molajo\\User\\Encrypt';
 
         parent::__construct($options);
     }
@@ -50,7 +50,7 @@ class EncryptFactoryMethod extends FactoryMethodBase implements FactoryInterface
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['encrypt_exception'] = 'Exception\\User\\EncryptException';
+        $this->dependencies['encrypt_exception'] = 'CommonApi\\Exception\\RuntimeException';
 
         return $this;
     }

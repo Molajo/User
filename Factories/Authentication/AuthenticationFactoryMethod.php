@@ -70,12 +70,11 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception'] = 'Exception\\User\\RuntimeException';
+        $this->dependencies['default_exception'] = 'CommonApi\\Exception\\RuntimeException';
         $this->dependencies['Configuration']     = $this->getConfiguration();
 
         return $this->dependencies;
     }
-
 
     /**
      * Factory Method Controller triggers the Factory Method to create the Class for the Service

@@ -50,7 +50,7 @@ class ActivityFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception'] = 'Exception\\User\\RuntimeException';
+        $this->dependencies['default_exception'] = 'CommonApi\\Exception\\RuntimeException';
         $this->dependencies['id']                = 0;
 
         return $this->dependencies;

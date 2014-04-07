@@ -44,7 +44,7 @@ class MailerFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      *
      * @return  array
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onBeforeInstantiation(array $dependency_values = null)
     {

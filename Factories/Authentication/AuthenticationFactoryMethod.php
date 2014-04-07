@@ -46,7 +46,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      *
      * @return  array
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = null)
     {
@@ -64,7 +64,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      *
      * @return  array
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onBeforeInstantiation(array $dependency_values = null)
     {
@@ -81,7 +81,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
     {
@@ -111,7 +111,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onAfterInstantiation()
     {

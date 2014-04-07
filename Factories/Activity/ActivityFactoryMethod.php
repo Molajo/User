@@ -44,7 +44,7 @@ class ActivityFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      *
      * @return  array
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onBeforeInstantiation(array $dependency_values = null)
     {

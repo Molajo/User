@@ -44,7 +44,7 @@ class FlashmessageFactoryMethod extends FactoryMethodBase implements FactoryInte
      *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
     {

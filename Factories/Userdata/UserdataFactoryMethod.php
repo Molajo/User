@@ -11,6 +11,7 @@ namespace Molajo\Factories\Userdata;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryBatchInterface;
 use CommonApi\IoC\FactoryInterface;
+use Exception;
 use Molajo\IoC\FactoryMethodBase;
 
 /**
@@ -19,7 +20,7 @@ use Molajo\IoC\FactoryMethodBase;
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
- * @since      1.0
+ * @since      1.0.0
  */
 class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
@@ -48,10 +49,12 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      */
     public function setDependencies(array $reflection = null)
     {
-        parent::setDependencies($reflection);
+        parent::setDependencies(null);
 
         $options                        = array();
+        $this->dependencies['Database'] = $options;
         $this->dependencies['Resource'] = $options;
+        $this->dependencies['Query2']    = $options;
 
         return $this->dependencies;
     }
@@ -67,7 +70,6 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception'] = 'Molajo\\User\\Exception\\RuntimeException';
         $this->dependencies['model_registry']    =
             $this->dependencies['Resource']->get('xml:///Molajo//Model//Datasource//User.xml');
 
@@ -84,10 +86,35 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
         }
 
         $this->dependencies['child_model_registries'] = $children;
-        $this->dependencies['default_exception']      = 'CommonApi\\Exception\\RuntimeException';
 
         return $this->dependencies;
     }
+
+
+    /**
+     * Instantiate Class
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function instantiateClass()
+    {
+        $class = $this->product_namespace;
+
+        try {
+            $this->product_result = new $class (
+                $this->dependencies['Database'],
+                $this->dependencies['Query2'],
+                $this->dependencies['model_registry'],
+                $this->dependencies['child_model_registries']
+            );
+        } catch (Exception $e) {
+            throw new RuntimeException
+            ('Molajito: Could not instantiate Driver Class: ' . $class);
+        }
+    }
+
 
     /**
      * Process Authenticate: isGuest, login, isLoggedOn, changePassword,

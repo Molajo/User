@@ -8,9 +8,8 @@
  */
 namespace Molajo\User;
 
-use CommonApi\Model\FieldhandlerInterface as UserFieldhandlerInterface;
-use CommonApi\User\MessagesInterface;
 use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\User\MessagesInterface;
 
 /**
  * User Fieldhandler Utility
@@ -20,7 +19,7 @@ use CommonApi\Model\FieldhandlerInterface;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class Fieldhandler implements UserFieldhandlerInterface
+class Fieldhandler implements FieldhandlerInterface
 {
     /**
      * Fieldhandler Instance
@@ -55,50 +54,53 @@ class Fieldhandler implements UserFieldhandlerInterface
     }
 
     /**
-     * Validate Input
+     * Validate
      *
-     * @param   string      $key
-     * @param   null|string $value
-     * @param   string      $fieldhandler_type_chain
-     * @param   array       $options
+     * @param   string     $field_name
+     * @param   null|mixed $field_value
+     * @param   string     $constraint
+     * @param   array      $options
      *
-     * @return  $this|mixed
-     * @since   1.0
+     * @return  \CommonApi\Model\ValidateResponseInterface
+     * @since   1.0.0
+     * @throws  \CommonApi\Exception\UnexpectedValueException
      */
-    public function validate($key, $value = null, $fieldhandler_type_chain, $options = array())
+    public function validate($field_name, $field_value = null, $constraint, array $options = array())
     {
-        return $this->fieldhandler->validate($key, $value, $fieldhandler_type_chain, $options);
+        return $this->fieldhandler->validate($field_name, $field_value, $constraint, $options);
     }
 
     /**
-     * Filter Input
+     * Sanitize
      *
-     * @param   string      $key
-     * @param   null|string $value
-     * @param   string      $fieldhandler_type_chain
-     * @param   array       $options
+     * @param   string     $field_name
+     * @param   null|mixed $field_value
+     * @param   string     $constraint
+     * @param   array      $options
      *
-     * @return  $this|mixed
-     * @since   1.0
+     * @return  \CommonApi\Model\ValidateResponseInterface
+     * @since   1.0.0
+     * @throws  \CommonApi\Exception\UnexpectedValueException
      */
-    public function filter($key, $value = null, $fieldhandler_type_chain, $options = array())
+    public function sanitize($field_name, $field_value = null, $constraint, array $options = array())
     {
-        return $this->fieldhandler->filter($key, $value, $fieldhandler_type_chain, $options);
+        return $this->fieldhandler->filter($field_name, $field_value, $constraint, $options);
     }
 
     /**
-     * Escape Input
+     * Format
      *
-     * @param   string      $key
-     * @param   null|string $value
-     * @param   string      $fieldhandler_type_chain
-     * @param   array       $options
+     * @param   string     $field_name
+     * @param   null|mixed $field_value
+     * @param   string     $constraint
+     * @param   array      $options
      *
-     * @return  $this|mixed
-     * @since   1.0
+     * @return  \CommonApi\Model\HandleResponseInterface
+     * @since   1.0.0
+     * @throws  \CommonApi\Exception\UnexpectedValueException
      */
-    public function escape($key, $value = null, $fieldhandler_type_chain, $options = array())
+    public function format($field_name, $field_value = null, $constraint, array $options = array())
     {
-        return $this->fieldhandler->filter($key, $value, $fieldhandler_type_chain, $options);
+        return $this->fieldhandler->filter($field_name, $field_value, $constraint, $options);
     }
 }

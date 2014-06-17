@@ -9,8 +9,13 @@
 namespace Molajo\Tests;
 
 use Molajo\User\TextTemplate;
-use CommonApi\Model\FieldhandlerInterface;
-use CommonApi\User\FlashMessageInterface;
+use Molajo\User\Mocks\MockFlashmessage as Flashmessage;
+use Molajo\User\Mocks\MockFieldhandler as Fieldhandler;
+use Molajo\User\Messages;
+
+require_once __DIR__ . '/Files/jsonRead.php';
+require_once __DIR__ . '/Mocks/FlashMessage.php';
+require_once __DIR__ . '/Mocks/Fieldhandler.php';
 
 /**
  * Test User TextTemplate
@@ -28,6 +33,11 @@ class TextTemplateTest extends \PHPUnit_Framework_TestCase
     protected $text_template;
 
     /**
+     * @var $data
+     */
+    protected $data;
+
+    /**
      * @covers  Molajo\User\TextTemplate::__construct
      * @covers  Molajo\User\TextTemplate::get
      * @covers  Molajo\User\TextTemplate::set
@@ -38,10 +48,19 @@ class TextTemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $flashmessage = new MockTextTemplateFlashmessage();
-        $fieldhandler   = new MockTextTemplateFieldHandler();
+        $fieldhandler_instance = new Fieldhandler();
 
-        //$this->text_template = new TextTemplate($flashmessage, $fieldhandler);
+        $flashmessage_instance = new Flashmessage();
+        include __DIR__ . '/Files/messages.php'; // $messages variable
+        $messages_instance = new Messages($flashmessage_instance, $messages);
+
+        $templates  = $this->getTemplates();
+
+        $this->text_template = new TextTemplate(
+            $fieldhandler_instance,
+            $messages_instance,
+            $templates
+        );
 
         return;
     }
@@ -55,73 +74,108 @@ class TextTemplateTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\TextTemplate::parseTokens
      * @covers  Molajo\User\TextTemplate::replaceTokens
      */
-    public function testStartTextTemplate()
+    public function testGet()
     {
-//        $this->assertEquals(text_template_id(), $this->text_template->getTextTemplate('text_template_id'));
-    }
-}
+        $row        = new \stdClass();
+        $row->today = '12/31/2014';
+        $row->name  = 'Jo Money';
+        $row->link  = 'http://example.com/link';
 
-class MockTextTemplateFieldHandler implements FieldhandlerInterface
-{
-    public function validate($field_name, $field_value = null, $constraint, array $options = array())
-    {
+        $this->text_template->set('data', $row);
 
-    }
-
-    public function sanitize($field_name, $field_value = null, $constraint, array $options = array())
-    {
-
-    }
-
-    public function format($field_name, $field_value = null, $constraint, array $options = array())
-    {
-
-    }
-}
-
-class MockTextTemplateFlashmessage implements FlashMessageInterface
-{
-
-    /**
-     * Get Flash Messages for User, all or by Type
-     *
-     * @param   string $type (Success, Notice, Warning, Error)
-     *
-     * @return  array
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    public function getFlashmessage($type = null)
-    {
-
+        $this->assertEquals($row, $this->text_template->get('data'));
     }
 
     /**
-     * Save a Flash Message (User Message)
-     *
-     * @param   string $type (Success, Notice, Warning, Error)
-     * @param   string $message
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
+     * @covers  Molajo\User\TextTemplate::__construct
+     * @covers  Molajo\User\TextTemplate::get
+     * @covers  Molajo\User\TextTemplate::set
+     * @covers  Molajo\User\TextTemplate::render
+     * @covers  Molajo\User\TextTemplate::renderLoop
+     * @covers  Molajo\User\TextTemplate::parseTokens
+     * @covers  Molajo\User\TextTemplate::replaceTokens
      */
-    public function setFlashmessage($type, $message)
+    public function testSet()
     {
+        $this->text_template->set('type', 'password_reset_request.template');
 
+        $this->assertEquals('password_reset_request.template', $this->text_template->get('type'));
     }
 
     /**
-     * Delete Flash Messages, all or by type
-     *
-     * @param   null|string $type
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
+     * @covers  Molajo\User\TextTemplate::__construct
+     * @covers  Molajo\User\TextTemplate::get
+     * @covers  Molajo\User\TextTemplate::set
+     * @covers  Molajo\User\TextTemplate::render
+     * @covers  Molajo\User\TextTemplate::renderLoop
+     * @covers  Molajo\User\TextTemplate::parseTokens
+     * @covers  Molajo\User\TextTemplate::replaceTokens
      */
-    public function deleteFlashmessage($type = null)
+    public function testRender()
     {
+        $this->text_template->set('type', 'password_reset_request.template');
 
+        $row        = new \stdClass();
+        $row->today = '12/31/2014';
+        $row->name  = 'Jo Money';
+        $row->link  = 'http://example.com/link';
+
+        $rendered = $this->text_template->render($row);
+
+//        file_put_contents(
+//            __DIR__ . '/Files/TextTemplateTextTestRender.json',
+//            json_encode($rendered)
+//        );
+
+        $should_be = readJsonFile(__DIR__ . '/Files/TextTemplateTextTestRender.json');
+
+        $this->assertEquals($should_be['name'], $rendered->name);
+        $this->assertEquals($should_be['subject'], $rendered->subject);
+        $this->assertEquals($should_be['body'], $rendered->body);
+    }
+
+    /**
+     * Retrieve requested template in the $options array or load all templates
+     *
+     * @return   array
+     * @since    1.0
+     * @throws   \CommonApi\Exception\RuntimeException
+     */
+    public function getTemplates()
+    {
+        $template = '';
+        $language = 'en-GB';
+
+        $template_folder = __DIR__ . '/Files/' . $language . '/';
+
+        $template_files = array();
+
+        $temp = scandir($template_folder);
+
+        foreach ($temp as $file) {
+            if ($file === '.' || $file == '..') {
+            } else {
+                $template_files[] = $file;
+            }
+        }
+
+        $templates = array();
+
+        foreach ($template_files as $template_name) {
+
+            if (file_exists($template_folder . $template_name)) {
+
+                require $template_folder . $template_name;
+                $templates[substr(
+                    $template_name,
+                    0,
+                    strlen($template_name) - 4
+                )]
+                    = $template; // $template is defined in the included file
+
+            }
+        }
+
+        return $templates;
     }
 }

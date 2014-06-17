@@ -64,12 +64,28 @@ class TextTemplate implements TemplateInterface
     protected $rendered_output = null;
 
     /**
+     * Rendered Output
+     *
+     * @var    stdClass
+     * @since  1.0
+     */
+    protected $message = null;
+
+    /**
      * Tokens
      *
      * @var    array
      * @since  1.0
      */
     protected $tokens;
+
+    /**
+     * Type
+     *
+     * @var    string
+     * @since  1.0
+     */
+    protected $type;
 
     /**
      * List of Properties
@@ -84,7 +100,8 @@ class TextTemplate implements TemplateInterface
             'templates',
             'data',
             'rendered_output',
-            'tokens'
+            'tokens',
+            'type'
         );
 
     /**
@@ -93,20 +110,17 @@ class TextTemplate implements TemplateInterface
      * @param   FieldhandlerInterface $fieldhandler
      * @param   MessagesInterface     $messages
      * @param   array                 $templates
-     * @param   array                 $data
      *
      * @since   1.0
      */
     public function __construct(
         FieldhandlerInterface $fieldhandler,
         MessagesInterface $messages,
-        array $templates = array(),
-        array $data = array()
+        array $templates = array()
     ) {
         $this->fieldhandler = $fieldhandler;
         $this->messages     = $messages;
         $this->templates    = $templates;
-        $this->data         = $data;
     }
 
     /**
@@ -170,36 +184,13 @@ class TextTemplate implements TemplateInterface
     public function render(stdClass $data)
     {
         $this->data = $data;
-        $type       = $data->type;
 
-        $this->rendered_output = '';
-        $rendered              = new stdClass();
+        $this->renderTemplateType();
 
-        $rendered = $this->renderSection($rendered, $type, $data, 'Body');
-        $rendered = $this->renderSection($rendered, $type, $data, 'Head');
-
-        return $rendered;
-    }
-
-    /**
-     * Render the Head or Body Sections
-     *
-     * @param   string   $rendered
-     * @param   string   $type
-     * @param   stdClass $data
-     * @param   string   $key
-     *
-     * @return  stdClass
-     * @since   1.0
-     */
-    public function renderSection($rendered, $type, $data, $key)
-    {
-        $this->renderTemplateType($data, $type, $key);
-
-        $this->renderLoop();
-
-        $rendered->$key = $this->fieldhandler
-            ->filter($type . ' ' . $key, $this->rendered_output, 'Fullspecialchars');
+        $rendered          = new stdClass();
+        $rendered->name    = $this->message->name;
+        $rendered->subject = $this->renderSection($this->message->subject, 'Subject');
+        $rendered->body    = $this->renderSection($this->message->body, 'Body');
 
         return $rendered;
     }
@@ -207,25 +198,42 @@ class TextTemplate implements TemplateInterface
     /**
      * Render Template Type
      *
-     * @param   stdClass $data
-     * @param   string   $type
-     * @param   string   $key
-     *
      * @return  $this
      * @since   1.0
      */
-    protected function renderTemplateType(stdClass $data, $type, $key = 'subject')
+    protected function renderTemplateType()
     {
-        if (isset($this->templates[$type])) {
-            $this->rendered_output = $this->templates[$type]->$key;
+        if (isset($this->templates[$this->type])) {
+            $this->message = $this->templates[$this->type];
 
         } else {
-            if (isset($this->data['$key'])) {
-                $this->rendered_output = $data['$key'];
+            if (isset($this->data[$this->type])) {
+                $this->message = $this->data[$this->type];
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Render the Subject and Body Sections, one at a time
+     *
+     * @param   string $template
+     * @param   string $key
+     *
+     * @return  string
+     * @since   1.0
+     */
+    public function renderSection($template, $key)
+    {
+        $this->rendered_output = $template;
+
+        $this->renderLoop();
+
+        $this->fieldhandler
+            ->sanitize($this->type . ' ' . $key, $this->rendered_output, 'Fullspecialchars');
+
+        return $this->rendered_output;
     }
 
     /**

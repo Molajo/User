@@ -22,23 +22,15 @@ use CommonApi\User\SessionInterface;
 class Session implements SessionInterface
 {
     /**
-     * Default Messages Exception
-     *
-     * @var    string
-     * @since  1.0
-     */
-    protected $session_exception = 'Molajo\\User\Exception\\RuntimeException';
-
-    /**
      * Start the Session
      *
-     * @return  bool
+     * @return  boolean
      * @since   1.0
      */
     public function startSession()
     {
         if (session_id()) {
-            $this->destroySession();
+            return session_id();
         }
 
         session_start();
@@ -47,21 +39,15 @@ class Session implements SessionInterface
     }
 
     /**
-     * Gets the value for a key
+     * Gets the session value for the specified key
      *
      * @param   string $key
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getSession($key)
     {
-        if (session_id()) {
-        } else {
-            $this->startSession();
-        }
-
         $key = (string)$key;
 
         if ($key == 'session_id') {
@@ -81,17 +67,11 @@ class Session implements SessionInterface
      * @param   string $key
      * @param   mixed  $value
      *
-     * @return  mixed
+     * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setSession($key, $value)
     {
-        if (session_id()) {
-        } else {
-            $this->startSession();
-        }
-
         $key   = (string)$key;
         $value = serialize($value);
 
@@ -103,27 +83,18 @@ class Session implements SessionInterface
     /**
      * Delete a session key
      *
-     * @param   null|string $key
+     * @param   string $key
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function deleteSession($key = null)
+    public function deleteSession($key)
     {
-        if ($key == null) {
-            $this->destroySession();
-            return $this;
-        }
-
-        if (session_id()) {
-        } else {
-            $this->startSession();
-        }
-
         $key = (string)$key;
 
-        unset($_SESSION[$key]);
+        if (isset($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+        }
 
         return $this;
     }
@@ -133,7 +104,6 @@ class Session implements SessionInterface
      *
      * @return  object
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function destroySession()
     {

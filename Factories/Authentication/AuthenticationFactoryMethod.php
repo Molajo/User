@@ -12,7 +12,7 @@ use Exception;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 use stdClass;
 
 /**
@@ -48,13 +48,15 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function setDependencies(array $reflection = null)
+    public function setDependencies(array $reflection = array())
     {
-        parent::setDependencies($reflection);
+        parent::setDependencies(array());
 
-        $options                           = array();
-        $this->dependencies['Runtimedata'] = $options;
-        $this->dependencies['Userdata']    = $options;
+        $options                            = array();
+        $this->dependencies['Runtimedata']  = $options;
+        $this->dependencies['Mailer']       = $options;
+        $this->dependencies['Encrypt']      = $options;
+        $this->dependencies['Fieldhandler'] = $options;
 
         return $this->dependencies;
     }
@@ -88,11 +90,11 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
         $class = $this->product_namespace;
 
         $this->product_result = new $class(
-            $this->dependencies['Userdata'],
-            $this->dependencies['Session'],
-            $this->dependencies['Cookie'],
+            $this->options['Userdata'],
+            $this->options['Session'],
+            $this->options['Cookie'],
             $this->dependencies['Mailer'],
-            $this->dependencies['Messages'],
+            $this->options['Messages'],
             $this->dependencies['Encrypt'],
             $this->dependencies['Fieldhandler'],
             $this->dependencies['Configuration'],
@@ -119,97 +121,56 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
 
         switch ($action) {
 
-            case 'isGuest':
-
-                try {
-                    $results = $this->product_result->$action($this->options['session_id']);
-
-                } catch (Exception $e) {
-                    throw new RuntimeException
-                    ('User Authentication Factory Method isGuest Failed. Exception: ' . $e->getMessage());
-                }
-                break;
-
             case 'login':
+echo 'yes';
+die;
+                $results = $this->product_result->$action(
+                    $this->options['session_id'],
+                    $this->options['username'],
+                    $this->options['password'],
+                    $this->options['remember']
+                );
 
-                try {
-
-                    $results = $this->product_result->$action(
-                        $this->options['session_id'],
-                        $this->options['username'],
-                        $this->options['password'],
-                        $this->options['remember']
-                    );
-
-                } catch (Exception $e) {
-
-                    throw new RuntimeException
-                    ('User Authentication Factory Method login Failed. Exception: ' . $e->getMessage());
-                }
                 break;
 
             case 'isLoggedOn':
 
-                try {
+                $results = $this->product_result->$action(
+                    $this->options['session_id'],
+                    $this->options['username']
+                );
 
-                    $results = $this->product_result->$action(
-                        $this->options['session_id'],
-                        $this->options['username']
-                    );
-                } catch (Exception $e) {
-
-                    throw new RuntimeException
-                    ('User Authentication Factory Method login Failed. Exception: ' . $e->getMessage());
-                }
                 break;
 
             case 'changePassword':
 
-                try {
+                $results = $this->product_result->$action(
+                    $this->options['session_id'],
+                    $this->options['username'],
+                    $this->options['password'],
+                    $this->options['new_password'],
+                    $this->options['reset_password_code'],
+                    $this->options['remember']
+                );
 
-                    $results = $this->product_result->$action(
-                        $this->options['session_id'],
-                        $this->options['username'],
-                        $this->options['password'],
-                        $this->options['new_password'],
-                        $this->options['reset_password_code'],
-                        $this->options['remember']
-                    );
-                } catch (Exception $e) {
-
-                    throw new RuntimeException
-                    ('User Authentication Factory Method changePassword Failed. Exception: ' . $e->getMessage());
-                }
                 break;
 
             case 'requestPasswordReset':
 
-                try {
+                $results = $this->product_result->$action(
+                    $this->options['session_id'],
+                    $this->options['username']
+                );
 
-                    $results = $this->product_result->$action(
-                        $this->options['session_id'],
-                        $this->options['username']
-                    );
-                } catch (Exception $e) {
-
-                    throw new RuntimeException
-                    ('User Authentication Factory Method requestPasswordReset Failed. Exception: ' . $e->getMessage());
-                }
                 break;
 
             case 'logout':
 
-                try {
+                $results = $this->product_result->$action(
+                    $this->options['session_id'],
+                    $this->options['username']
+                );
 
-                    $results = $this->product_result->$action(
-                        $this->options['session_id'],
-                        $this->options['username']
-                    );
-                } catch (Exception $e) {
-
-                    throw new RuntimeException
-                    ('User Authentication Factory Method logout Failed. Exception: ' . $e->getMessage());
-                }
                 break;
 
             /**
@@ -221,8 +182,9 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
              * break;
              */
             default:
-                throw new RuntimeException
-                ('User Authentication Factory Method: Invalid action: ' . $action);
+                //'isGuest':
+                $results = $this->product_result->$action($this->options['session_id']);
+                break;
         }
 
         if (is_object($results)) {

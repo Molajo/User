@@ -8,10 +8,10 @@
  */
 namespace Molajo\User;
 
-use Exception;
+use CommonApi\Exception\RuntimeException;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\MessagesInterface;
-use CommonApi\User\EncryptException;
+use Exception;
 
 /**
  * Encryption
@@ -32,36 +32,20 @@ class Encrypt implements EncryptInterface
     protected $messages;
 
     /**
-     * Library Include
+     * Length of String
      *
      * @var    string
      * @since  1.0
      */
-    protected $library_include = 'PasswordLib.phar';
+    protected $length;
 
     /**
-     * Password Encryption
+     * Length of String
      *
      * @var    string
      * @since  1.0
      */
-    protected $password_encryption_namespace = 'PasswordLib\\PasswordLib';
-
-    /**
-     * Random String
-     *
-     * @var    string
-     * @since  1.0
-     */
-    protected $string_generator_namespace = 'PasswordLib\\Random\\Factory';
-
-    /**
-     * Default Exception
-     *
-     * @var    string
-     * @since  1.0
-     */
-    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
+    protected $characters;
 
     /**
      * Construct
@@ -70,17 +54,23 @@ class Encrypt implements EncryptInterface
      * @param   null              $default_exception
      *
      * @since   1.0
-     * @throws  EncryptException
+     * @throws  RuntimeException
      */
     public function __construct(
         MessagesInterface $messages,
-        $default_exception = null
+        $length = 15,
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     ) {
         $this->messages = $messages;
 
-        if ($default_exception === null) {
+        if ((int)$length < 5) {
         } else {
-            $this->default_exception = $default_exception;
+            $this->length = (int)$length;
+        }
+
+        if ($characters === null || trim($characters) == '') {
+        } else {
+            $this->characters = $characters;
         }
     }
 
@@ -93,27 +83,25 @@ class Encrypt implements EncryptInterface
      *
      * @return  string
      * @since   1.0
-     * @throws  \CommonApi\User\EncryptException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function createHashString($input)
     {
         $hash = false;
 
         if ($input === false || $input === null || trim($input) == '') {
-            $this->messages->throwException(3020, array(), $this->default_exception);
+            $this->messages->throwException(3020, array(), 'CommonApi\Exception\RuntimeException');
         }
 
         try {
-            $class = $this->password_encryption_namespace;
-//            $lib   = new $class();
-//            $hash  = $lib->createPasswordHash($input);
+            $hash = password_hash($input, PASSWORD_BCRYPT);
 
         } catch (Exception $e) {
-//            $this->messages->throwException(3025, array(), $this->default_exception);
+            $this->messages->throwException(3025, array(), 'CommonApi\Exception\RuntimeException');
         }
-        $hash = $input;
+
         if ($hash === false || $hash === null || trim($hash) == '') {
-            $this->messages->throwException(3030, array(), $this->default_exception);
+            $this->messages->throwException(3030, array(), 'CommonApi\Exception\RuntimeException');
         }
 
         return $hash;
@@ -129,71 +117,61 @@ class Encrypt implements EncryptInterface
      *
      * @return  boolean
      * @since   1.0
-     * @throws  \CommonApi\User\EncryptException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function verifyHashString($input, $hash)
     {
         $response = 0;
 
         if ($input === false || $input === null || trim($input) == '') {
-            $this->messages->throwException(3035, array(), $this->default_exception);
+            $this->messages->throwException(3035, array(), 'CommonApi\Exception\RuntimeException');
         }
 
         if ($hash === false || $hash === null || trim($hash) == '') {
-            $this->messages->throwException(3040, array(), $this->default_exception);
+            $this->messages->throwException(3040, array(), 'CommonApi\Exception\RuntimeException');
         }
 
         try {
-            $class = $this->password_encryption_namespace;
-            // $lib      = new $class();
-
-            // $response = $lib->verifyPasswordHash($input, $hash);
+            $response = password_verify($input, $hash);
 
         } catch (Exception $e) {
-//            $this->messages->throwException(3045, array(), $this->default_exception);
-            $response = 1;
+            $this->messages->throwException(3045, array(), 'CommonApi\Exception\RuntimeException');
         }
-        $response = 0;
+
         if ($response === 0 || $response === 1) {
-            $this->messages->throwException(3050, array(), $this->default_exception);
+            $this->messages->throwException(3050, array(), 'CommonApi\Exception\RuntimeException');
         }
 
         return $response;
     }
 
     /**
-     * Creates random string using base64 characters (a-zA-Z0-9./) for generating tokens
+     * Generate a Random String of an optional specified length
      *
-     * @param   int $length
+     * @param   null|int    $length
+     * @param   null|string $characters
      *
-     * @return  boolean
+     * @return  string
      * @since   1.0
-     * @throws  EncryptException
      */
-    public function getRandomToken($length = 64)
+    public function generateString($length = null, $characters = null)
     {
-        $token = false;
-
-        if ((int)$length < 16) {
-            $length = 16;
-        }
-        if ((int)$length > 250) {
-            $length = 250;
+        if ((int)$length < 5) {
+        } else {
+            $this->length = (int)$length;
         }
 
-        try {
-            //    $class = $this->password_encryption_namespace;
-            //    $lib   = new $class();
-            //    $token = $lib->getRandomToken((int)$length);
-            $token = 1;
-        } catch (Exception $e) {
-            $this->messages->throwException(3055, array(), $this->default_exception);
+        if ($characters === null) {
+        } else {
+            $this->characters = $characters;
         }
 
-        if ($token === false || $token === null || trim($token) == '') {
-            $this->messages->throwException(3060, array(), $this->default_exception);
+        $random_string = '';
+
+        for ($i = 0; $i < $this->length; $i++) {
+            $random_string .= $this->characters[rand(0, strlen($this->characters) - 1)];
         }
 
-        return $token;
+        return $random_string;
     }
 }

@@ -109,9 +109,9 @@ class Facade implements UserInterface
      * @return  object
      * @since   1.0
      */
-    public function getUserData()
+    public function getUserdata()
     {
-        return $this->userdata->getUserData();
+        return $this->userdata->getUserdata();
     }
 
     /**
@@ -122,9 +122,9 @@ class Facade implements UserInterface
      * @return  object
      * @since   1.0
      */
-    public function insertUserData(array $data = array())
+    public function insertUserdata(array $data = array())
     {
-        return $this->userdata->insertUserData($data);
+        return $this->userdata->insertUserdata($data);
     }
 
     /**
@@ -135,9 +135,9 @@ class Facade implements UserInterface
      * @return  object
      * @since   1.0
      */
-    public function updateUserData(array $updates = array())
+    public function updateUserdata(array $updates = array())
     {
-        return $this->userdata->updateUserData($updates);
+        return $this->userdata->updateUserdata($updates);
     }
 
     /**
@@ -146,9 +146,9 @@ class Facade implements UserInterface
      * @return  $this
      * @since   1.0
      */
-    public function deleteUserData()
+    public function deleteUserdata()
     {
-        return $this->userdata->deleteUserData();
+        return $this->userdata->deleteUserdata();
     }
 
     /**
@@ -199,9 +199,9 @@ class Facade implements UserInterface
      * @return  array
      * @since   1.0
      */
-    public function getFlashMessage($type = null)
+    public function getFlashmessage($type = null)
     {
-        return $this->flashmessage->getFlashMessage($type);
+        return $this->flashmessage->getFlashmessage($type);
     }
 
     /**
@@ -213,9 +213,9 @@ class Facade implements UserInterface
      * @return  $this
      * @since   1.0
      */
-    public function setFlashMessage($type, $message)
+    public function setFlashmessage($type, $message)
     {
-        return $this->flashmessage->setFlashMessage($type, $message);
+        return $this->flashmessage->setFlashmessage($type, $message);
     }
 
     /**
@@ -226,9 +226,9 @@ class Facade implements UserInterface
      * @return  $this
      * @since   1.0
      */
-    public function deleteFlashMessage($type = null)
+    public function deleteFlashmessage($type = null)
     {
-        return $this->flashmessage->deleteFlashMessage($type);
+        return $this->flashmessage->deleteFlashmessage($type);
     }
 
     /**
@@ -253,8 +253,8 @@ class Facade implements UserInterface
      * @param   int     $minutes
      * @param   string  $path
      * @param   string  $domain
-     * @param   bool    $secure
-     * @param   bool    $http_only
+     * @param   boolean $secure
+     * @param   boolean $http_only
      *
      * @return  $this
      * @since   1.0

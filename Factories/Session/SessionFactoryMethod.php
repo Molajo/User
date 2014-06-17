@@ -10,7 +10,7 @@ namespace Molajo\Factories\Session;
 
 use CommonApi\IoC\FactoryBatchInterface;
 use CommonApi\IoC\FactoryInterface;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
  * Session Factory Method
@@ -36,5 +36,19 @@ class SessionFactoryMethod extends FactoryMethodBase implements FactoryInterface
         $options['product_namespace']        = 'Molajo\\User\\Session';
 
         parent::__construct($options);
+    }
+
+
+    /**
+     * Process Authenticate: isGuest, login, isLoggedOn, changePassword,
+     *   requestPasswordReset, logout, register, confirmRegistration
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function onAfterInstantiation()
+    {
+        $this->product_result->startSession();
     }
 }

@@ -105,7 +105,7 @@ class Cookie implements CookieInterface
      * @param   null   $path
      * @param   null   $domain
      * @param   int    $secure
-     * @param   bool   $http_only
+     * @param   boolean $http_only
      *
      * @since   1.0
      */
@@ -176,8 +176,8 @@ class Cookie implements CookieInterface
      * @param   int     $minutes
      * @param   string  $path
      * @param   string  $domain
-     * @param   bool    $secure
-     * @param   bool    $http_only
+     * @param   boolean $secure
+     * @param   boolean $http_only
      *
      * @return  $this
      * @since   1.0

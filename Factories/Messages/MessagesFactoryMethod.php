@@ -11,7 +11,7 @@ namespace Molajo\Factories\Messages;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
  * User Messages Factory Method
@@ -46,7 +46,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function setDependencies(array $reflection = null)
+    public function setDependencies(array $reflection = array())
     {
         parent::setDependencies($reflection);
 
@@ -88,6 +88,8 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
             $this->dependencies['messages'],
             $this->dependencies['messages_exception']
         );
+
+        return $this;
     }
 
     /**
@@ -159,7 +161,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
             4100 => 'System error: Redirect Service Set: unknown key: {key}.',
             4200 => 'System error: Redirect: No Url provided for Redirect.',
             4300 => 'System error: Redirect: Invalid URL {url} for Redirect.',
-            4400 => 'System error: Session: Invalid type {type] for setFlashMessage.',
+            4400 => 'System error: Session: Invalid type {type] for setFlashmessage.',
             5000 => 'System error: Messages - Unknown Message ID: {message} requested in getMessage.',
             5010 => 'System error: Class get Method requesting unknown key: {key}.',
             5015 => 'System error: Class set Method requesting unknown key: {key}.',

@@ -12,7 +12,7 @@ use stdClass; // this is needed by required files in getTemplates() method below
 use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
  * User Template Factory Method

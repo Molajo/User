@@ -8,10 +8,9 @@
  */
 namespace Molajo\Factories\User;
 
-use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryBatchInterface;
 use CommonApi\IoC\FactoryInterface;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
  * User Factory Method
@@ -91,7 +90,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
     public function __construct(array $options = array())
     {
         $options['product_name']      = basename(__DIR__);
-        $options['product_namespace'] = 'Molajo\\User\\Facade';
+        $options['product_namespace'] = null;
 
         parent::__construct($options);
     }
@@ -103,11 +102,11 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function setDependencies(array $reflection = null)
+    public function setDependencies(array $reflection = array())
     {
         // Intentionally not instantiating the class in this service provider
         // Will be created in Instantiateuser
-        parent::setDependencies(null);
+        parent::setDependencies(array());
 
         $this->dependencies                 = array();
         $options                            = array();
@@ -117,6 +116,10 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
         $this->dependencies['Flashmessage'] = $options;
         $this->dependencies['Runtimedata']  = $options;
         $this->dependencies['Resource']     = $options;
+        $this->dependencies['Database']     = $options;
+        $this->dependencies['Query']        = $options;
+        $this->dependencies['Messages']     = $options;
+        $this->dependencies['Mailer']       = $options;
 
         return $this->dependencies;
     }
@@ -145,7 +148,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
         }
 
         // TEST DATA BEGIN
-        $this->dependencies['Flashmessage']->deleteFlashMessage();
+        $this->dependencies['Flashmessage']->deleteFlashmessage();
         $this->dependencies['Session']->setSession(session_id(), 'admin');
         $this->dependencies['Session']->setSession('session_id', session_id());
         $this->dependencies['Session']->setSession('admin', '12345');
@@ -162,18 +165,6 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
         $this->options['action']       = 'login';
 
         return $this;
-    }
-
-    /**
-     * Factory Method Controller triggers the Factory Method to create the Class for the Service
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    public function instantiateClass()
-    {
-        $this->product_result = null;
     }
 
     /**
@@ -204,7 +195,8 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
             $this->options['return']                         = '';
             $this->options['reset_password_code']            = '';
             $this->options['registration_confirmation_code'] = '';
-            $this->options['username']                       = $this->dependencies['Session']->getSession($session_id);
+            $this->options['username']
+                = $this->dependencies['Session']->getSession($session_id);
             if ($this->options['username'] == false) {
                 $this->options['action']   = 'isGuest';
                 $this->options['username'] = '';
@@ -222,11 +214,22 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      */
     public function scheduleFactories()
     {
+        $x = $this->options;
+        unset($x['ioc_id']);
+        unset($x['factory_method_namespace']);
+        unset($x['product_namespace']);
+
         $options = array();
-        foreach ($this->options as $key => $value) {
+        foreach ($x as $key => $value) {
+                $options[$key] = $value;
+        }
+
+        foreach ($this->dependencies as $key => $value) {
             $options[$key] = $value;
         }
+
         $options['registration_actions']            = $this->registration_actions;
+
         $this->schedule_factory_methods['Userdata'] = $options;
 
         return $this->schedule_factory_methods;

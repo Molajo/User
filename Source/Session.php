@@ -30,35 +30,18 @@ class Session implements SessionInterface
     protected $session_exception = 'Molajo\\User\Exception\\RuntimeException';
 
     /**
-     * Constructor
-     *
-     * @param  null $session_exception
-     *
-     * @since  1.0
-     */
-    public function __construct(
-        $session_exception = null
-    ) {
-        if ($session_exception === null) {
-        } else {
-            $this->session_exception = $session_exception;
-        }
-
-        $this->startSession();
-    }
-
-    /**
      * Start the Session
      *
      * @return  bool
      * @since   1.0
      */
-    protected function startSession()
+    public function startSession()
     {
         if (session_id()) {
-        } else {
-            session_start();
+            $this->destroySession();
         }
+
+        session_start();
 
         return session_id();
     }

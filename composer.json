@@ -24,6 +24,7 @@
         "php": ">=5.4",
         "commonapi/email": "dev-master",
         "commonapi/user": "dev-master",
+        "ircmaxell/password-compat": "dev-master",
         "molajo/query": "dev-master"
     },
     "suggest": {

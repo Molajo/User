@@ -12,7 +12,7 @@ use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryBatchInterface;
 use CommonApi\IoC\FactoryInterface;
 use Exception;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
  * User Data Services
@@ -35,7 +35,7 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     {
         $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['product_namespace']        = 'Molajo\\User\\UserData';
+        $options['product_namespace']        = 'Molajo\\User\\Userdata';
 
         parent::__construct($options);
     }
@@ -47,14 +47,11 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function setDependencies(array $reflection = null)
+    public function setDependencies(array $reflection = array())
     {
-        parent::setDependencies(null);
+        parent::setDependencies(array());
 
-        $options                        = array();
-        $this->dependencies['Database'] = $options;
-        $this->dependencies['Resource'] = $options;
-        $this->dependencies['Query2']    = $options;
+        $this->dependencies = array();
 
         return $this->dependencies;
     }
@@ -70,10 +67,10 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['model_registry']    =
-            $this->dependencies['Resource']->get('xml:///Molajo//Model//Datasource//User.xml');
+        $this->options['model_registry']
+            = $this->options['Resource']->get('xml:///Molajo//Model//Datasource//User.xml');
 
-        $xml = $this->dependencies['model_registry']['children'];
+        $xml = $this->options['model_registry']['children'];
 
         $children = array();
         if (is_array($xml) && count($xml) > 0) {
@@ -81,11 +78,11 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
                 $name                 = (string)$child['name'];
                 $name                 = ucfirst(strtolower($name));
                 $child_model_registry = 'xml:///Molajo//Model//Datasource//' . $name . '.xml';
-                $children[$name]      = $this->dependencies['Resource']->get($child_model_registry);
+                $children[$name]      = $this->options['Resource']->get($child_model_registry);
             }
         }
 
-        $this->dependencies['child_model_registries'] = $children;
+        $this->options['child_model_registries'] = $children;
 
         return $this->dependencies;
     }
@@ -104,17 +101,20 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
 
         try {
             $this->product_result = new $class (
-                $this->dependencies['Database'],
-                $this->dependencies['Query2'],
-                $this->dependencies['model_registry'],
-                $this->dependencies['child_model_registries']
+                $this->options['Database'],
+                $this->options['Query'],
+                $this->options['model_registry'],
+                $this->options['child_model_registries']
             );
         } catch (Exception $e) {
             throw new RuntimeException
-            ('Molajito: Could not instantiate Driver Class: ' . $class);
+            (
+                'Molajito: Could not instantiate Driver Class: ' . $class
+            );
         }
-    }
 
+        return $this;
+    }
 
     /**
      * Process Authenticate: isGuest, login, isLoggedOn, changePassword,
@@ -144,6 +144,8 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
 
         $this->product_result->load($value, $key);
 
+        $this->options['Userdata'] = $this->product_result;
+
         return $this;
     }
 
@@ -155,8 +157,13 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      */
     public function scheduleFactories()
     {
+        $x = $this->options;
+        unset($x['ioc_id']);
+        unset($x['factory_method_namespace']);
+        unset($x['product_namespace']);
+
         $options = array();
-        foreach ($this->options as $key => $value) {
+        foreach ($x as $key => $value) {
             $options[$key] = $value;
         }
 

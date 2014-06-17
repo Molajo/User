@@ -22,7 +22,7 @@ use CommonApi\User\FlashMessageInterface;
 class Messages implements MessagesInterface
 {
     /**
-     * FlashMessage Instance
+     * Flashmessage Instance
      *
      * @var    object  CommonApi\User\FlashMessageInterface
      * @since  1.0
@@ -114,7 +114,7 @@ class Messages implements MessagesInterface
     }
 
     /**
-     * Store Flash (User) Messages in FlashMessage for presentation after redirect
+     * Store Flash (User) Messages in Flashmessage for presentation after redirect
      *
      * @param   int    $message_id
      * @param   array  $values
@@ -123,11 +123,11 @@ class Messages implements MessagesInterface
      * @return  null
      * @since   1.0
      */
-    public function setFlashMessage($message_id, array $values = array(), $type = 'Error')
+    public function setFlashmessage($message_id, array $values = array(), $type = 'Error')
     {
         $message = $this->formatMessage($message_id, $values);
 
-        $this->flashmessage->setFlashMessage($type, $message);
+        $this->flashmessage->setFlashmessage($type, $message);
 
         return $this;
     }

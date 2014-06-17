@@ -23,7 +23,7 @@ use CommonApi\User\UserDataInterface;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class UserData implements UserDataInterface
+class Userdata implements UserDataInterface
 {
     /**
      * User Group Constants
@@ -177,7 +177,7 @@ class UserData implements UserDataInterface
      * @return  object
      * @since   1.0
      */
-    public function getUserData()
+    public function getUserdata()
     {
         return $this->user;
     }
@@ -190,7 +190,7 @@ class UserData implements UserDataInterface
      * @return  object
      * @since   1.0
      */
-    public function insertUserData(array $data = array())
+    public function insertUserdata(array $data = array())
     {
         return $this->user;
     }
@@ -203,7 +203,7 @@ class UserData implements UserDataInterface
      * @return  object
      * @since   1.0
      */
-    public function updateUserData(array $updates = array())
+    public function updateUserdata(array $updates = array())
     {
         if (is_array($updates) && count($updates) > 0) {
         } else {
@@ -222,13 +222,13 @@ class UserData implements UserDataInterface
                 if (count($temp) == 2) {
                 } else {
                     throw new RuntimeException
-                    ('UserData-updateUserData Method: Illegal Value for $table_column: ' . $table_column);
+                    ('Userdata-updateUserdata Method: Illegal Value for $table_column: ' . $table_column);
                 }
 
                 if (trim($table) == '' || $table == strtolower($temp[0])) {
                 } else {
                     throw new RuntimeException
-                    ('UserData-updateUserData Method: Attempting to update multiple tables simultaneously'
+                    ('Userdata-updateUserdata Method: Attempting to update multiple tables simultaneously'
                     . ' Previous table: ' . $table
                     . ' Different table value: ' . strtolower($temp[0]));
                 }
@@ -259,7 +259,7 @@ class UserData implements UserDataInterface
 
         } catch (Exception $e) {
             throw new RuntimeException
-            ('UserData::updateUserData Failed: ' . $e->getMessage());
+            ('Userdata::updateUserdata Failed: ' . $e->getMessage());
         }
 
         return $this->user;
@@ -284,7 +284,7 @@ class UserData implements UserDataInterface
         // need child objects
 
         throw new RuntimeException
-        ('UserData-getDatatype Method: Unidentified User Table: ' . $table);
+        ('Userdata-getDatatype Method: Unidentified User Table: ' . $table);
     }
 
     /**
@@ -301,7 +301,7 @@ class UserData implements UserDataInterface
         if (count($this->model_registry['fields']) > 0) {
         } else {
             throw new RuntimeException
-            ('UserData-getDatatypeStandard Method: Empty model_registry for Standard Fields.');
+            ('Userdata-getDatatypeStandard Method: Empty model_registry for Standard Fields.');
         }
 
         foreach ($this->model_registry['fields'] as $field) {
@@ -312,7 +312,7 @@ class UserData implements UserDataInterface
         }
 
         throw new RuntimeException
-        ('UserData-getDatatypeStandard Method: Standard Field does not exist: ' . $column);
+        ('Userdata-getDatatypeStandard Method: Standard Field does not exist: ' . $column);
     }
 
     /**
@@ -328,7 +328,7 @@ class UserData implements UserDataInterface
     protected function getDatatypeChild($table, $column)
     {
         throw new RuntimeException
-        ('UserData-getDatatypeChild Method: Child does not exist. Table: ' . $table . ' Column: ' . $column);
+        ('Userdata-getDatatypeChild Method: Child does not exist. Table: ' . $table . ' Column: ' . $column);
     }
 
     /**
@@ -338,7 +338,7 @@ class UserData implements UserDataInterface
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function deleteUserData()
+    public function deleteUserdata()
     {
         try {
 
@@ -352,7 +352,7 @@ class UserData implements UserDataInterface
 
         } catch (Exception $e) {
             throw new RuntimeException
-            ('UserData::deleteUserData Failed: ' . $e->getMessage());
+            ('Userdata::deleteUserdata Failed: ' . $e->getMessage());
         }
 
         return $this;
@@ -389,7 +389,7 @@ class UserData implements UserDataInterface
 
         } catch (Exception $e) {
             throw new RuntimeException
-            ('UserData::getUser Failed: ' . $e->getMessage());
+            ('Userdata::getUser Failed: ' . $e->getMessage());
         }
 
         return $data;
@@ -457,7 +457,7 @@ class UserData implements UserDataInterface
         $count  = 0;
         $fields = $model_registry['fields'];
 
-        if (is_array($fields) && count($fields) > 0) {
+        if (count($fields) > 0) {
             foreach ($fields as $field) {
                 if ($field['name'] == $join) {
                 } else {
@@ -537,7 +537,7 @@ class UserData implements UserDataInterface
     {
         $typeObject = new stdClass();
 
-        if (is_array($fields) && count($fields) > 0) {
+        if (count($fields) > 0) {
 
             foreach ($fields as $field) {
                 $name              = $field['name'];

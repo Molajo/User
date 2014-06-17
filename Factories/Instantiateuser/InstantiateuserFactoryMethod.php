@@ -11,7 +11,7 @@ namespace Molajo\Factories\Instantiateuser;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
  * Instantiate User Factory Method
@@ -45,7 +45,7 @@ class InstantiateuserFactoryMethod extends FactoryMethodBase implements FactoryI
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function setDependencies(array $reflection = null)
+    public function setDependencies(array $reflection = array())
     {
         parent::setDependencies($reflection);
 
@@ -62,7 +62,7 @@ class InstantiateuserFactoryMethod extends FactoryMethodBase implements FactoryI
      */
     public function setContainerEntries()
     {
-        $this->dependencies['Runtimedata']->user = $this->sortObject($this->product_result->getUserData());
+        $this->dependencies['Runtimedata']->user = $this->sortObject($this->product_result->getUserdata());
 
         $this->set_container_entries['Runtimedata']           = $this->dependencies['Runtimedata'];
         $this->set_container_entries['Molajo\Factories\User'] = $this->product_result;

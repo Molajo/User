@@ -8,10 +8,9 @@
  */
 namespace Molajo\Factories\Encrypt;
 
-use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
  * User Encrypt Factory Method
@@ -40,18 +39,34 @@ class EncryptFactoryMethod extends FactoryMethodBase implements FactoryInterface
     }
 
     /**
-     * Set Dependencies for Instantiation
+     * Instantiate a new handler and inject it into the Adapter for the FactoryInterface
      *
      * @return  array
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function onBeforeInstantiation(array $dependency_values = null)
+    public function setDependencies(array $reflection = array())
     {
-        parent::onBeforeInstantiation($dependency_values);
+        parent::setDependencies(array());
 
-        $this->dependencies['encrypt_exception'] = 'CommonApi\\Exception\\RuntimeException';
+        $this->dependencies['Messages'] = array();
 
-        return $this;
+        return $this->dependencies;
+    }
+
+    /**
+     * Factory Method Controller triggers the Factory Method to create the Class for the Service
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function instantiateClass()
+    {
+        $class = $this->product_namespace;
+
+        $this->product_result = new $class(
+            $session = $this->dependencies['Messages']
+        );
     }
 }

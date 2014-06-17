@@ -19,7 +19,7 @@ use CommonApi\User\SessionInterface;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class FlashMessage implements FlashMessageInterface
+class Flashmessage implements FlashMessageInterface
 {
     /**
      * Session Instance
@@ -69,24 +69,6 @@ class FlashMessage implements FlashMessageInterface
         } else {
             $this->flash_message_exception = $flash_message_exception;
         }
-
-        $this->startSession();
-    }
-
-    /**
-     * Start the Session
-     *
-     * @return  bool
-     * @since   1.0
-     */
-    protected function startSession()
-    {
-        if (session_id()) {
-        } else {
-            session_start();
-        }
-
-        return session_id();
     }
 
     /**
@@ -98,9 +80,10 @@ class FlashMessage implements FlashMessageInterface
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function getFlashMessage($type = null)
+    public function getFlashmessage($type = null)
     {
         $list = array();
+
         if ($type == null) {
             $list = $this->flash_types;
         } else {
@@ -129,13 +112,13 @@ class FlashMessage implements FlashMessageInterface
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function setFlashMessage($type, $message)
+    public function setFlashmessage($type, $message)
     {
         if (in_array($type, $this->flash_types)) {
         } else {
             // Cannot use messages instance due to messages instance requiring session
             throw new $this->flash_message_exception
-            ('Invalid Type: ' . $type . ' specified for setFlashMessage.');
+            ('Invalid Type: ' . $type . ' specified for setFlashmessage.');
         }
 
         $type_messages = $this->session->getSession($type);
@@ -163,9 +146,10 @@ class FlashMessage implements FlashMessageInterface
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function deleteFlashMessage($type = null)
+    public function deleteFlashmessage($type = null)
     {
         $list = array();
+
         if ($type == null) {
             $list = $this->flash_types;
         } else {

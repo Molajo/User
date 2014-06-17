@@ -37,23 +37,31 @@ class TextTemplate implements TemplateInterface
      * @var    object  CommonApi\User\MessagesInterface
      * @since  1.0
      */
-    protected $messages_interface;
+    protected $messages;
 
     /**
-     * Input
+     * Templates
      *
      * @var    array
      * @since  1.0
      */
-    protected $userdata = array();
+    protected $templates = array();
+
+    /**
+     * Data
+     *
+     * @var    array
+     * @since  1.0
+     */
+    protected $data = array();
 
     /**
      * Rendered Output
      *
-     * @var    object
+     * @var    string
      * @since  1.0
      */
-    protected $rendered_tag;
+    protected $rendered_output = null;
 
     /**
      * Tokens
@@ -64,27 +72,20 @@ class TextTemplate implements TemplateInterface
     protected $tokens;
 
     /**
-     * Templates
-     *
-     * @var    object
-     * @since  1.0
-     */
-    protected $templates = array();
-
-    /**
      * List of Properties
      *
-     * @var    object
+     * @var    array
      * @since  1.0
      */
-    protected $property_array = array(
-        'fieldhandler',
-        'messages',
-        'data',
-        'rendered_output',
-        'tokens',
-        'templates'
-    );
+    protected $property_array
+        = array(
+            'fieldhandler',
+            'messages',
+            'templates',
+            'data',
+            'rendered_output',
+            'tokens'
+        );
 
     /**
      * Construct
@@ -174,35 +175,57 @@ class TextTemplate implements TemplateInterface
         $this->rendered_output = '';
         $rendered              = new stdClass();
 
-        /** Body */
-        if (isset($this->templates[$type])) {
-            $this->rendered_output = $this->templates[$type]->body;
-        } else {
-            if (isset($this->data['body'])) {
-                $this->rendered_output = $data['body'];
-            }
-        }
-
-        $this->renderLoop();
-
-        $rendered->body = $this->fieldhandler
-            ->filter($type . ' Body', $this->rendered_output, 'Fullspecialchars');
-
-        /** Head */
-        if (isset($this->templates[$type])) {
-            $this->rendered_output = $this->templates[$type]->subject;
-        } else {
-            if (isset($this->data['subject'])) {
-                $this->rendered_output = $data['subject'];
-            }
-        }
-
-        $this->renderLoop();
-
-        $rendered->subject = $this->fieldhandler
-            ->filter($type . ' Body', $this->rendered_output, 'Fullspecialchars');
+        $rendered = $this->renderSection($rendered, $type, $data, 'Body');
+        $rendered = $this->renderSection($rendered, $type, $data, 'Head');
 
         return $rendered;
+    }
+
+    /**
+     * Render the Head or Body Sections
+     *
+     * @param   string   $rendered
+     * @param   string   $type
+     * @param   stdClass $data
+     * @param   string   $key
+     *
+     * @return  stdClass
+     * @since   1.0
+     */
+    public function renderSection($rendered, $type, $data, $key)
+    {
+        $this->renderTemplateType($data, $type, $key);
+
+        $this->renderLoop();
+
+        $rendered->$key = $this->fieldhandler
+            ->filter($type . ' ' . $key, $this->rendered_output, 'Fullspecialchars');
+
+        return $rendered;
+    }
+
+    /**
+     * Render Template Type
+     *
+     * @param   stdClass $data
+     * @param   string   $type
+     * @param   string   $key
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function renderTemplateType(stdClass $data, $type, $key = 'subject')
+    {
+        if (isset($this->templates[$type])) {
+            $this->rendered_output = $this->templates[$type]->$key;
+
+        } else {
+            if (isset($this->data['$key'])) {
+                $this->rendered_output = $data['$key'];
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -218,20 +241,13 @@ class TextTemplate implements TemplateInterface
 
         while ($complete === false) {
 
-            $loop ++;
-
             $this->parseTokens();
-
-            if (count($this->tokens) == 0) {
-                break;
-            }
 
             $this->replaceTokens();
 
-            if ($loop > 100) {
+            if ($loop++ > 100) {
                 break;
             }
-            continue;
         }
 
         return $this;
@@ -246,6 +262,7 @@ class TextTemplate implements TemplateInterface
     protected function parseTokens()
     {
         $this->tokens = array();
+
         preg_match_all('#{(.*)}#iU', $this->rendered_output, $this->tokens);
 
         return $this;
@@ -259,24 +276,54 @@ class TextTemplate implements TemplateInterface
      */
     protected function replaceTokens()
     {
-        $get_rid_of_array = array();
-
-        foreach ($this->tokens[0] as $get_rid_of_item) {
-            $get_rid_of_array[] = $get_rid_of_item;
+        if (count($this->tokens) == 0) {
+            return $this;
         }
 
-        $replace_with_array = array();
+        $replace_this = $this->setReplaceThisTokens();
 
-        foreach ($this->tokens[1] as $use_as_field_name) {
-            if (isset($this->data->$use_as_field_name)) {
-                $replace_with_array[] = $this->data->$use_as_field_name;
+        $replace_with = $this->setReplaceWithValues();
+
+        $this->rendered_output = str_replace($replace_this, $replace_with, $this->rendered_output);
+
+        return $this;
+    }
+
+    /**
+     * Set Tokens to use for search and replacement
+     *
+     * @return  array
+     * @since   1.0
+     */
+    protected function setReplaceThisTokens()
+    {
+        $replace_this = array();
+
+        foreach ($this->tokens[0] as $token) {
+            $replace_this[] = $token;
+        }
+
+        return $replace_this;
+    }
+
+    /**
+     * Set Replace With Values
+     *
+     * @return  array
+     * @since   1.0
+     */
+    protected function setReplaceWithValues()
+    {
+        $replace_with = array();
+
+        foreach ($this->tokens[1] as $token) {
+            if (isset($this->data->$token)) {
+                $replace_with[] = $this->data->$token;
             } else {
-                $replace_with_array[] = '';
+                $replace_with[] = '';
             }
         }
 
-        $this->rendered_output = str_replace($get_rid_of_array, $replace_with_array, $this->rendered_output);
-
-        return $this;
+        return $replace_with;
     }
 }

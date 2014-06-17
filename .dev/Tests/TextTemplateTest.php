@@ -39,9 +39,9 @@ class TextTemplateTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $flashmessage = new MockTextTemplateFlashmessage();
-//        $fieldhandler   = new MockTextTemplateFieldHandler();
+        $fieldhandler   = new MockTextTemplateFieldHandler();
 
-//        $this->text_template = new TextTemplate($flashmessage, $fieldhandler);
+        //$this->text_template = new TextTemplate($flashmessage, $fieldhandler);
 
         return;
     }

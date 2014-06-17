@@ -8,11 +8,10 @@
  */
 namespace Molajo\User;
 
-use CommonApi\Exception\RuntimeException;
 use CommonApi\User\SessionInterface;
 
 /**
- * Session Interface
+ * Session Class
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License

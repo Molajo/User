@@ -88,10 +88,6 @@ class Encrypt implements EncryptInterface
     {
         $hash = false;
 
-        if ($input === false || $input === null || trim($input) == '') {
-            $this->messages->throwException(3020, array(), 'CommonApi\Exception\RuntimeException');
-        }
-
         try {
             $hash = password_hash($input, PASSWORD_BCRYPT);
 
@@ -99,7 +95,7 @@ class Encrypt implements EncryptInterface
             $this->messages->throwException(3025, array(), 'CommonApi\Exception\RuntimeException');
         }
 
-        if ($hash === false || $hash === null || trim($hash) == '') {
+        if ($hash === false) {
             $this->messages->throwException(3030, array(), 'CommonApi\Exception\RuntimeException');
         }
 
@@ -121,14 +117,6 @@ class Encrypt implements EncryptInterface
     public function verifyHashString($input, $hash)
     {
         $response = 0;
-
-        if ($input === false || $input === null || trim($input) == '') {
-            $this->messages->throwException(3035, array(), 'CommonApi\Exception\RuntimeException');
-        }
-
-        if ($hash === false || $hash === null || trim($hash) == '') {
-            $this->messages->throwException(3040, array(), 'CommonApi\Exception\RuntimeException');
-        }
 
         try {
             $response = password_verify($input, $hash);
@@ -165,6 +153,17 @@ class Encrypt implements EncryptInterface
             $this->characters = $characters;
         }
 
+        return $this->generateStringOperation();
+    }
+
+    /**
+     * Generate Random String Operation
+     *
+     * @return  string
+     * @since   1.0
+     */
+    protected function generateStringOperation()
+    {
         $random_string = '';
 
         for ($i = 0; $i < $this->length; $i++) {

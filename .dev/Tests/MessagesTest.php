@@ -114,4 +114,16 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($answer, $flash_message);
     }
+
+    /**
+     * Retrieve requested template in the $options array or load all templates
+     *
+     * @return   array
+     * @since    1.0
+     * @throws   \CommonApi\Exception\RuntimeException
+     */
+    public function getTemplates()
+    {
+        include __DIR__ . '/Files/getTemplates.php';
+    }
 }

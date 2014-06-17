@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1403024228">
-  <project timestamp="1403024228">
+<coverage generated="1403025499">
+  <project timestamp="1403025499">
     <file name="/Users/amystephen/Sites/Molajo/user/.dev/Bootstrap.php">
       <line num="39" type="stmt" count="0"/>
       <line num="40" type="stmt" count="0"/>
@@ -51,6 +51,31 @@
       <line num="14" type="stmt" count="0"/>
       <line num="15" type="stmt" count="0"/>
       <metrics loc="14" ncloc="7" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="5" coveredelements="0"/>
+    </file>
+    <file name="/Users/amystephen/Sites/Molajo/user/.dev/Tests/Files/getTemplates.php">
+      <line num="3" type="stmt" count="0"/>
+      <line num="4" type="stmt" count="0"/>
+      <line num="6" type="stmt" count="0"/>
+      <line num="8" type="stmt" count="0"/>
+      <line num="10" type="stmt" count="0"/>
+      <line num="12" type="stmt" count="0"/>
+      <line num="13" type="stmt" count="0"/>
+      <line num="14" type="stmt" count="0"/>
+      <line num="15" type="stmt" count="0"/>
+      <line num="17" type="stmt" count="0"/>
+      <line num="19" type="stmt" count="0"/>
+      <line num="21" type="stmt" count="0"/>
+      <line num="23" type="stmt" count="0"/>
+      <line num="25" type="stmt" count="0"/>
+      <line num="26" type="stmt" count="0"/>
+      <line num="27" type="stmt" count="0"/>
+      <line num="28" type="stmt" count="0"/>
+      <line num="29" type="stmt" count="0"/>
+      <line num="30" type="stmt" count="0"/>
+      <line num="33" type="stmt" count="0"/>
+      <line num="34" type="stmt" count="0"/>
+      <line num="36" type="stmt" count="0"/>
+      <metrics loc="36" ncloc="34" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="22" coveredstatements="0" elements="22" coveredelements="0"/>
     </file>
     <file name="/Users/amystephen/Sites/Molajo/user/.dev/Tests/Files/jsonRead.php">
       <line num="4" type="stmt" count="0"/>
@@ -298,6 +323,54 @@
         <line num="459" type="stmt" count="0"/>
         <metrics loc="458" ncloc="244" classes="1" methods="18" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="97" coveredstatements="63" elements="115" coveredelements="71"/>
       </file>
+      <file name="/Users/amystephen/Sites/Molajo/user/Source/Encrypt.php">
+        <class name="Encrypt" namespace="Molajo\User" fullPackage="Molajo" package="Molajo">
+          <metrics methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="36" coveredstatements="26" elements="41" coveredelements="31"/>
+        </class>
+        <line num="58" type="method" name="__construct" crap="4.25" count="3"/>
+        <line num="63" type="stmt" count="3"/>
+        <line num="65" type="stmt" count="3"/>
+        <line num="66" type="stmt" count="0"/>
+        <line num="67" type="stmt" count="3"/>
+        <line num="70" type="stmt" count="3"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="3"/>
+        <line num="74" type="stmt" count="3"/>
+        <line num="87" type="method" name="createHashString" crap="3.47" count="1"/>
+        <line num="89" type="stmt" count="1"/>
+        <line num="92" type="stmt" count="1"/>
+        <line num="94" type="stmt" count="1"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="1"/>
+        <line num="99" type="stmt" count="0"/>
+        <line num="100" type="stmt" count="0"/>
+        <line num="102" type="stmt" count="1"/>
+        <line num="117" type="method" name="verifyHashString" crap="4.84" count="1"/>
+        <line num="119" type="stmt" count="1"/>
+        <line num="122" type="stmt" count="1"/>
+        <line num="124" type="stmt" count="1"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="128" type="stmt" count="1"/>
+        <line num="129" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="1"/>
+        <line num="144" type="method" name="generateString" crap="3.21" count="1"/>
+        <line num="146" type="stmt" count="1"/>
+        <line num="147" type="stmt" count="1"/>
+        <line num="148" type="stmt" count="0"/>
+        <line num="151" type="stmt" count="1"/>
+        <line num="152" type="stmt" count="1"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="156" type="stmt" count="1"/>
+        <line num="165" type="method" name="generateStringOperation" crap="2" count="1"/>
+        <line num="167" type="stmt" count="1"/>
+        <line num="169" type="stmt" count="1"/>
+        <line num="170" type="stmt" count="1"/>
+        <line num="171" type="stmt" count="1"/>
+        <line num="173" type="stmt" count="1"/>
+        <line num="176" type="stmt" count="0"/>
+        <metrics loc="175" ncloc="96" classes="1" methods="5" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="36" coveredstatements="26" elements="41" coveredelements="27"/>
+      </file>
       <file name="/Users/amystephen/Sites/Molajo/user/Source/Messages.php">
         <class name="Messages" namespace="Molajo\User" fullPackage="Molajo" package="Molajo">
           <metrics methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="22" elements="38" coveredelements="28"/>
@@ -471,6 +544,10 @@
     <file name="/Users/amystephen/Sites/Molajo/user/vendor/commonapi/user/CookieInterface.php">
       <line num="75" type="stmt" count="0"/>
       <metrics loc="74" ncloc="21" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/Users/amystephen/Sites/Molajo/user/vendor/commonapi/user/EncryptInterface.php">
+      <line num="46" type="stmt" count="0"/>
+      <metrics loc="45" ncloc="9" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/Users/amystephen/Sites/Molajo/user/vendor/commonapi/user/MessagesInterface.php">
       <line num="55" type="stmt" count="0"/>
@@ -827,6 +904,6 @@
       <line num="276" type="stmt" count="0"/>
       <metrics loc="279" ncloc="194" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="140" coveredstatements="0" elements="140" coveredelements="0"/>
     </file>
-    <metrics files="19" loc="2306" ncloc="1357" classes="8" methods="66" coveredmethods="20" conditionals="0" coveredconditionals="0" statements="662" coveredstatements="164" elements="728" coveredelements="184"/>
+    <metrics files="22" loc="2562" ncloc="1496" classes="9" methods="71" coveredmethods="21" conditionals="0" coveredconditionals="0" statements="720" coveredstatements="190" elements="791" coveredelements="211"/>
   </project>
 </coverage>

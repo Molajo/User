@@ -23,7 +23,7 @@ class Session implements SessionInterface
     /**
      * Start the Session
      *
-     * @return  boolean
+     * @return  string
      * @since   1.0
      */
     public function startSession()
@@ -84,7 +84,7 @@ class Session implements SessionInterface
      *
      * @param   string $key
      *
-     * @return  mixed
+     * @return  Session
      * @since   1.0
      */
     public function deleteSession($key)

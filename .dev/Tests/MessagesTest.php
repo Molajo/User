@@ -1,93 +1,115 @@
 <?php
 /**
- * User Messages Factory Method
+ * Test User Messages
+ *
+ * @package    Molajo
+ * @copyright  2014 Amy Stephen. All rights reserved.
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
+ */
+namespace Molajo\Tests;
+
+use Molajo\User\Messages;
+use CommonApi\User\FlashMessageInterface;
+
+require_once __DIR__ . '/Files/jsonRead.php';
+
+/**
+ * Test User Messages
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
- */
-namespace Molajo\Factories\Messages;
-
-use CommonApi\Exception\RuntimeException;
-use CommonApi\IoC\FactoryInterface;
-use CommonApi\IoC\FactoryBatchInterface;
-use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
-
-/**
- * User Messages Factory Method
- *
- * @author     Amy Stephen
- * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
+class MessagesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Constructor
-     *
-     * @param  array $options
-     *
-     * @since  1.0
+     * @var $messages
      */
-    public function __construct(array $options = array())
-    {
-        $options['product_name']             = basename(__DIR__);
-        $options['store_instance_indicator'] = true;
-        $options['product_namespace']        = 'Molajo\\User\\Messages';
+    protected $messages;
 
-        parent::__construct($options);
+    /**
+     * @covers  Molajo\User\Messages::__construct
+     * @covers  Molajo\User\Messages::setMessage
+     * @covers  Molajo\User\Messages::getMessage
+     * @covers  Molajo\User\Messages::setFlashmessage
+     * @covers  Molajo\User\Messages::formatMessage
+     * @covers  Molajo\User\Messages::throwException
+     * @covers  Molajo\User\Messages::initializeMessages
+     */
+    public function setUp()
+    {
+        $flashmessage = new MockMessagesFlashmessage();
+        $messages     = $this->setMessages();
+
+        $this->messages = new Messages($flashmessage, $messages);
+
+        return;
     }
 
     /**
-     * Retrieve a list of Interface dependencies and return the data ot the controller.
-     *
-     * @return  array
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
+     * @covers  Molajo\User\Messages::__construct
+     * @covers  Molajo\User\Messages::setMessage
+     * @covers  Molajo\User\Messages::getMessage
+     * @covers  Molajo\User\Messages::setFlashmessage
+     * @covers  Molajo\User\Messages::formatMessage
+     * @covers  Molajo\User\Messages::throwException
+     * @covers  Molajo\User\Messages::initializeMessages
      */
-    public function setDependencies(array $reflection = array())
+    public function testSetMessage()
     {
-        parent::setDependencies($reflection);
+        $message_id = 111111111111;
+        $message = 'This is a message';
 
-        $this->dependencies['Flashmessage'] = $this->setMessages();
+        $this->messages->setMessage($message_id, $message);
 
-        return $this->dependencies;
+        $this->assertEquals($message, $this->messages->getMessage($message_id));
     }
 
     /**
-     * Set Dependencies for Instantiation
-     *
-     * @return  array
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
+     * @covers  Molajo\User\Messages::__construct
+     * @covers  Molajo\User\Messages::setMessage
+     * @covers  Molajo\User\Messages::getMessage
+     * @covers  Molajo\User\Messages::setFlashmessage
+     * @covers  Molajo\User\Messages::formatMessage
+     * @covers  Molajo\User\Messages::throwException
+     * @covers  Molajo\User\Messages::initializeMessages
      */
-    public function onBeforeInstantiation(array $dependency_values = null)
+    public function testFormatMessage()
     {
-        parent::onBeforeInstantiation($dependency_values);
+        $message_id = 9090909090;
+        $message = 'This is a {name}.';
+        $answer = 'This is a Test.';
 
-        $this->dependencies['messages']           = $this->setMessages();
+        $this->messages->setMessage($message_id, $message);
 
-        return $this->dependencies;
+        $results = $this->messages->getMessage($message_id, array('name' => 'Test'));
+
+        $this->assertEquals($answer, $results);
     }
 
     /**
-     * Factory Method Controller triggers the Factory Method to create the Class for the Service
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
+     * @covers  Molajo\User\Messages::__construct
+     * @covers  Molajo\User\Messages::setMessage
+     * @covers  Molajo\User\Messages::getMessage
+     * @covers  Molajo\User\Messages::setFlashmessage
+     * @covers  Molajo\User\Messages::formatMessage
+     * @covers  Molajo\User\Messages::throwException
+     * @covers  Molajo\User\Messages::initializeMessages
      */
-    public function instantiateClass()
+    public function testSetFlashMessage()
     {
-        $class = $this->product_namespace;
+        $message_id = 9090909090;
+        $message = 'This is a {name}.';
+        $answer = 'Type: Error  Message: This is a Test.';
 
-        $this->product_result = new $class(
-            $this->dependencies['Flashmessage'],
-            $this->dependencies['messages']
-        );
+        $this->messages->setMessage($message_id, $message);
 
-        return $this;
+        $results = $this->messages->setFlashmessage($message_id, array('name' => 'Test'));
+
+        $flash_message = readJsonFile(__DIR__ . '/Files/testMessagesFlashMessage.json');
+
+        $this->assertEquals($answer, $flash_message);
     }
 
     /**
@@ -172,5 +194,26 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
         );
 
         return $messages;
+    }
+}
+
+class MockMessagesFlashmessage implements FlashMessageInterface
+{
+    public function getFlashmessage($type = null)
+    {
+
+    }
+
+    public function setFlashmessage($type, $message)
+    {
+        file_put_contents(
+            __DIR__ . '/Files/testMessagesFlashMessage.json',
+            json_encode('Type: ' . $type . ' ' . ' Message: ' . $message)
+        );
+    }
+
+    public function deleteFlashmessage($type = null)
+    {
+
     }
 }

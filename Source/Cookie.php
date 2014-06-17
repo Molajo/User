@@ -178,7 +178,7 @@ class Cookie implements CookieInterface
      *
      * @param   integer $minutes
      *
-     * @return  integer
+     * @return  double
      * @since   1.0
      */
     protected function setCookieTime($minutes)
@@ -441,8 +441,8 @@ class Cookie implements CookieInterface
     /**
      * Initialize Http Only Setting for Cookies
      *
-     * @param   string $secure
      *
+     * @param boolean $http_only
      * @return  $this
      * @since   1.0
      */

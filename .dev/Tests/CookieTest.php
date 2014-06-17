@@ -9,6 +9,7 @@
 namespace Molajo\Tests;
 
 use Molajo\User\Cookie;
+
 require_once __DIR__ . '/Files/jsonRead.php';
 
 /**

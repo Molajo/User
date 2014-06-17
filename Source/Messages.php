@@ -12,7 +12,7 @@ use CommonApi\User\MessagesInterface;
 use CommonApi\User\FlashMessageInterface;
 
 /**
- * Error Message Class
+ * Message Class
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -39,39 +39,20 @@ class Messages implements MessagesInterface
     protected $messages = array();
 
     /**
-     * Default Messages Exception
-     *
-     * @var    string
-     * @since  1.0
-     */
-    protected $messages_exception = 'CommonApi\\Exception\\RuntimeException';
-
-    /**
      * Construct
      *
      * @param  FlashMessageInterface $flashmessage
      * @param  array                 $messages
-     * @param  null                  $messages_exception
      *
      * @since  1.0
      */
     public function __construct(
         FlashMessageInterface $flashmessage,
-        array $messages = array(),
-        $messages_exception = null)
-    {
+        array $messages = array()
+    ) {
         $this->flashmessage = $flashmessage;
 
-        if (count($messages) > 0) {
-            foreach ($messages as $key => $message) {
-                $this->messages[$key] = $message;
-            }
-        }
-
-        if ($messages_exception === null) {
-        } else {
-            $this->messages_exception = $messages_exception;
-        }
+        $this->initializeMessages($messages);
     }
 
     /**
@@ -91,41 +72,18 @@ class Messages implements MessagesInterface
     }
 
     /**
-     * Get Message
-     *
-     * @param   int $message_id
-     *
-     * @since   1.0
-     * @return  $this
-     */
-    public function getMessage($message_id = 0)
-    {
-        if ((int)$message_id == 0) {
-            return $this->messages;
-        }
-
-        if (isset($this->messages[$message_id])) {
-            return $this->messages[$message_id];
-        }
-
-        $this->throwException(5000, array('message' => $message_id), $this->messages_exception);
-
-        return $this;
-    }
-
-    /**
      * Store Flash (User) Messages in Flashmessage for presentation after redirect
      *
      * @param   int    $message_id
      * @param   array  $values
      * @param   string $type (Success, Notice, Warning, Error)
      *
-     * @return  null
+     * @return  $this
      * @since   1.0
      */
     public function setFlashmessage($message_id, array $values = array(), $type = 'Error')
     {
-        $message = $this->formatMessage($message_id, $values);
+        $message = $this->getMessage($message_id, $values);
 
         $this->flashmessage->setFlashmessage($type, $message);
 
@@ -133,11 +91,53 @@ class Messages implements MessagesInterface
     }
 
     /**
+     * Get Message
+     *
+     * @param   int   $message_id
+     * @param   array $values
+     *
+     * @since   1.0
+     * @return  string
+     */
+    public function getMessage($message_id = 0, array $values = array())
+    {
+        if ((int)$message_id == 0) {
+            return $this->messages;
+        }
+
+        if (isset($this->messages[$message_id])) {
+            return $this->formatMessage($this->messages[$message_id], $values);
+        }
+
+        $this->throwException(5000, array('message' => $message_id), 'CommonApi\\Exception\\RuntimeException');
+    }
+
+    /**
+     * Replace placeholders {key} with values
+     *
+     * @param   string $message
+     * @param   array  $values
+     *
+     * @return  string
+     * @since   1.0
+     */
+    protected function formatMessage($message, array $values = array())
+    {
+        $replace = array();
+
+        foreach ($values as $key => $value) {
+            $replace['{' . $key . '}'] = $value;
+        }
+
+        return (strtr($message, $replace));
+    }
+
+    /**
      * Format Exception Message and throw the Exception
      *
-     * @param   int    $message_id
-     * @param   array  $values
-     * @param   string $exception
+     * @param   int         $message_id
+     * @param   array       $values
+     * @param   null|string $exception
      *
      * @return  $this
      * @since   1.0
@@ -146,11 +146,6 @@ class Messages implements MessagesInterface
     public function throwException($message_id, array $values = array(), $exception = null)
     {
         $message = $this->formatMessage($message_id, $values);
-
-        if ($exception == null) {
-        } else {
-            $this->messages_exception = $exception;
-        }
 
         if (class_exists($exception)) {
             $class = $exception;
@@ -162,24 +157,21 @@ class Messages implements MessagesInterface
     }
 
     /**
-     * Replace placeholders {key} with values
+     * Initialize Messages
      *
-     * @param   int   $message_id
-     * @param   array $values
+     * @param   array $messages
      *
-     * @return  string
+     * @return  $this
      * @since   1.0
      */
-    protected function formatMessage($message_id = 0, $values = array())
+    protected function initializeMessages(array $messages)
     {
-        $replace = array();
-
-        $message = $this->messages[$message_id];
-
-        foreach ($values as $key => $value) {
-            $replace['{' . $key . '}'] = $value;
+        if (count($messages) > 0) {
+            foreach ($messages as $key => $message) {
+                $this->messages[$key] = $message;
+            }
         }
 
-        return (strtr($message, $replace));
+        return $this;
     }
 }

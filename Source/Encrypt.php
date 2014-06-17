@@ -51,7 +51,6 @@ class Encrypt implements EncryptInterface
      * Construct
      *
      * @param   MessagesInterface $messages
-     * @param   null              $default_exception
      *
      * @since   1.0
      * @throws  RuntimeException

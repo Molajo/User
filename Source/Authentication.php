@@ -222,7 +222,7 @@ class Authentication extends Verify implements AuthenticationInterface
      * @param   string $session_id
      * @param   string $username
      *
-     * @return  null|void
+     * @return  stdClass
      * @since   1.0
      */
     public function logout($session_id, $username)

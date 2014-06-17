@@ -12,6 +12,11 @@ function readJsonFile($file_name)
 
     $temp = json_decode($input);
 
+    if (is_object($temp)) {
+    } else {
+        return $temp;
+    }
+
     if (count($temp) > 0) {
         $temp_array = array();
         foreach ($temp as $key => $value) {

@@ -8,7 +8,6 @@
  */
 namespace Molajo\User\Authentication;
 
-use DateTime;
 use Exception;
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\CookieInterface;

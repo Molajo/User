@@ -10,15 +10,7 @@ namespace Molajo\User\Authentication;
 
 use DateTime;
 use Exception;
-use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
-use CommonApi\User\CookieInterface;
-use CommonApi\User\EncryptInterface;
-use CommonApi\User\MailerInterface;
-use CommonApi\User\MessagesInterface;
-use CommonApi\User\SessionInterface;
-use CommonApi\User\UserDataInterface;
-use stdClass;
 
 /**
  * Authentication Verify
@@ -91,7 +83,7 @@ abstract class Verify extends Set implements AuthenticationInterface
      *
      * @param   string $action
      *
-     * @return  int
+     * @return  boolean
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */

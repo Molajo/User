@@ -530,7 +530,7 @@ class Userdata implements UserDataInterface
      * @param   object $data
      * @param   array  $fields
      *
-     * @return  object
+     * @return  stdClass
      * @since   1.0
      */
     protected function loadCustomfields($data, $fields = array())

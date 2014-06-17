@@ -9,9 +9,9 @@
 namespace Molajo\User;
 
 use stdClass;
-use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\MessagesInterface;
 use CommonApi\User\TemplateInterface;
+use CommonApi\Model\FieldhandlerInterface;
 
 /**
  * Text Template Class
@@ -38,14 +38,6 @@ class TextTemplate implements TemplateInterface
      * @since  1.0
      */
     protected $messages_interface;
-
-    /**
-     * Default Exception
-     *
-     * @var    string
-     * @since  1.0
-     */
-    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * Input
@@ -99,7 +91,6 @@ class TextTemplate implements TemplateInterface
      *
      * @param   FieldhandlerInterface $fieldhandler
      * @param   MessagesInterface     $messages
-     * @param   string                $default_exception
      * @param   array                 $templates
      * @param   array                 $data
      *
@@ -108,7 +99,6 @@ class TextTemplate implements TemplateInterface
     public function __construct(
         FieldhandlerInterface $fieldhandler,
         MessagesInterface $messages,
-        $default_exception = null,
         array $templates = array(),
         array $data = array()
     ) {
@@ -116,11 +106,6 @@ class TextTemplate implements TemplateInterface
         $this->messages     = $messages;
         $this->templates    = $templates;
         $this->data         = $data;
-
-        if ($default_exception === null) {
-        } else {
-            $this->default_exception = $default_exception;
-        }
     }
 
     /**
@@ -131,7 +116,7 @@ class TextTemplate implements TemplateInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \CommonApi\User\TemplateException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function get($key, $default = null)
     {
@@ -139,7 +124,7 @@ class TextTemplate implements TemplateInterface
 
         if (in_array($key, $this->property_array)) {
         } else {
-            $this->messages->throwException(6000, array('key' => $key), $this->default_exception);
+            $this->messages->throwException(6000, array('key' => $key), 'CommonApi\Exception\RuntimeException');
         }
 
         if ($this->$key === null) {
@@ -157,7 +142,7 @@ class TextTemplate implements TemplateInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\User\TemplateException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function set($key, $value = null)
     {
@@ -165,7 +150,7 @@ class TextTemplate implements TemplateInterface
 
         if (in_array($key, $this->property_array)) {
         } else {
-            $this->messages->throwException(6010, array('key' => $key), $this->default_exception);
+            $this->messages->throwException(6010, array('key' => $key), 'CommonApi\Exception\RuntimeException');
         }
 
         $this->$key = $value;
@@ -178,7 +163,7 @@ class TextTemplate implements TemplateInterface
      *
      * @param   stdClass $data
      *
-     * @return  string
+     * @return  stdClass
      * @since   1.0
      */
     public function render(stdClass $data)

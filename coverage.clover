@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1403010492">
-  <project timestamp="1403010492">
+<coverage generated="1403017387">
+  <project timestamp="1403017387">
     <file name="/Users/amystephen/Sites/Molajo/user/.dev/Bootstrap.php">
       <line num="39" type="stmt" count="0"/>
       <line num="40" type="stmt" count="0"/>
@@ -44,11 +44,14 @@
       <line num="15" type="stmt" count="0"/>
       <line num="16" type="stmt" count="0"/>
       <line num="17" type="stmt" count="0"/>
-      <line num="18" type="stmt" count="0"/>
-      <line num="19" type="stmt" count="0"/>
       <line num="20" type="stmt" count="0"/>
+      <line num="21" type="stmt" count="0"/>
       <line num="22" type="stmt" count="0"/>
-      <metrics loc="23" ncloc="23" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="0" elements="13" coveredelements="0"/>
+      <line num="23" type="stmt" count="0"/>
+      <line num="24" type="stmt" count="0"/>
+      <line num="25" type="stmt" count="0"/>
+      <line num="27" type="stmt" count="0"/>
+      <metrics loc="28" ncloc="28" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="0" elements="16" coveredelements="0"/>
     </file>
     <package name="Molajo\User">
       <file name="/Users/amystephen/Sites/Molajo/user/Source/Cookie.php">
@@ -173,6 +176,51 @@
         <line num="459" type="stmt" count="0"/>
         <metrics loc="458" ncloc="244" classes="1" methods="18" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="97" coveredstatements="63" elements="115" coveredelements="71"/>
       </file>
+      <file name="/Users/amystephen/Sites/Molajo/user/Source/Messages.php">
+        <class name="Messages" namespace="Molajo\User" fullPackage="Molajo" package="Molajo">
+          <metrics methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="22" elements="38" coveredelements="28"/>
+        </class>
+        <line num="49" type="method" name="__construct" crap="1" count="3"/>
+        <line num="53" type="stmt" count="3"/>
+        <line num="55" type="stmt" count="3"/>
+        <line num="56" type="stmt" count="3"/>
+        <line num="67" type="method" name="setMessage" crap="1" count="3"/>
+        <line num="69" type="stmt" count="3"/>
+        <line num="71" type="stmt" count="3"/>
+        <line num="84" type="method" name="setFlashmessage" crap="1" count="1"/>
+        <line num="86" type="stmt" count="1"/>
+        <line num="88" type="stmt" count="1"/>
+        <line num="90" type="stmt" count="1"/>
+        <line num="102" type="method" name="getMessage" crap="4.12" count="3"/>
+        <line num="104" type="stmt" count="3"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="3"/>
+        <line num="109" type="stmt" count="3"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="113" type="stmt" count="0"/>
+        <line num="124" type="method" name="formatMessage" crap="2" count="3"/>
+        <line num="126" type="stmt" count="3"/>
+        <line num="128" type="stmt" count="3"/>
+        <line num="129" type="stmt" count="2"/>
+        <line num="130" type="stmt" count="3"/>
+        <line num="132" type="stmt" count="3"/>
+        <line num="146" type="method" name="throwException" crap="6" count="0"/>
+        <line num="148" type="stmt" count="0"/>
+        <line num="150" type="stmt" count="0"/>
+        <line num="151" type="stmt" count="0"/>
+        <line num="152" type="stmt" count="0"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="156" type="stmt" count="0"/>
+        <line num="167" type="method" name="initializeMessages" crap="3" count="3"/>
+        <line num="169" type="stmt" count="3"/>
+        <line num="170" type="stmt" count="3"/>
+        <line num="171" type="stmt" count="3"/>
+        <line num="172" type="stmt" count="3"/>
+        <line num="173" type="stmt" count="3"/>
+        <line num="175" type="stmt" count="3"/>
+        <line num="178" type="stmt" count="0"/>
+        <metrics loc="177" ncloc="85" classes="1" methods="7" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="22" elements="38" coveredelements="27"/>
+      </file>
       <file name="/Users/amystephen/Sites/Molajo/user/Source/Session.php">
         <class name="Session" namespace="Molajo\User" fullPackage="Molajo" package="Molajo">
           <metrics methods="5" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="17" elements="31" coveredelements="21"/>
@@ -215,6 +263,10 @@
     <file name="/Users/amystephen/Sites/Molajo/user/vendor/commonapi/user/CookieInterface.php">
       <line num="75" type="stmt" count="0"/>
       <metrics loc="74" ncloc="21" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/Users/amystephen/Sites/Molajo/user/vendor/commonapi/user/MessagesInterface.php">
+      <line num="55" type="stmt" count="0"/>
+      <metrics loc="54" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <file name="/Users/amystephen/Sites/Molajo/user/vendor/commonapi/user/SessionInterface.php">
       <line num="52" type="stmt" count="0"/>
@@ -563,6 +615,6 @@
       <line num="276" type="stmt" count="0"/>
       <metrics loc="279" ncloc="194" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="140" coveredstatements="0" elements="140" coveredelements="0"/>
     </file>
-    <metrics files="10" loc="1524" ncloc="923" classes="4" methods="42" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="470" coveredstatements="104" elements="512" coveredelements="115"/>
+    <metrics files="12" loc="1760" ncloc="1024" classes="5" methods="49" coveredmethods="16" conditionals="0" coveredconditionals="0" statements="504" coveredstatements="126" elements="553" coveredelements="142"/>
   </project>
 </coverage>

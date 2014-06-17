@@ -8,9 +8,10 @@
  */
 namespace Molajo\User;
 
+use CommonApi\Email\EmailInterface;
 use CommonApi\User\MailerInterface;
 use CommonApi\User\TemplateInterface;
-use CommonApi\Email\EmailInterface;
+use stdClass;
 
 /**
  * User Mailer Class
@@ -39,204 +40,90 @@ class Mailer implements MailerInterface
     protected $template;
 
     /**
-     * Default Exception
-     *
-     * @var    string
-     * @since  1.0
-     */
-    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
-
-    /**
-     * Email To (Email address, Name)
-     *
-     * @var     string
-     * @since   1.0
-     */
-    protected $to;
-
-    /**
-     * From
-     *
-     * @var     string
-     * @since   1.0
-     */
-    protected $from;
-
-    /**
-     * Reply to
-     *
-     * @var     string
-     * @since   1.0
-     */
-    protected $reply_to;
-
-    /**
-     * CC
-     *
-     * @var     string
-     * @since   1.0
-     */
-    protected $cc;
-
-    /**
-     * Bcc
-     *
-     * @var     string
-     * @since   1.0
-     */
-    protected $bcc;
-
-    /**
-     * Subject
-     *
-     * @var     string
-     * @since   1.0
-     */
-    protected $subject;
-
-    /**
-     * HTML or Text
-     *
-     * @var     string
-     * @since   1.0
-     */
-    protected $mailer_html_or_text;
-
-    /**
-     * Attachment location
-     *
-     * @var     string
-     * @since   1.0
-     */
-    protected $attachment;
-
-    /**
-     * Data
-     *
-     * @var     object
-     * @since   1.0
-     */
-    protected $userdata;
-
-    /**
      * List of Properties that will be sent via email
      *
-     * @var    object
+     * @var    array
      * @since  1.0
      */
-    protected $property_array = array(
-        'to',
-        'from',
-        'reply_to',
-        'cc',
-        'bcc',
-        'subject',
-        'body',
-        'mailer_html_or_text',
-        'attachment'
-    );
+    protected $property_array
+        = array(
+            'to',
+            'from',
+            'reply_to',
+            'cc',
+            'bcc',
+            'subject',
+            'body',
+            'mailer_html_or_text',
+            'attachment'
+        );
 
     /**
      * Construct
      *
-     * @param EmailInterface         $email
-     * @param null|TemplateInterface $template
-     * @param null|string            $default_exception
-     * @param array                  $options
+     * @param  EmailInterface    $email
+     * @param  TemplateInterface $template
      *
      * @since  1.0
      */
     public function __construct(
         EmailInterface $email,
-        TemplateInterface $template = null,
-        $default_exception = null,
-        $options = array()
+        TemplateInterface $template = null
     ) {
-        $this->email = $email;
-
-        if ($template === null) {
-        } else {
-            $this->template = $template;
-        }
-
-        if ($default_exception === null) {
-        } else {
-            $this->default_exception = $default_exception;
-        }
-
-        if (is_array($options)) {
-        } else {
-            $options = array();
-        }
-
-        if (count($options) > 0) {
-            foreach ($this->property_array as $property) {
-                if (isset($options[$property])) {
-                    $this->$property = $options[$property];
-                } else {
-                    $this->$property = '';
-                }
-            }
-        }
+        $this->email    = $email;
+        $this->template = $template;
     }
 
     /**
      * Set the Option Values, Initiate Rendering, Send
      *
-     * @param   array                  $options
-     * @param   null|TemplateInterface $template
+     * @param   string  $template
+     * @param   object  $input_data
      *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\User\MailerException
      */
-    public function render(
-        $options = array(),
-        TemplateInterface $template = null
-    ) {
-        if (is_array($options)) {
-        } else {
-            $options = array();
-        }
+    public function send($template, $input_data)
+    {
+        $data = $this->processTemplate($template, $input_data);
 
-        if (count($options) > 0) {
-            $this->data = new \stdClass();
-            foreach ($this->property_array as $property) {
-                if (isset($options[$property])) {
-                    $this->$property = $options[$property];
-                }
-            }
-            foreach ($options as $key => $value) {
-                $this->data->$key = $value;
-            }
-        }
+        return $this->processMail($data);
+    }
 
-        if ($template === null) {
-        } else {
-            $this->template = $template;
-        }
+    /**
+     * Set the Option Values, Initiate Rendering, Send
+     *
+     * @param   string  $template
+     * @param   object  $input_data
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function processTemplate($template, $input_data)
+    {
+        $this->template->set('type', $template);
 
-        $results = $this->template->render($this->data);
+        $results = $this->template->render($input_data);
 
-        $this->subject = $results->subject;
-        $this->body    = $results->body;
+        $input_data->subject = $results->subject;
+        $input_data->body    = $results->body;
 
-        return $this;
+        return $input_data;
     }
 
     /**
      * Send Email
      *
+     * @param   object $data
+     *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\User\MailerException
      */
-    public function send()
+    protected function processMail($data)
     {
         foreach ($this->property_array as $property) {
-            if ($this->$property == '') {
-            } else {
-                $this->email->set($property, $this->$property);
+            if (isset($data->$property)) {
+                $this->email->set($property, $data->$property);
             }
         }
 

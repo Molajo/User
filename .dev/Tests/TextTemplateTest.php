@@ -143,38 +143,7 @@ class TextTemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function getTemplates()
     {
-        $template = '';
-        $language = 'en-GB';
-
-        $template_folder = __DIR__ . '/Files/' . $language . '/';
-
-        $template_files = array();
-
-        $temp = scandir($template_folder);
-
-        foreach ($temp as $file) {
-            if ($file === '.' || $file == '..') {
-            } else {
-                $template_files[] = $file;
-            }
-        }
-
-        $templates = array();
-
-        foreach ($template_files as $template_name) {
-
-            if (file_exists($template_folder . $template_name)) {
-
-                require $template_folder . $template_name;
-                $templates[substr(
-                    $template_name,
-                    0,
-                    strlen($template_name) - 4
-                )]
-                    = $template; // $template is defined in the included file
-
-            }
-        }
+        include __DIR__ . '/Files/getTemplates.php';
 
         return $templates;
     }

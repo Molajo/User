@@ -8,7 +8,7 @@
  */
 namespace Molajo\Tests;
 
-use Molajo\User\Persist\Session;
+use Molajo\User\Session;
 
 /**
  * Test User Session
@@ -34,8 +34,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $class         = 'Molajo\\User\\Session';
-        $this->session = new $class();
+        $this->session = new Session();
 
         return;
     }

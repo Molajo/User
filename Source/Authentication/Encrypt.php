@@ -10,12 +10,8 @@ namespace Molajo\User\Authentication;
 
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
-use CommonApi\User\CookieInterface;
 use CommonApi\User\EncryptInterface;
-use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
-use CommonApi\User\SessionInterface;
-use CommonApi\User\UserDataInterface;
 use stdClass;
 
 /**
@@ -39,7 +35,6 @@ abstract class Encrypt extends Base implements AuthenticationInterface
     /**
      * Construct
      *
-     * @param  MessagesInterface     $messages
      * @param  EncryptInterface      $encrypt
      * @param  FieldhandlerInterface $fieldhandler
      * @param  stdClass              $configuration
@@ -49,7 +44,6 @@ abstract class Encrypt extends Base implements AuthenticationInterface
      * @since  1.0
      */
     public function __construct(
-        MessagesInterface $messages,
         EncryptInterface $encrypt,
         FieldhandlerInterface $fieldhandler,
         $configuration,
@@ -59,7 +53,6 @@ abstract class Encrypt extends Base implements AuthenticationInterface
         $this->encrypt  = $encrypt;
 
         parent::__construct(
-            $messages,
             $fieldhandler,
             $configuration,
             $server,

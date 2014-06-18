@@ -11,7 +11,6 @@ namespace Molajo\User;
 use CommonApi\Email\EmailInterface;
 use CommonApi\User\MailerInterface;
 use CommonApi\User\TemplateInterface;
-use stdClass;
 
 /**
  * User Mailer Class
@@ -114,7 +113,7 @@ class Mailer implements MailerInterface
     /**
      * Send Email
      *
-     * @param   object $data
+     * @param   Mailer $data
      *
      * @return  $this
      * @since   1.0

@@ -11,7 +11,6 @@ namespace Molajo\User\Authentication;
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\EncryptInterface;
-use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
 use CommonApi\User\UserDataInterface;
 use DateTime;
@@ -71,8 +70,6 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Construct
      *
      * @param  UserDataInterface     $userdata
-     * @param  MailerInterface       $mailer
-     * @param  MessagesInterface     $messages
      * @param  EncryptInterface      $encrypt
      * @param  FieldhandlerInterface $fieldhandler
      * @param  stdClass              $configuration
@@ -83,7 +80,6 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     public function __construct(
         UserDataInterface $userdata,
-        MessagesInterface $messages,
         EncryptInterface $encrypt,
         FieldhandlerInterface $fieldhandler,
         $configuration,
@@ -95,7 +91,6 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
         $this->today    = $this->user->today;
 
         parent::__construct(
-            $messages,
             $encrypt,
             $fieldhandler,
             $configuration,
@@ -193,6 +188,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      *
      * $param   string  $new_password
      *
+     * @param string $new_password
      * @return  $this
      * @since   1.0
      */
@@ -211,6 +207,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      *
      * $param   string  $session_id
      *
+     * @param Session $session_id
      * @return  $this
      * @since   1.0
      */

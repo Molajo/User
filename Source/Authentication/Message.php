@@ -1,6 +1,6 @@
 <?php
 /**
- * User Cookie Authentication
+ * User Messages for Authentication
  *
  * @package    Molajo
  * @copyright  2014 Amy Stephen. All rights reserved.
@@ -18,30 +18,22 @@ use CommonApi\User\UserDataInterface;
 use stdClass;
 
 /**
- * User Cookie Authentication
+ * User Messages for Authentication
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-abstract class Cookie extends Message implements AuthenticationInterface
+abstract class Message extends Mailer implements AuthenticationInterface
 {
     /**
-     * Cookie Instance
+     * Messages Instance
      *
-     * @var    object  CommonApi\User\CookieInterface
+     * @var    object  CommonApi\User\MessagesInterface
      * @since  1.0
      */
-    protected $cookie;
-
-    /**
-     * Remember
-     *
-     * @var    boolean
-     * @since  1.0
-     */
-    protected $remember;
+    protected $messages;
 
     /**
      * Construct
@@ -74,7 +66,6 @@ abstract class Cookie extends Message implements AuthenticationInterface
         parent::__construct(
             $userdata,
             $mailer,
-            $messages,
             $encrypt,
             $fieldhandler,
             $configuration,
@@ -84,36 +75,34 @@ abstract class Cookie extends Message implements AuthenticationInterface
     }
 
     /**
-     * Save Remember Me Cookie
+     * Throw Exception and Format Message
+     *
+     * @param   integer  $message_id
      *
      * @return  object
      * @since   1.0
      */
-    protected function saveRememberMeCookie()
-    {
-        return;
-        /**
-         * if ($remember
-         * {
-         * $this->cookie->forever($toPersist);
-         * }/
-         * 'remember_me_time',
-         * 'remember_me_cookie_name',
-         * 'remember_me_cookie_domain',
-         * 'remember_me_secure',
-         * 'remember_me_path',
-         * 'encryption_method',
-         */
+    protected function setFlashMessage(
+        $message_id
+    ) {
+        return $this->messages->setFlashmessage($message_id);
     }
 
     /**
-     * Forget Cookie
+     * Throw Exception and Format Message
+     *
+     * @param   integer  $message_id
+     * @param   array    $thing
+     * @param   string   $exception
      *
      * @return  object
      * @since   1.0
      */
-    protected function forgetCookie()
-    {
-        return;
+    protected function throwExceptionMessage(
+        $message_id,
+        array $thing = array(),
+        $exception = 'CommonApi\\Exception\\RuntimeException'
+    ) {
+        return $this->messages->throwException($message_id, $thing, $exception);
     }
 }

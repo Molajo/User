@@ -12,7 +12,6 @@ use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\MailerInterface;
-use CommonApi\User\MessagesInterface;
 use CommonApi\User\UserDataInterface;
 use stdClass;
 
@@ -39,7 +38,6 @@ abstract class Mailer extends UpdateUser implements AuthenticationInterface
      *
      * @param  UserDataInterface     $userdata
      * @param  MailerInterface       $mailer
-     * @param  MessagesInterface     $messages
      * @param  EncryptInterface      $encrypt
      * @param  FieldhandlerInterface $fieldhandler
      * @param  stdClass              $configuration
@@ -51,7 +49,6 @@ abstract class Mailer extends UpdateUser implements AuthenticationInterface
     public function __construct(
         UserDataInterface $userdata,
         MailerInterface $mailer,
-        MessagesInterface $messages,
         EncryptInterface $encrypt,
         FieldhandlerInterface $fieldhandler,
         $configuration,
@@ -62,7 +59,6 @@ abstract class Mailer extends UpdateUser implements AuthenticationInterface
 
         parent::__construct(
             $userdata,
-            $messages,
             $encrypt,
             $fieldhandler,
             $configuration,

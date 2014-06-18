@@ -123,7 +123,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
             return $this;
         };
 
-        $this->messages->throwException(1900, array(), 'CommonApi\\Exception\\RuntimeException');
+        $this->throwExceptionMessage(1900, array(), 'CommonApi\\Exception\\RuntimeException');
 
         return $this;
     }
@@ -143,7 +143,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
             $this->session_id = $session_id;
         }
 
-        $this->messages->throwException(1800, array(), 'CommonApi\\Exception\\RuntimeException');
+        $this->throwExceptionMessage(1800, array(), 'CommonApi\\Exception\\RuntimeException');
 
         return $this;
     }
@@ -166,7 +166,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
 
         $values           = array();
         $values['action'] = $action;
-        $this->messages->throwException(1805, $values, 'CommonApi\\Exception\\RuntimeException');
+        $this->throwExceptionMessage(1805, $values, 'CommonApi\\Exception\\RuntimeException');
 
         return $this;
     }
@@ -176,7 +176,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      *
      * @param   string $session_id
      *
-     * @return  $this
+     * @return  boolean
      * @since   1.0
      */
     protected function verifySessionLoggedOn($session_id)
@@ -249,7 +249,6 @@ abstract class Session extends Cookie implements AuthenticationInterface
     /**
      * Verifies the token for the user
      *
-     * @param   string $action
      *
      * @return  $this
      * @since   1.0
@@ -265,7 +264,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
 
         $this->destroySession();
         $this->forgetCookie();
-        $this->messages->throwException(2000);
+        $this->throwExceptionMessage(2000);
 
         return $this;
     }
@@ -314,7 +313,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      *
      * @param   string $session_id
      *
-     * @return  $this
+     * @return  boolean
      * @since   1.0
      */
     protected function verifySessionIdToExternal($session_id)
@@ -329,10 +328,9 @@ abstract class Session extends Cookie implements AuthenticationInterface
     /**
      * Verifies the session between the user table and the session object
      *
-     * @param   string $session_id
      * @param   string $type
      *
-     * @return  $this
+     * @return  boolean
      * @since   1.0
      */
     protected function verifySessionIdToUser($key, $type)
@@ -355,7 +353,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
     protected function verifySessionNotEmpty($session_id)
     {
         if (trim($session_id) === '') {
-            $this->messages->throwException(300);
+            $this->throwExceptionMessage(300);
         }
     }
 
@@ -391,7 +389,6 @@ abstract class Session extends Cookie implements AuthenticationInterface
     /**
      * Destroy the Session
      *
-     * @param   string $key
      *
      * @return  $this
      * @since   1.0

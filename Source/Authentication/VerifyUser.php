@@ -57,7 +57,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
     {
         if ($this->user->activation_datetime == '0000-00-00 00:00:00') {
             $this->error = true;
-            $this->messages->setFlashmessage(600);
+            $this->setFlashmessage(600);
         }
 
         return $this;
@@ -68,7 +68,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      *
      * @param   DateTime $today_datetime
      *
-     * @return  mixed
+     * @return  VerifyUser
      * @since   1.0
      */
     protected function verifyLoginAttempts($today_datetime)
@@ -84,7 +84,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
         }
 
         $this->error = true;
-        $this->messages->setFlashmessage(800);
+        $this->setFlashmessage(800);
 
         return $this;
     }
@@ -126,7 +126,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
         }
 
         $this->error = true;
-        $this->messages->setFlashmessage(800);
+        $this->setFlashmessage(800);
 
         return false;
     }
@@ -141,7 +141,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
     {
         if ($this->user->block == 1) {
             $this->error = true;
-            $this->messages->setFlashmessage(1100);
+            $this->setFlashmessage(1100);
 
             return false;
         }
@@ -154,7 +154,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      *
      * @param   DateTime $today_datetime
      *
-     * @return  boolean
+     * @return  VerifyUser
      * @since   1.0
      */
     protected function verifyUserPasswordExpiration($today_datetime)
@@ -167,7 +167,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
         ) {
             $this->updateUserBlock();
             $this->error = true;
-            $this->messages->setFlashmessage(1200);
+            $this->setFlashmessage(1200);
         }
 
         return $this;

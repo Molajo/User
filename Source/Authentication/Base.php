@@ -9,7 +9,6 @@
 namespace Molajo\User\Authentication;
 
 use CommonApi\Model\FieldhandlerInterface;
-use CommonApi\User\MessagesInterface;
 use stdClass;
 
 /**
@@ -22,14 +21,6 @@ use stdClass;
  */
 abstract class Base
 {
-    /**
-     * Messages Instance
-     *
-     * @var    object  CommonApi\User\MessagesInterface
-     * @since  1.0
-     */
-    protected $messages;
-
     /**
      * Fieldhandler Instance
      *
@@ -71,9 +62,21 @@ abstract class Base
     protected $error = false;
 
     /**
+     * Properties
+     *
+     * @var    array
+     * @since  1.0
+     */
+    protected $base_properties = array(
+        'fieldhandler',
+        'configuration',
+        'server',
+        'post'
+    );
+
+    /**
      * Construct
      *
-     * @param  MessagesInterface     $messages
      * @param  FieldhandlerInterface $fieldhandler
      * @param  stdClass              $configuration
      * @param  object                $server
@@ -82,16 +85,13 @@ abstract class Base
      * @since  1.0
      */
     public function __construct(
-        MessagesInterface $messages,
         FieldhandlerInterface $fieldhandler,
         $configuration,
         $server,
         $post
     ) {
-        $this->messages      = $messages;
-        $this->fieldhandler  = $fieldhandler;
-        $this->configuration = $configuration;
-        $this->server        = $server;
-        $this->post          = $post;
+        foreach ($this->base_properties as $key) {
+            $this->$key = $key;
+        }
     }
 }

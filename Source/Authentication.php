@@ -38,7 +38,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
             $this->setSessionFormToken();
         }
 
-        $this->verifySessionFormToken('isGuest');
+        $this->verifySessionFormToken();
 
         $this->setSessionValue('last_activity_datetime', $this->today);
 
@@ -62,7 +62,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
 
         $this->verifySession($session_id, 'login');
         $this->verifyUser('login');
-        $this->verifySessionFormToken('login');
+        $this->verifySessionFormToken();
         $this->verifyUsernamePassword($username, $password);
 
         if ($this->error === true) {
@@ -101,7 +101,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         $this->verifySession($session_id, 'isLoggedOn');
         $this->verifyUser('isLoggedOn');
         $this->verifySessionNotTimedOut();
-        $this->verifySessionFormToken('isLoggedOn');
+        $this->verifySessionFormToken();
 
         if ($this->error === true) {
             return $this->redirect401();
@@ -135,7 +135,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
     ) {
         $this->verifySession($session_id, 'login');
         $this->verifyUser('login');
-        $this->verifySessionFormToken('login');
+        $this->verifySessionFormToken();
         $this->verifyPasswordChange($new_password);
         $this->verifyUsernamePassword($username, $password, $reset_password_code);
 
@@ -171,7 +171,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
     {
         $this->verifySession($session_id, 'requestPasswordReset');
         $this->verifyUser('requestPasswordReset');
-        $this->verifySessionFormToken('requestPasswordReset');
+        $this->verifySessionFormToken();
 
         if ($this->error === true) {
             return $this->redirect401();
@@ -198,7 +198,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         $this->verifySession($session_id, 'logout');
         $this->verifyUser('logout');
         $this->verifySessionNotTimedOut();
-        $this->verifySessionFormToken('logout');
+        $this->verifySessionFormToken();
 
         if ($this->error === true) {
             return $this->redirect401();

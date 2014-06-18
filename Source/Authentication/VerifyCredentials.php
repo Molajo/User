@@ -153,7 +153,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
         $this->updateUserFailedLoginAttempt();
 
         $this->error = true;
-        $this->messages->setFlashmessage($message_id);
+        $this->setFlashmessage($message_id);
 
         return $this;
     }
@@ -185,7 +185,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
      *
      * @param   string $new_password
      *
-     * @return  boolean
+     * @return  VerifyCredentials
      * @since   1.0
      */
     protected function verifyPasswordChangeLength($new_password)
@@ -212,7 +212,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
     {
         if ($new_password === '' || $new_password === null) {
             $this->error = true;
-            $this->messages->setFlashmessage(2130);
+            $this->setFlashmessage(2130);
         }
 
         return $this;
@@ -288,7 +288,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
 
         if ($test === 1) {
             $this->error = true;
-            $this->messages->setFlashmessage(2300);
+            $this->setFlashmessage(2300);
         }
 
         return $this;
@@ -404,7 +404,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
     {
         if ($this->fieldhandler->validate('Password', $new_password, $test, $options) === false) {
             $this->error = true;
-            $this->messages->setFlashmessage($message_id);
+            $this->setFlashmessage($message_id);
         }
 
         return $this;

@@ -9,7 +9,6 @@
 namespace Molajo\User\Authentication;
 
 use CommonApi\Model\FieldhandlerInterface;
-use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
 use stdClass;
 
@@ -23,14 +22,6 @@ use stdClass;
  */
 abstract class Base
 {
-    /**
-     * Mailer Instance
-     *
-     * @var    object  CommonApi\User\MailerInterface
-     * @since  1.0
-     */
-    protected $mailer;
-
     /**
      * Messages Instance
      *
@@ -72,14 +63,6 @@ abstract class Base
     protected $post;
 
     /**
-     * Guest
-     *
-     * @var    boolean
-     * @since  1.0
-     */
-    protected $guest;
-
-    /**
      * Error
      *
      * @var    boolean
@@ -90,7 +73,6 @@ abstract class Base
     /**
      * Construct
      *
-     * @param  MailerInterface       $mailer
      * @param  MessagesInterface     $messages
      * @param  FieldhandlerInterface $fieldhandler
      * @param  stdClass              $configuration
@@ -100,14 +82,12 @@ abstract class Base
      * @since  1.0
      */
     public function __construct(
-        MailerInterface $mailer,
         MessagesInterface $messages,
         FieldhandlerInterface $fieldhandler,
         $configuration,
         $server,
         $post
     ) {
-        $this->mailer        = $mailer;
         $this->messages      = $messages;
         $this->fieldhandler  = $fieldhandler;
         $this->configuration = $configuration;

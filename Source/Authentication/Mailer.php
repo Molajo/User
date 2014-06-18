@@ -1,6 +1,6 @@
 <?php
 /**
- * Encryption for User Authentication
+ * Mailer for User Authentication
  *
  * @package    Molajo
  * @copyright  2014 Amy Stephen. All rights reserved.
@@ -10,11 +10,9 @@ namespace Molajo\User\Authentication;
 
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
-use CommonApi\User\CookieInterface;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
-use CommonApi\User\SessionInterface;
 use CommonApi\User\UserDataInterface;
 use stdClass;
 
@@ -26,19 +24,21 @@ use stdClass;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-abstract class Encrypt extends Base implements AuthenticationInterface
+abstract class Mailer extends UpdateUser implements AuthenticationInterface
 {
     /**
-     * Encrypt Instance
+     * Mailer Instance
      *
-     * @var    object  CommonApi\User\EncryptInterface
+     * @var    object  CommonApi\User\MailerInterface
      * @since  1.0
      */
-    protected $encrypt;
+    protected $mailer;
 
     /**
      * Construct
      *
+     * @param  UserDataInterface     $userdata
+     * @param  MailerInterface       $mailer
      * @param  MessagesInterface     $messages
      * @param  EncryptInterface      $encrypt
      * @param  FieldhandlerInterface $fieldhandler
@@ -49,6 +49,8 @@ abstract class Encrypt extends Base implements AuthenticationInterface
      * @since  1.0
      */
     public function __construct(
+        UserDataInterface $userdata,
+        MailerInterface $mailer,
         MessagesInterface $messages,
         EncryptInterface $encrypt,
         FieldhandlerInterface $fieldhandler,
@@ -56,10 +58,12 @@ abstract class Encrypt extends Base implements AuthenticationInterface
         $server,
         $post
     ) {
-        $this->encrypt  = $encrypt;
+        $this->mailer  = $mailer;
 
         parent::__construct(
+            $userdata,
             $messages,
+            $encrypt,
             $fieldhandler,
             $configuration,
             $server,
@@ -68,39 +72,22 @@ abstract class Encrypt extends Base implements AuthenticationInterface
     }
 
     /**
-     * Generate a Random String
+     * Email Password Reset
      *
      * @return  $this
      * @since   1.0
      */
-    protected function generateString()
+    protected function emailPasswordReset()
     {
-        return $this->encrypt->generateString();
-    }
+        $options          = array();
+        $options['type']  = 'password_reset_request';
+        $options['link']  = $this->configuration->url_to_change_password
+            . '?reset_password_code=' . $this->user->reset_password_code;
+        $options['name']  = $this->user->full_name;
+        $options['today'] = $this->today;
+        $options['to']    = $this->user->email
+            . ', ' . $$this->user->full_name;
 
-    /**
-     * Create Hash String
-     *
-     * @param   string  $value
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    protected function createHashString($value)
-    {
-        return $this->encrypt->createHashString($value);
-    }
-
-    /**
-     * Verify Hash String
-     *
-     * @param   string  $value
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    protected function verifyHashString($value, $existing)
-    {
-        return $this->encrypt->verifyHashString($value, $existing);
+        $this->mailer->render($options)->send();
     }
 }

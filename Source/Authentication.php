@@ -27,20 +27,20 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
      *
      * @param   string $session_id
      *
-     * @return  int
+     * @return  integer
      * @since   1.0
      */
     public function isGuest($session_id)
     {
         $this->verifySession($session_id, 'isGuest');
 
-        if ($this->session->getSession('last_activity_datetime') === false) {
-            $this->setFormToken();
+        if ($this->getSessionValue('last_activity_datetime') === false) {
+            $this->setSessionFormToken();
         }
 
-        $this->verifyFormToken('isGuest');
+        $this->verifySessionFormToken('isGuest');
 
-        $this->session->setSession('last_activity_datetime', $this->today);
+        $this->setSessionValue('last_activity_datetime', $this->today);
 
         return 0;
     }
@@ -62,7 +62,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
 
         $this->verifySession($session_id, 'login');
         $this->verifyUser('login');
-        $this->verifyFormToken('login');
+        $this->verifySessionFormToken('login');
         $this->verifyUsernamePassword($username, $password);
 
         if ($this->error === true) {
@@ -70,7 +70,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         }
 
         $this->setSessionLogin();
-        $this->setFormToken();
+        $this->setSessionFormToken();
 
         if (isset($options['remember'])) {
             $this->remember = $options['remember'];
@@ -101,7 +101,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         $this->verifySession($session_id, 'isLoggedOn');
         $this->verifyUser('isLoggedOn');
         $this->verifySessionNotTimedOut();
-        $this->verifyFormToken('isLoggedOn');
+        $this->verifySessionFormToken('isLoggedOn');
 
         if ($this->error === true) {
             return $this->redirect401();
@@ -135,7 +135,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
     ) {
         $this->verifySession($session_id, 'login');
         $this->verifyUser('login');
-        $this->verifyFormToken('login');
+        $this->verifySessionFormToken('login');
         $this->verifyPasswordChange($new_password);
         $this->verifyUsernamePassword($username, $password, $reset_password_code);
 
@@ -171,28 +171,15 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
     {
         $this->verifySession($session_id, 'requestPasswordReset');
         $this->verifyUser('requestPasswordReset');
-        $this->verifyFormToken('requestPasswordReset');
+        $this->verifySessionFormToken('requestPasswordReset');
 
         if ($this->error === true) {
             return $this->redirect401();
         }
 
-        if ($this->user->reset_password_code === '') {
-            $this->updateUserResetPasswordCode();
-        }
-
+        $this->updateUserResetPasswordCode();
         $this->updateUser();
-
-        $options          = array();
-        $options['type']  = 'password_reset_request';
-        $options['link']  = $this->configuration->url_to_change_password
-            . '?reset_password_code=' . $this->user->reset_password_code;
-        $options['name']  = $this->user->full_name;
-        $options['today'] = $this->today;
-        $options['to']    = $this->user->email
-            . ', ' . $$this->user->full_name;
-
-        $this->mailer->render($options)->send();
+        $this->emailPasswordReset();
 
         return 0;
     }
@@ -211,7 +198,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         $this->verifySession($session_id, 'logout');
         $this->verifyUser('logout');
         $this->verifySessionNotTimedOut();
-        $this->verifyFormToken('logout');
+        $this->verifySessionFormToken('logout');
 
         if ($this->error === true) {
             return $this->redirect401();

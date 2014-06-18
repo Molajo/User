@@ -25,7 +25,7 @@ use stdClass;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-abstract class Cookie extends UpdateUser implements AuthenticationInterface
+abstract class Cookie extends Mailer implements AuthenticationInterface
 {
     /**
      * Cookie Instance

@@ -44,6 +44,14 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
     protected $user;
 
     /**
+     * Guest
+     *
+     * @var    boolean
+     * @since  1.0
+     */
+    protected $guest;
+
+    /**
      * Today
      *
      * @var    DateTime
@@ -75,7 +83,6 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     public function __construct(
         UserDataInterface $userdata,
-        MailerInterface $mailer,
         MessagesInterface $messages,
         EncryptInterface $encrypt,
         FieldhandlerInterface $fieldhandler,
@@ -88,7 +95,6 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
         $this->today    = $this->user->today;
 
         parent::__construct(
-            $mailer,
             $messages,
             $encrypt,
             $fieldhandler,
@@ -224,7 +230,9 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     protected function updateUserResetPasswordCode()
     {
-        $this->updates['#__users.reset_password_code'] = $this->generateString();
+        if ($this->user->reset_password_code === '') {
+            $this->updates['#__users.reset_password_code'] = $this->generateString();
+        }
 
         return $this;
     }

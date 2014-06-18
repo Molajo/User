@@ -240,7 +240,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
     protected function verifyFormAction()
     {
         if (in_array($this->server['REQUEST_METHOD'], array('POST', 'PUT', 'DELETE'))) {
-            $this->verifyFormToken();
+            $this->verifySessionFormToken();
         }
 
         return $this;
@@ -255,7 +255,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function verifyFormToken()
+    protected function verifySessionFormToken()
     {
         $key = $this->getSessionValue('form_token');
 
@@ -276,7 +276,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @return  $this
      * @since   1.0
      */
-    protected function setFormToken()
+    protected function setSessionFormToken()
     {
         if ($this->getSessionValue('form_token') === false) {
             $token = $this->generateString();

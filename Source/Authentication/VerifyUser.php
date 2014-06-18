@@ -73,7 +73,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      */
     protected function verifyLoginAttempts($today_datetime)
     {
-        if ($this->verifyLoginAttemptsCount() === false) {
+        if ($this->verifyLoginMaxAttemptsExceeded() === true) {
             $this->updateUserBlock();
             return $this;
         }
@@ -95,13 +95,13 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      * @return  boolean
      * @since   1.0
      */
-    protected function verifyLoginAttemptsCount()
+    protected function verifyLoginMaxAttemptsExceeded()
     {
         if ($this->user->login_attempts > $this->configuration->max_login_attempts) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -115,14 +115,13 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
     protected function verifyLoginRemoveBlock($today_datetime)
     {
         if ($this->configuration->password_lock_out_days === 0) {
-            return true;
+            return false;
         }
 
         $last_activity_date = new DateTime($this->user->last_activity_datetime);
         $day_object         = $last_activity_date->diff($today_datetime);
 
         if ($day_object->days > $this->configuration->password_lock_out_days) {
-            $this->updateUserRemoveBlock();
             return true;
         }
 

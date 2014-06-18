@@ -29,14 +29,6 @@ use stdClass;
 abstract class Session extends Cookie implements AuthenticationInterface
 {
     /**
-     * Encrypt Instance
-     *
-     * @var    object  CommonApi\User\EncryptInterface
-     * @since  1.0
-     */
-    protected $encrypt;
-
-    /**
      * Session Instance
      *
      * @var    object  CommonApi\User\SessionInterface
@@ -92,13 +84,13 @@ abstract class Session extends Cookie implements AuthenticationInterface
     ) {
         $this->session             = $session;
         $this->external_session_id = $external_session_id;
-        $this->encrypt             = $encrypt;
 
         parent::__construct(
             $userdata,
             $cookie,
             $mailer,
             $messages,
+            $encrypt,
             $fieldhandler,
             $configuration,
             $server,
@@ -418,5 +410,19 @@ abstract class Session extends Cookie implements AuthenticationInterface
     protected function encryptGenerateString()
     {
         return $this->encrypt->generateString();
+    }
+
+
+    /**
+     * Verify Hash String
+     *
+     * @param   string  $password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyHashString($password)
+    {
+        return $this->encrypt->verifyHashString($password, $this->user->password);
     }
 }

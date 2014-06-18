@@ -52,7 +52,7 @@ class Messages implements MessagesInterface
     ) {
         $this->flashmessage = $flashmessage;
 
-        $this->initializeMessages($messages);
+        $this->initialiseMessages($messages);
     }
 
     /**
@@ -164,7 +164,7 @@ class Messages implements MessagesInterface
      * @return  $this
      * @since   1.0
      */
-    protected function initializeMessages(array $messages)
+    protected function initialiseMessages(array $messages)
     {
         if (count($messages) > 0) {
             foreach ($messages as $key => $message) {

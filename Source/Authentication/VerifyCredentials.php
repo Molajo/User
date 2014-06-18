@@ -8,7 +8,6 @@
  */
 namespace Molajo\User\Authentication;
 
-use Exception;
 use CommonApi\User\AuthenticationInterface;
 
 /**
@@ -32,7 +31,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function verifyCredentials(
+    protected function verifyUsernamePassword(
         $username = '',
         $password = '',
         $reset_password_code = ''
@@ -49,136 +48,21 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
     }
 
     /**
-     * Password requirements
+     * Verify User for Username or Email
      *
-     * @param   string $new_password
+     * @param   string $key
+     * @param   string $value
      *
      * @return  $this
      * @since   1.0
      */
-    protected function verifyPasswordChange($new_password)
+    protected function verifyUserProvidedKey($key, $value)
     {
-        if ($new_password === '' || $new_password === null) {
-            $this->error = true;
-            $this->messages->setFlashmessage(2130);
+        if ($this->user->$key === $value) {
+            return true;
         }
 
-        if ($this->configuration->password_minimum_password_length === 0) {
-            $this->configuration->password_minimum_password_length = 5;
-        }
-        if ($this->configuration->password_maximum_password_length
-            < $this->configuration->password_minimum_password_length
-        ) {
-            $this->configuration->password_maximum_password_length = 10;
-        }
-
-        $options = array();
-
-        try {
-            $options['from'] = $this->configuration->password_minimum_password_length;
-            $options['to']   = $this->configuration->password_maximum_password_length;
-
-            $this->fieldhandler->validate('Password', $new_password, 'Stringlength', $options);
-        } catch (Exception $e) {
-
-            $values         = array();
-            $values['from'] = $this->configuration->password_minimum_password_length;
-            $values['to']   = $this->configuration->password_maximum_password_length;
-
-            $this->error = true;
-            $this->messages->setFlashmessage(2100, $values);
-        }
-
-        if ($this->configuration->password_must_not_match_username === true) {
-
-            try {
-                $options              = array();
-                $options['not_equal'] = $this->user->username;
-
-                $this->fieldhandler->validate('Password', $new_password, 'Notequal', $options);
-            } catch (Exception $e) {
-
-                $this->error = true;
-                $this->messages->setFlashmessage(2200);
-            }
-        }
-
-        if ($this->configuration->password_must_not_match_last_password === true) {
-
-            $test = $this->encrypt->verifyHashString(
-                $new_password,
-                $this->user->password
-            );
-
-            if ($test === 1) {
-                $this->error = true;
-                $this->messages->setFlashmessage(2300);
-            }
-        }
-
-        if ($this->configuration->password_alpha_character_required === true) {
-
-            try {
-                $options          = array();
-                $options['regex'] = '/[A-Za-z]/';
-                $this->fieldhandler->validate('Password', $new_password, 'Regex', $options);
-            } catch (Exception $e) {
-
-                $this->error = true;
-                $this->messages->setFlashmessage(2400);
-            }
-        }
-
-        if ($this->configuration->password_numeric_character_required === true) {
-
-            try {
-                $options          = array();
-                $options['regex'] = '/[0-9]/';
-                $this->fieldhandler->validate('Password', $new_password, 'Regex', $options);
-            } catch (Exception $e) {
-
-                $this->error = true;
-                $this->messages->setFlashmessage(2500);
-            }
-        }
-
-        if ($this->configuration->password_special_character_required === true) {
-
-            try {
-                $options          = array();
-                $options['regex'] = '/[!*@#$%]/';
-                $this->fieldhandler->validate('Password', $new_password, 'Regex', $options);
-            } catch (Exception $e) {
-
-                $this->error = true;
-                $this->messages->setFlashmessage(2600);
-            }
-        }
-
-        if ($this->configuration->password_mixed_case_required === true) {
-
-            try {
-                $options          = array();
-                $options['regex'] = '`[A-Z]`';
-                $this->fieldhandler->validate('Password', $new_password, 'Regex', $options);
-            } catch (Exception $e) {
-
-                $this->error = true;
-                $this->messages->setFlashmessage(2700);
-            }
-
-            try {
-                $options          = array();
-                $options['regex'] = '`[a-z]`';
-                $this->fieldhandler->validate('Password', $new_password, 'Regex', $options);
-            } catch (Exception $e) {
-
-                $this->error = true;
-                $this->messages->setFlashmessage(2800);
-            }
-        }
-
-        return $this;
+        return false;
     }
 
     /**
@@ -192,18 +76,15 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
      */
     protected function verifyUserPassword($password, $reset_password_code)
     {
-        if ($password === '' && $reset_password_code === '') {
-            $this->error = true;
-            $this->messages->setFlashmessage(1400);
+        if ($this->verifyUserPasswordNeither($password, $reset_password_code) === true) {
+            return $this;
         }
 
         if ($password === '') {
-            $this->verifyUserPasswordReset($reset_password_code);
-        } else {
-            $this->verifyUserPasswordHash($password);
+            return $this->verifyUserPasswordReset($reset_password_code);
         }
 
-        return $this;
+        return $this->verifyUserPasswordHash($password);
     }
 
     /**
@@ -218,8 +99,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
     protected function verifyUserPasswordNeither($password, $reset_password_code)
     {
         if ($password === '' && $reset_password_code === '') {
-            $this->error = true;
-            $this->messages->setFlashmessage(1400);
+            return $this->setUserPasswordError(1400);
         }
 
         return $this;
@@ -236,13 +116,10 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
     protected function verifyUserPasswordReset($reset_password_code)
     {
         if ($reset_password_code === $this->user->reset_password_code) {
-        } else {
-            $this->updateUserFailedLoginAttempt();
-            $this->error = true;
-            $this->messages->setFlashmessage(1500);
+            return $this;
         }
 
-        return $this;
+        return $this->setUserPasswordError(1500);
     }
 
     /**
@@ -255,16 +132,274 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
      */
     protected function verifyUserPasswordHash($password)
     {
-        $test = $this->encrypt->verifyHashString($password, $this->user->password);
-
-        if ($test === true) {
+        if ($this->verifyHashString($password) === true) {
             return $this;
         }
 
+        return $this->setUserPasswordError(1400);
+    }
+
+    /**
+     * Set User Password Error
+     *
+     * @param   integer $message_id
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function setUserPasswordError($message_id)
+    {
         $this->updateUserFailedLoginAttempt();
 
         $this->error = true;
-        $this->messages->setFlashmessage(1600);
+        $this->messages->setFlashmessage($message_id);
+
+        return $this;
+    }
+
+    /**
+     * Password requirements
+     *
+     * @param   string $new_password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChange($new_password)
+    {
+        $this->verifyPasswordChangeValue($new_password);
+        $this->verifyPasswordChangeLength($new_password);
+        $this->verifyPasswordChangeNotMatchUsername($new_password);
+        $this->verifyPasswordChangeNotMatchLastPassword($new_password);
+        $this->verifyPasswordChangeAlphaCharacterRequired($new_password);
+        $this->verifyPasswordChangeNumericCharacterRequired($new_password);
+        $this->verifyPasswordChangeSpecialCharacterRequired($new_password);
+        $this->verifyPasswordChangeMixedCaseRequired($new_password);
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change Length
+     *
+     * @param   string $new_password
+     *
+     * @return  boolean
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeLength($new_password)
+    {
+        $this->verifyPasswordChangeMinimum();
+        $this->verifyPasswordChangeMaximum();
+
+        $options = array();
+
+        $options['from'] = $this->configuration->password_minimum_password_length;
+        $options['to']   = $this->configuration->password_maximum_password_length;
+
+        if ($this->fieldhandler->validate('Password', $new_password, 'Stringlength', $options) === true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Verify Password Change Length Maximum
+     *
+     * @param   string $new_password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeValue($new_password)
+    {
+        if ($new_password === '' || $new_password === null) {
+            $this->error = true;
+            $this->messages->setFlashmessage(2130);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change Length Minimum
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeMinimum()
+    {
+        if ($this->configuration->password_minimum_password_length === 0) {
+            $this->configuration->password_minimum_password_length = 5;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change Length Maximum
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeMaximum()
+    {
+        if ($this->configuration->password_maximum_password_length
+            < $this->configuration->password_minimum_password_length
+        ) {
+            $this->configuration->password_maximum_password_length = 10;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change -- Must not match Username
+     *
+     * @param   string $new_password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeNotMatchUsername($new_password)
+    {
+        if ($this->configuration->password_must_not_match_username === false) {
+            return $this;
+        }
+
+        $options              = array();
+        $options['not_equal'] = $this->user->username;
+
+
+        if ($this->fieldhandler->validate('Password', $new_password, 'Notequal', $options) === false) {
+            $this->error = true;
+            $this->messages->setFlashmessage(2200);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change -- Must not match last password
+     *
+     * @param   string $new_password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeNotMatchLastPassword($new_password)
+    {
+        if ($this->configuration->password_must_not_match_last_password === false) {
+            return $this;
+        }
+
+        $test = $this->encrypt->verifyHashString($new_password, $this->user->password);
+
+        if ($test === 1) {
+            $this->error = true;
+            $this->messages->setFlashmessage(2300);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change -- Alpha Character Required
+     *
+     * @param   string $new_password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeAlphaCharacterRequired($new_password)
+    {
+        if ($this->configuration->password_alpha_character_required === false) {
+            return $this;
+        }
+
+        $this->verifyPasswordChangeRegex($new_password, '/[A-Za-z]/', 2400);
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change -- Numeric Character Required
+     *
+     * @param   string $new_password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeNumericCharacterRequired($new_password)
+    {
+        if ($this->configuration->password_numeric_character_required === false) {
+            return $this;
+        }
+
+        $this->verifyPasswordChangeRegex($new_password, '/[0-9]/', 2500);
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change -- Special character required
+     *
+     * @param   string $new_password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeSpecialCharacterRequired($new_password)
+    {
+        if ($this->configuration->password_special_character_required === false) {
+            return $this;
+        }
+
+        $this->verifyPasswordChangeRegex($new_password, '/[!*@#$%]/', 2600);
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change -- Mixed case character required
+     *
+     * @param   string $new_password
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeMixedCaseRequired($new_password)
+    {
+        if ($this->configuration->password_mixed_case_required === false) {
+            return true;
+        }
+
+        $this->verifyPasswordChangeRegex($new_password, '`[A-Z]`', 2700);
+        $this->verifyPasswordChangeRegex($new_password, '`[a-z]`', 2800);
+
+        return $this;
+    }
+
+    /**
+     * Verify Password Change -- Mixed case character required
+     *
+     * @param   string  $new_password
+     * @param   string  $regex
+     * @param   integer $message_id
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeRegex($new_password, $regex, $message_id)
+    {
+        $options          = array();
+        $options['regex'] = $regex;
+
+        if ($this->fieldhandler->validate('Password', $new_password, 'Regex', $options) === false) {
+            $this->error = true;
+            $this->messages->setFlashmessage($message_id);
+        }
 
         return $this;
     }

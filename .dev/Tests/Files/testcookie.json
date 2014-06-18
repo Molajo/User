@@ -1,1 +1,1 @@
-{"name":"Cookie","value":"@covers  Molajo\\User\\Cookie::initializeHttpOnly","expire":1,"path":"\/","domain":"","secure":false,"http_only":false}
+{"name":"Cookie","value":"@covers  Molajo\\User\\Cookie::initialiseHttpOnly","expire":1,"path":"\/","domain":"","secure":false,"http_only":false}

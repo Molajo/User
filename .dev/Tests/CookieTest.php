@@ -40,12 +40,12 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Cookie::destroyCookies
      * @covers  Molajo\User\Cookie::sendCookies
      * @covers  Molajo\User\Cookie::sendCookie
-     * @covers  Molajo\User\Cookie::initializeCookies
-     * @covers  Molajo\User\Cookie::initializeExpiration
-     * @covers  Molajo\User\Cookie::initializePath
-     * @covers  Molajo\User\Cookie::initializeDomain
-     * @covers  Molajo\User\Cookie::initializeSecure
-     * @covers  Molajo\User\Cookie::initializeHttpOnly
+     * @covers  Molajo\User\Cookie::initialiseCookies
+     * @covers  Molajo\User\Cookie::initialiseExpiration
+     * @covers  Molajo\User\Cookie::initialisePath
+     * @covers  Molajo\User\Cookie::initialiseDomain
+     * @covers  Molajo\User\Cookie::initialiseSecure
+     * @covers  Molajo\User\Cookie::initialiseHttpOnly
      */
     public function setUp()
     {
@@ -67,17 +67,17 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Cookie::destroyCookies
      * @covers  Molajo\User\Cookie::sendCookies
      * @covers  Molajo\User\Cookie::sendCookie
-     * @covers  Molajo\User\Cookie::initializeCookies
-     * @covers  Molajo\User\Cookie::initializeExpiration
-     * @covers  Molajo\User\Cookie::initializePath
-     * @covers  Molajo\User\Cookie::initializeDomain
-     * @covers  Molajo\User\Cookie::initializeSecure
-     * @covers  Molajo\User\Cookie::initializeHttpOnly
+     * @covers  Molajo\User\Cookie::initialiseCookies
+     * @covers  Molajo\User\Cookie::initialiseExpiration
+     * @covers  Molajo\User\Cookie::initialisePath
+     * @covers  Molajo\User\Cookie::initialiseDomain
+     * @covers  Molajo\User\Cookie::initialiseSecure
+     * @covers  Molajo\User\Cookie::initialiseHttpOnly
      */
     public function testSetGetCookie()
     {
         $name         = 'Cookie name';
-        $value        = '@covers  Molajo\User\Cookie::initializeHttpOnly';
+        $value        = '@covers  Molajo\User\Cookie::initialiseHttpOnly';
         $minutes      = 1;
         $minutes_test = time() + 1;
         $path         = '/';
@@ -111,17 +111,17 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Cookie::destroyCookies
      * @covers  Molajo\User\Cookie::sendCookies
      * @covers  Molajo\User\Cookie::sendCookie
-     * @covers  Molajo\User\Cookie::initializeCookies
-     * @covers  Molajo\User\Cookie::initializeExpiration
-     * @covers  Molajo\User\Cookie::initializePath
-     * @covers  Molajo\User\Cookie::initializeDomain
-     * @covers  Molajo\User\Cookie::initializeSecure
-     * @covers  Molajo\User\Cookie::initializeHttpOnly
+     * @covers  Molajo\User\Cookie::initialiseCookies
+     * @covers  Molajo\User\Cookie::initialiseExpiration
+     * @covers  Molajo\User\Cookie::initialisePath
+     * @covers  Molajo\User\Cookie::initialiseDomain
+     * @covers  Molajo\User\Cookie::initialiseSecure
+     * @covers  Molajo\User\Cookie::initialiseHttpOnly
      */
     public function testSetDeleteGetCookie()
     {
         $name         = 'Cookie name';
-        $value        = '@covers  Molajo\User\Cookie::initializeHttpOnly';
+        $value        = '@covers  Molajo\User\Cookie::initialiseHttpOnly';
         $minutes      = 1;
         $minutes_test = time() + 1;
         $path         = '/';
@@ -159,12 +159,12 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Cookie::destroyCookies
      * @covers  Molajo\User\Cookie::sendCookies
      * @covers  Molajo\User\Cookie::sendCookie
-     * @covers  Molajo\User\Cookie::initializeCookies
-     * @covers  Molajo\User\Cookie::initializeExpiration
-     * @covers  Molajo\User\Cookie::initializePath
-     * @covers  Molajo\User\Cookie::initializeDomain
-     * @covers  Molajo\User\Cookie::initializeSecure
-     * @covers  Molajo\User\Cookie::initializeHttpOnly
+     * @covers  Molajo\User\Cookie::initialiseCookies
+     * @covers  Molajo\User\Cookie::initialiseExpiration
+     * @covers  Molajo\User\Cookie::initialisePath
+     * @covers  Molajo\User\Cookie::initialiseDomain
+     * @covers  Molajo\User\Cookie::initialiseSecure
+     * @covers  Molajo\User\Cookie::initialiseHttpOnly
      */
     public function testSetDeleteNothingGetCookie()
     {
@@ -184,17 +184,17 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Cookie::destroyCookies
      * @covers  Molajo\User\Cookie::sendCookies
      * @covers  Molajo\User\Cookie::sendCookie
-     * @covers  Molajo\User\Cookie::initializeCookies
-     * @covers  Molajo\User\Cookie::initializeExpiration
-     * @covers  Molajo\User\Cookie::initializePath
-     * @covers  Molajo\User\Cookie::initializeDomain
-     * @covers  Molajo\User\Cookie::initializeSecure
-     * @covers  Molajo\User\Cookie::initializeHttpOnly
+     * @covers  Molajo\User\Cookie::initialiseCookies
+     * @covers  Molajo\User\Cookie::initialiseExpiration
+     * @covers  Molajo\User\Cookie::initialisePath
+     * @covers  Molajo\User\Cookie::initialiseDomain
+     * @covers  Molajo\User\Cookie::initialiseSecure
+     * @covers  Molajo\User\Cookie::initialiseHttpOnly
      */
     public function testDestroyCookie()
     {
         $name         = 'Cookie name';
-        $value        = '@covers  Molajo\User\Cookie::initializeHttpOnly';
+        $value        = '@covers  Molajo\User\Cookie::initialiseHttpOnly';
         $minutes      = 1;
         $minutes_test = time() + 1;
         $path         = '/';
@@ -222,17 +222,17 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Cookie::destroyCookies
      * @covers  Molajo\User\Cookie::sendCookies
      * @covers  Molajo\User\Cookie::sendCookie
-     * @covers  Molajo\User\Cookie::initializeCookies
-     * @covers  Molajo\User\Cookie::initializeExpiration
-     * @covers  Molajo\User\Cookie::initializePath
-     * @covers  Molajo\User\Cookie::initializeDomain
-     * @covers  Molajo\User\Cookie::initializeSecure
-     * @covers  Molajo\User\Cookie::initializeHttpOnly
+     * @covers  Molajo\User\Cookie::initialiseCookies
+     * @covers  Molajo\User\Cookie::initialiseExpiration
+     * @covers  Molajo\User\Cookie::initialisePath
+     * @covers  Molajo\User\Cookie::initialiseDomain
+     * @covers  Molajo\User\Cookie::initialiseSecure
+     * @covers  Molajo\User\Cookie::initialiseHttpOnly
      */
     public function testSendCookies()
     {
         $name      = 'Cookie';
-        $value     = '@covers  Molajo\User\Cookie::initializeHttpOnly';
+        $value     = '@covers  Molajo\User\Cookie::initialiseHttpOnly';
         $minutes   = 1;
         $path      = '/';
         $domain    = '';

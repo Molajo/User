@@ -110,12 +110,12 @@ class Cookie implements CookieInterface
         $secure = 0,
         $http_only = false
     ) {
-        $this->initializeCookies($cookies);
-        $this->initializeExpiration($expire);
-        $this->initializePath($path);
-        $this->initializeDomain($domain);
-        $this->initializeSecure($secure);
-        $this->initializeHttpOnly($http_only);
+        $this->initialiseCookies($cookies);
+        $this->initialiseExpiration($expire);
+        $this->initialisePath($path);
+        $this->initialiseDomain($domain);
+        $this->initialiseSecure($secure);
+        $this->initialiseHttpOnly($http_only);
     }
 
     /**
@@ -351,7 +351,7 @@ class Cookie implements CookieInterface
      * @return  $this
      * @since   1.0
      */
-    protected function initializeCookies(array $cookies)
+    protected function initialiseCookies(array $cookies)
     {
         if (is_array($cookies)) {
             $this->cookies = $cookies;
@@ -370,7 +370,7 @@ class Cookie implements CookieInterface
      * @return  $this
      * @since   1.0
      */
-    protected function initializeExpiration($expire)
+    protected function initialiseExpiration($expire)
     {
         if ($expire === null) {
             $expire = 2628000;
@@ -389,7 +389,7 @@ class Cookie implements CookieInterface
      * @return  $this
      * @since   1.0
      */
-    protected function initializePath($path)
+    protected function initialisePath($path)
     {
         if ($path === null) {
             $path = '';
@@ -408,7 +408,7 @@ class Cookie implements CookieInterface
      * @return  $this
      * @since   1.0
      */
-    protected function initializeDomain($domain)
+    protected function initialiseDomain($domain)
     {
         if ($domain === null) {
             $domain = '';
@@ -427,7 +427,7 @@ class Cookie implements CookieInterface
      * @return  $this
      * @since   1.0
      */
-    protected function initializeSecure($secure = null)
+    protected function initialiseSecure($secure = null)
     {
         if ($secure === null) {
             $secure = false;
@@ -447,7 +447,7 @@ class Cookie implements CookieInterface
      * @return  $this
      * @since   1.0
      */
-    protected function initializeHttpOnly($http_only)
+    protected function initialiseHttpOnly($http_only)
     {
         if ($http_only === true) {
         } else {

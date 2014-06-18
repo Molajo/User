@@ -63,7 +63,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         $this->verifySession($session_id, 'login');
         $this->verifyUser('login');
         $this->verifyFormToken('login');
-        $this->verifyCredentials($username, $password);
+        $this->verifyUsernamePassword($username, $password);
 
         if ($this->error === true) {
             return $this->redirect401();
@@ -137,7 +137,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         $this->verifyUser('login');
         $this->verifyFormToken('login');
         $this->verifyPasswordChange($new_password);
-        $this->verifyCredentials($username, $password, $reset_password_code);
+        $this->verifyUsernamePassword($username, $password, $reset_password_code);
 
         if ($this->error === true) {
             return $this->redirect401();

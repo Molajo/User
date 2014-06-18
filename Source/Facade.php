@@ -91,7 +91,7 @@ class Facade implements UserInterface
     }
 
     /**
-     * Get user data using a value for id, username, email or initialize new user
+     * Get user data using a value for id, username, email or initialise new user
      *
      * @param   null|string $value
      * @param   null|string $key

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1403054694">
-  <project timestamp="1403054694">
+<coverage generated="1403057277">
+  <project timestamp="1403057277">
     <file name="/Users/amystephen/Sites/Molajo/user/.dev/Bootstrap.php">
       <line num="39" type="stmt" count="0"/>
       <line num="40" type="stmt" count="0"/>
@@ -298,37 +298,37 @@
         <line num="339" type="stmt" count="0"/>
         <line num="340" type="stmt" count="0"/>
         <line num="343" type="stmt" count="0"/>
-        <line num="354" type="method" name="initializeCookies" crap="2.03" count="5"/>
+        <line num="354" type="method" name="initialiseCookies" crap="2.03" count="5"/>
         <line num="356" type="stmt" count="5"/>
         <line num="357" type="stmt" count="5"/>
         <line num="358" type="stmt" count="5"/>
         <line num="359" type="stmt" count="0"/>
         <line num="362" type="stmt" count="5"/>
-        <line num="373" type="method" name="initializeExpiration" crap="2.26" count="5"/>
+        <line num="373" type="method" name="initialiseExpiration" crap="2.26" count="5"/>
         <line num="375" type="stmt" count="5"/>
         <line num="376" type="stmt" count="0"/>
         <line num="377" type="stmt" count="0"/>
         <line num="379" type="stmt" count="5"/>
         <line num="381" type="stmt" count="5"/>
-        <line num="392" type="method" name="initializePath" crap="2" count="5"/>
+        <line num="392" type="method" name="initialisePath" crap="2" count="5"/>
         <line num="394" type="stmt" count="5"/>
         <line num="395" type="stmt" count="5"/>
         <line num="396" type="stmt" count="5"/>
         <line num="398" type="stmt" count="5"/>
         <line num="400" type="stmt" count="5"/>
-        <line num="411" type="method" name="initializeDomain" crap="2" count="5"/>
+        <line num="411" type="method" name="initialiseDomain" crap="2" count="5"/>
         <line num="413" type="stmt" count="5"/>
         <line num="414" type="stmt" count="5"/>
         <line num="415" type="stmt" count="5"/>
         <line num="417" type="stmt" count="5"/>
         <line num="419" type="stmt" count="5"/>
-        <line num="430" type="method" name="initializeSecure" crap="2.26" count="5"/>
+        <line num="430" type="method" name="initialiseSecure" crap="2.26" count="5"/>
         <line num="432" type="stmt" count="5"/>
         <line num="433" type="stmt" count="0"/>
         <line num="434" type="stmt" count="0"/>
         <line num="436" type="stmt" count="5"/>
         <line num="438" type="stmt" count="5"/>
-        <line num="450" type="method" name="initializeHttpOnly" crap="2.06" count="5"/>
+        <line num="450" type="method" name="initialiseHttpOnly" crap="2.06" count="5"/>
         <line num="452" type="stmt" count="5"/>
         <line num="453" type="stmt" count="0"/>
         <line num="454" type="stmt" count="5"/>
@@ -447,7 +447,7 @@
         <line num="152" type="stmt" count="0"/>
         <line num="153" type="stmt" count="0"/>
         <line num="156" type="stmt" count="0"/>
-        <line num="167" type="method" name="initializeMessages" crap="3" count="3"/>
+        <line num="167" type="method" name="initialiseMessages" crap="3" count="3"/>
         <line num="169" type="stmt" count="3"/>
         <line num="170" type="stmt" count="3"/>
         <line num="171" type="stmt" count="3"/>

@@ -10,6 +10,7 @@ namespace Molajo\User\Authentication;
 
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
+use CommonApi\User\EncryptInterface;
 use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
 use CommonApi\User\UserDataInterface;
@@ -59,11 +60,20 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
     protected $updates = array();
 
     /**
+     * Encrypt Instance
+     *
+     * @var    object  CommonApi\User\EncryptInterface
+     * @since  1.0
+     */
+    protected $encrypt;
+
+    /**
      * Construct
      *
      * @param  UserDataInterface     $userdata
      * @param  MailerInterface       $mailer
      * @param  MessagesInterface     $messages
+     * @param  EncryptInterface      $encrypt
      * @param  FieldhandlerInterface $fieldhandler
      * @param  stdClass              $configuration
      * @param  object                $server
@@ -75,6 +85,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
         UserDataInterface $userdata,
         MailerInterface $mailer,
         MessagesInterface $messages,
+        EncryptInterface $encrypt,
         FieldhandlerInterface $fieldhandler,
         $configuration,
         $server,
@@ -83,6 +94,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
         $this->userdata = $userdata;
         $this->user     = $this->userdata->getUserdata();
         $this->today    = $this->user->today;
+        $this->encrypt  = $encrypt;
 
         parent::__construct(
             $mailer,
@@ -109,6 +121,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
         $this->updates['#__users.login_attempts'] = 0;
 
         $this->updateUserClearResetPasswordCode();
+
         $this->updateUserRemoveBlock();
 
         return $this;
@@ -141,7 +154,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
     {
         $this->updates['#__users.block'] = 0;
 
-        return $this;
+        return $this->updateUser();
     }
 
     /**
@@ -155,7 +168,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
     {
         $this->updates['#__users.block'] = 1;
 
-        return $this;
+        return $this->updateUser();
     }
 
     /**
@@ -189,7 +202,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
     {
         $hash = $this->encrypt->createHashString($new_password);
 
-        $this->updates['#__users.password']                  = $new_password;
+        $this->updates['#__users.password']                  = $hash;
         $this->updates['#__users.password_changed_datetime'] = $this->today;
 
         return $this;
@@ -205,7 +218,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
      */
     protected function updateUserSessionId($session_id)
     {
-        $this->updates['#__users.session_id'] = $this->session_id;
+        $this->updates['#__users.session_id'] = $session_id;
 
         return $this;
     }
@@ -238,6 +251,19 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
     }
 
     /**
+     * Set the Login Date Time
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function updateUserLastVisit()
+    {
+        $this->updates['#__users.last_visit_datetime'] = $this->today;
+
+        return $this;
+    }
+
+    /**
      * Update User
      *
      * @return  $this
@@ -248,19 +274,6 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
         $this->updateUserLastActivityDate();
 
         $this->user = $this->userdata->updateUserdata($this->updates);
-
-        return $this;
-    }
-
-    /**
-     * Set the Login Date Time
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    protected function updateUserLastVisit()
-    {
-        $this->updates['#__users.last_visit_datetime'] = $this->today;
 
         return $this;
     }

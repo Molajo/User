@@ -37,7 +37,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Messages::setFlashmessage
      * @covers  Molajo\User\Messages::formatMessage
      * @covers  Molajo\User\Messages::throwException
-     * @covers  Molajo\User\Messages::initializeMessages
+     * @covers  Molajo\User\Messages::initialiseMessages
      */
     public function setUp()
     {
@@ -57,7 +57,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Messages::setFlashmessage
      * @covers  Molajo\User\Messages::formatMessage
      * @covers  Molajo\User\Messages::throwException
-     * @covers  Molajo\User\Messages::initializeMessages
+     * @covers  Molajo\User\Messages::initialiseMessages
      */
     public function testSetMessage()
     {
@@ -76,7 +76,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Messages::setFlashmessage
      * @covers  Molajo\User\Messages::formatMessage
      * @covers  Molajo\User\Messages::throwException
-     * @covers  Molajo\User\Messages::initializeMessages
+     * @covers  Molajo\User\Messages::initialiseMessages
      */
     public function testFormatMessage()
     {
@@ -98,7 +98,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
      * @covers  Molajo\User\Messages::setFlashmessage
      * @covers  Molajo\User\Messages::formatMessage
      * @covers  Molajo\User\Messages::throwException
-     * @covers  Molajo\User\Messages::initializeMessages
+     * @covers  Molajo\User\Messages::initialiseMessages
      */
     public function testSetFlashMessage()
     {

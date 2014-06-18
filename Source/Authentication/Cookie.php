@@ -11,6 +11,7 @@ namespace Molajo\User\Authentication;
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\CookieInterface;
+use CommonApi\User\EncryptInterface;
 use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
 use CommonApi\User\UserDataInterface;
@@ -49,6 +50,7 @@ abstract class Cookie extends UpdateUser implements AuthenticationInterface
      * @param  CookieInterface       $cookie
      * @param  MailerInterface       $mailer
      * @param  MessagesInterface     $messages
+     * @param  EncryptInterface      $encrypt
      * @param  FieldhandlerInterface $fieldhandler
      * @param  stdClass              $configuration
      * @param  object                $server
@@ -61,6 +63,7 @@ abstract class Cookie extends UpdateUser implements AuthenticationInterface
         CookieInterface $cookie,
         MailerInterface $mailer,
         MessagesInterface $messages,
+        EncryptInterface $encrypt,
         FieldhandlerInterface $fieldhandler,
         $configuration,
         $server,
@@ -72,6 +75,7 @@ abstract class Cookie extends UpdateUser implements AuthenticationInterface
             $userdata,
             $mailer,
             $messages,
+            $encrypt,
             $fieldhandler,
             $configuration,
             $server,

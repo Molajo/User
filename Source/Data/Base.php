@@ -8,10 +8,8 @@
  */
 namespace Molajo\User\Data;
 
-use Exception;
 use stdClass;
 use CommonApi\Database\DatabaseInterface;
-use CommonApi\Exception\RuntimeException;
 use CommonApi\Query\QueryInterface;
 use CommonApi\User\UserDataInterface;
 
@@ -141,7 +139,6 @@ abstract class Base implements UserDataInterface
 
         return $this;
     }
-
 
     /**
      * Return object with custom fields loaded

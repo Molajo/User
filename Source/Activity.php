@@ -22,7 +22,7 @@ use CommonApi\Exception\RuntimeException;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class Activity implements ActivityInterface
+class UserActivity implements ActivityInterface
 {
     /**
      * Guest
@@ -55,14 +55,6 @@ class Activity implements ActivityInterface
      * @since  1.0
      */
     protected $messages;
-
-    /**
-     * Default Exception
-     *
-     * @var    string
-     * @since  1.0
-     */
-    protected $default_exception = 'CommonApi\\Exception\\RuntimeException';
 
     /**
      * activity_id
@@ -169,7 +161,6 @@ class Activity implements ActivityInterface
      * @param  DatabaseInterface $database
      * @param  QueryInterface    $query
      * @param  MessagesInterface $messages
-     * @param  null              $default_exception
      * @param  int               $id
      *
      * @since  1.0
@@ -178,17 +169,11 @@ class Activity implements ActivityInterface
         DatabaseInterface $database,
         QueryInterface $query,
         MessagesInterface $messages,
-        $default_exception = null,
         $id = 0
     ) {
         $this->database = $database;
         $this->query    = $query;
         $this->messages = $messages;
-
-        if ($default_exception === null) {
-        } else {
-            $this->default_exception = $default_exception;
-        }
 
         if ($id === 0) {
             $this->guest = true;
@@ -221,15 +206,6 @@ class Activity implements ActivityInterface
      */
     public function get($key = null, $default = null)
     {
-        $key = strtolower($key);
-
-        if (in_array($key, $this->property_array)) {
-        } else {
-            $options        = array();
-            $options['key'] = $key;
-            $this->messages->throwException(5010, $options, $this->default_exception);
-        }
-
         if ($this->$key === null) {
             $this->$key = $default;
         }
@@ -248,15 +224,6 @@ class Activity implements ActivityInterface
      */
     public function set($key, $value = null)
     {
-        $key = strtolower($key);
-
-        if (in_array($key, $this->property_array)) {
-        } else {
-            $options        = array();
-            $options['key'] = $key;
-            $this->messages->throwException(5015, $options, $this->default_exception);
-        }
-
         $this->$key = $value;
 
         return $this;
@@ -279,8 +246,7 @@ class Activity implements ActivityInterface
     }
 
     /**
-     * Retrieve User View Groups
-     * echo $this->database->getSQL();
+     * Retrieve User Activity
      *
      * @param   string $id
      *
@@ -289,8 +255,6 @@ class Activity implements ActivityInterface
      */
     protected function getUserActivity($id)
     {
-        $data = array();
-
         if ($this->guest === false) {
 
             $this->query->clearQuery();
@@ -301,10 +265,10 @@ class Activity implements ActivityInterface
             $this->query->orderBy('activity_datetime', 'DESC');
 
             $data = $this->database->loadObjectList($this->query->getSQL());
-        }
 
-        if (is_array($data) && count($data) > 0) {
-            $this->activity = $data;
+            if (is_array($data) && count($data) > 0) {
+                $this->activity = $data;
+            }
         }
 
         return $this;
@@ -341,7 +305,7 @@ class Activity implements ActivityInterface
         $results = $this->database->execute($this->query->getSQL());
 
         if ($results === false) {
-            $this->messages->throwException(1700, array(), $this->default_exception);
+            $this->messages->throwException(1700, array(), 'CommonApi\\Exception\\RuntimeException');
         }
 
         $this->getUserActivity($this->id);
@@ -369,7 +333,7 @@ class Activity implements ActivityInterface
         $results = $this->database->execute($this->query->getSQL());
 
         if ($results === false) {
-            $this->messages->throwException(1800, array(), $this->default_exception);
+            $this->messages->throwException(1800, array(), 'CommonApi\\Exception\\RuntimeException');
         }
 
         $this->getUser($this->id);

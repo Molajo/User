@@ -19,7 +19,7 @@ use CommonApi\User\AuthenticationInterface;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-abstract class VerifyUser extends UpdateUser implements AuthenticationInterface
+abstract class VerifyUser extends Session implements AuthenticationInterface
 {
     /**
      * Is the user permitted to logon?

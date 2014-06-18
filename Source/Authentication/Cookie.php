@@ -1,6 +1,6 @@
 <?php
 /**
- * Authentication Set
+ * User Cookie Authentication
  *
  * @package    Molajo
  * @copyright  2014 Amy Stephen. All rights reserved.
@@ -17,7 +17,7 @@ use CommonApi\User\UserDataInterface;
 use stdClass;
 
 /**
- * Authentication Set
+ * User Cookie Authentication
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License

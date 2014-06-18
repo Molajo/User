@@ -11,8 +11,6 @@ namespace Molajo\User\Authentication;
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\MailerInterface;
 use CommonApi\User\MessagesInterface;
-use CommonApi\User\UserDataInterface;
-use DateTime;
 use stdClass;
 
 /**

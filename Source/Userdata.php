@@ -31,9 +31,9 @@ class Userdata implements UserDataInterface
      * @since  1.0
      */
     const GROUP_ADMINISTRATOR = 1;
-    const GROUP_PUBLIC        = 2;
-    const GROUP_GUEST         = 3;
-    const GROUP_REGISTERED    = 4;
+    const GROUP_PUBLIC = 2;
+    const GROUP_GUEST = 3;
+    const GROUP_REGISTERED = 4;
 
     /**
      * Database Instance
@@ -118,17 +118,17 @@ class Userdata implements UserDataInterface
 
         if ($value === null) {
 
-        } elseif ($key == 'id') {
+        } elseif ($key === 'id') {
             $column            = 'id';
             $data_type         = 'userid';
             $this->user->guest = 0;
 
-        } elseif ($key == 'email') {
+        } elseif ($key === 'email') {
             $column            = 'email';
             $data_type         = 'email';
             $this->user->guest = 0;
 
-        } elseif ($key == 'username') {
+        } elseif ($key === 'username') {
             $column            = 'username';
             $data_type         = 'username';
             $this->user->guest = 0;
@@ -219,18 +219,22 @@ class Userdata implements UserDataInterface
             if (strpos($table_column, '.')) {
                 $temp = explode('.', $table_column);
 
-                if (count($temp) == 2) {
+                if (count($temp) === 2) {
                 } else {
                     throw new RuntimeException
-                    ('Userdata-updateUserdata Method: Illegal Value for $table_column: ' . $table_column);
+                    (
+                        'Userdata-updateUserdata Method: Illegal Value for $table_column: ' . $table_column
+                    );
                 }
 
-                if (trim($table) == '' || $table == strtolower($temp[0])) {
+                if (trim($table) === '' || $table === strtolower($temp[0])) {
                 } else {
                     throw new RuntimeException
-                    ('Userdata-updateUserdata Method: Attempting to update multiple tables simultaneously'
-                    . ' Previous table: ' . $table
-                    . ' Different table value: ' . strtolower($temp[0]));
+                    (
+                        'Userdata-updateUserdata Method: Attempting to update multiple tables simultaneously'
+                        . ' Previous table: ' . $table
+                        . ' Different table value: ' . strtolower($temp[0])
+                    );
                 }
 
                 $table                   = strtolower($temp[0]);
@@ -259,7 +263,9 @@ class Userdata implements UserDataInterface
 
         } catch (Exception $e) {
             throw new RuntimeException
-            ('Userdata::updateUserdata Failed: ' . $e->getMessage());
+            (
+                'Userdata::updateUserdata Failed: ' . $e->getMessage()
+            );
         }
 
         return $this->user;
@@ -277,14 +283,16 @@ class Userdata implements UserDataInterface
      */
     protected function getDatatype($table, $column)
     {
-        if ($table == '#__users') {
+        if ($table === '#__users') {
             return $this->getDatatypeStandard($column);
         }
         // need custom fields
         // need child objects
 
         throw new RuntimeException
-        ('Userdata-getDatatype Method: Unidentified User Table: ' . $table);
+        (
+            'Userdata-getDatatype Method: Unidentified User Table: ' . $table
+        );
     }
 
     /**
@@ -301,18 +309,22 @@ class Userdata implements UserDataInterface
         if (count($this->model_registry['fields']) > 0) {
         } else {
             throw new RuntimeException
-            ('Userdata-getDatatypeStandard Method: Empty model_registry for Standard Fields.');
+            (
+                'Userdata-getDatatypeStandard Method: Empty model_registry for Standard Fields.'
+            );
         }
 
         foreach ($this->model_registry['fields'] as $field) {
             $name = $field['name'];
-            if ($name == $column) {
+            if ($name === $column) {
                 return $field['type'];
             }
         }
 
         throw new RuntimeException
-        ('Userdata-getDatatypeStandard Method: Standard Field does not exist: ' . $column);
+        (
+            'Userdata-getDatatypeStandard Method: Standard Field does not exist: ' . $column
+        );
     }
 
     /**
@@ -328,7 +340,9 @@ class Userdata implements UserDataInterface
     protected function getDatatypeChild($table, $column)
     {
         throw new RuntimeException
-        ('Userdata-getDatatypeChild Method: Child does not exist. Table: ' . $table . ' Column: ' . $column);
+        (
+            'Userdata-getDatatypeChild Method: Child does not exist. Table: ' . $table . ' Column: ' . $column
+        );
     }
 
     /**
@@ -352,7 +366,9 @@ class Userdata implements UserDataInterface
 
         } catch (Exception $e) {
             throw new RuntimeException
-            ('Userdata::deleteUserdata Failed: ' . $e->getMessage());
+            (
+                'Userdata::deleteUserdata Failed: ' . $e->getMessage()
+            );
         }
 
         return $this;
@@ -389,7 +405,9 @@ class Userdata implements UserDataInterface
 
         } catch (Exception $e) {
             throw new RuntimeException
-            ('Userdata::getUser Failed: ' . $e->getMessage());
+            (
+                'Userdata::getUser Failed: ' . $e->getMessage()
+            );
         }
 
         return $data;
@@ -459,9 +477,9 @@ class Userdata implements UserDataInterface
 
         if (count($fields) > 0) {
             foreach ($fields as $field) {
-                if ($field['name'] == $join) {
+                if ($field['name'] === $join) {
                 } else {
-                    $count ++;
+                    $count++;
                     $hold_field = $field['name'];
                     $this->query->select($field['name']);
                 }
@@ -474,7 +492,7 @@ class Userdata implements UserDataInterface
         $results = $this->database->loadObjectList($this->query->getSQL());
 
         $value = array();
-        if ($count == 1) {
+        if ($count === 1) {
             if (count($results) > 0) {
                 foreach ($results as $result) {
                     $value[] = $result->$hold_field;

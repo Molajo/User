@@ -9,7 +9,7 @@
 namespace Molajo\User;
 
 use CommonApi\User\AuthenticationInterface;
-use Molajo\User\Authentication\Verify;
+use Molajo\User\Authentication\VerifyCredentials;
 use stdClass;
 
 /**
@@ -20,12 +20,12 @@ use stdClass;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class Authentication extends Verify implements AuthenticationInterface
+class Authentication extends VerifyCredentials implements AuthenticationInterface
 {
     /**
      * Guest - verify the Session
      *
-     * @param   string   $session_id
+     * @param   string $session_id
      *
      * @return  int
      * @since   1.0
@@ -48,10 +48,10 @@ class Authentication extends Verify implements AuthenticationInterface
     /**
      * Login - verify username and password, handle remember request
      *
-     * @param   string   $session_id
-     * @param   string   $username
-     * @param   string   $password
-     * @param   boolean  $remember
+     * @param   string  $session_id
+     * @param   string  $username
+     * @param   string  $password
+     * @param   boolean $remember
      *
      * @return  int
      * @since   1.0
@@ -66,11 +66,7 @@ class Authentication extends Verify implements AuthenticationInterface
         $this->verifyCredentials($username, $password);
 
         if ($this->error === true) {
-            $redirect       = new stdClass();
-            $redirect->code = 401;
-            $redirect->url  = $this->configuration->url_to_login;
-
-            return $redirect;
+            return $this->redirect401();
         }
 
         $this->setSessionLogin();
@@ -80,14 +76,12 @@ class Authentication extends Verify implements AuthenticationInterface
             $this->remember = $options['remember'];
         }
 
-        if ((int)$this->remember == 1) {
+        if ((int)$this->remember === 1) {
         }
 
-        $this->clearLoginAttempts();
-        $this->clearResetPasswordCode();
-        $this->updates['#__users.last_visit_datetime']    = $this->today;
-        $this->updates['#__users.last_activity_datetime'] = $this->today;
-
+        $this->updateUserClearLoginAttempts();
+        $this->updateUserClearResetPasswordCode();
+        $this->updateUserLastVisit();
         $this->updateUser();
 
         return $this->user->id;
@@ -110,14 +104,10 @@ class Authentication extends Verify implements AuthenticationInterface
         $this->verifyFormToken('isLoggedOn');
 
         if ($this->error === true) {
-            $redirect       = new stdClass();
-            $redirect->code = 401;
-            $redirect->url  = $this->configuration->url_to_login;
-            return $redirect;
+            return $this->redirect401();
         }
 
-        $this->updates['#__users.last_activity_datetime'] = $this->today;
-        $this->user                                       = $this->updateUser();
+        $this->updateUser();
 
         return $this->user->id;
     }
@@ -136,7 +126,7 @@ class Authentication extends Verify implements AuthenticationInterface
      * @since   1.0
      */
     public function changePassword(
-        $session_id = '',
+        $session_id,
         $username,
         $password = '',
         $new_password = '',
@@ -150,24 +140,18 @@ class Authentication extends Verify implements AuthenticationInterface
         $this->verifyCredentials($username, $password, $reset_password_code);
 
         if ($this->error === true) {
-            $redirect       = new stdClass();
-            $redirect->code = 401;
-            $redirect->url  = $this->configuration->url_to_login;
-            return $redirect;
+            return $this->redirect401();
         }
 
-        //$hash                                       = $this->encrypt->createHashString($new_password);
-        $this->updates['#__users.password']                  = $new_password; //$hash;
-        $this->updates['#__users.password_changed_datetime'] = $this->today;
-        $this->updates['#__users.last_visit_datetime']       = $this->today;
-        $this->updates['#__users.last_activity_datetime']    = $this->today;
-
-        $this->clearLoginAttempts();
-        $this->clearResetPasswordCode();
+        $this->updateUserPassword($new_password);
+        $this->updateUserLastVisit();
+        $this->updateUserLastActivityDate();
+        $this->updateUserClearLoginAttempts();
+        $this->updateUserClearResetPasswordCode();
 
         $this->user = $this->updateUser();
 
-        if ((int)$this->remember == true) {
+        if ((int)$this->remember === true) {
             //$this->saveRememberMeCookie();
         }
 
@@ -190,17 +174,14 @@ class Authentication extends Verify implements AuthenticationInterface
         $this->verifyFormToken('requestPasswordReset');
 
         if ($this->error === true) {
-            $redirect       = new stdClass();
-            $redirect->code = 401;
-            $redirect->url  = $this->configuration->url_to_login;
-            return $redirect;
+            return $this->redirect401();
         }
 
-        if ($this->user->reset_password_code == '') {
-            $this->setResetPasswordCode();
+        if ($this->user->reset_password_code === '') {
+            $this->updateUserResetPasswordCode();
         }
-        $this->updates['#__users.last_activity_datetime'] = $this->today;
-        $this->user                                       = $this->updateUser();
+
+        $this->updateUser();
 
         $options          = array();
         $options['type']  = 'password_reset_request';
@@ -233,20 +214,27 @@ class Authentication extends Verify implements AuthenticationInterface
         $this->verifyFormToken('logout');
 
         if ($this->error === true) {
-            $redirect       = new stdClass();
-            $redirect->code = 401;
-            $redirect->url  = $this->configuration->url_to_login;
-            return $redirect;
+            return $this->redirect401();
         }
 
-        $this->updates['#__users.last_activity_datetime'] = $this->today;
-        $this->user                                       = $this->updateUser();
-        $this->session->destroySession();
-        //$this->cookie->forget();
+        $this->updateUser();
+        $this->destroySession();
+        $this->forgetCookie();
 
+        return $this->redirect401();
+    }
+
+    /**
+     * Redirect 401
+     *
+     * @return  stdClass
+     * @since   1.0
+     */
+    protected function redirect401()
+    {
         $redirect       = new stdClass();
         $redirect->code = 401;
-        $redirect->url  = $this->configuration->url_for_home;
+        $redirect->url  = $this->configuration->url_to_login;
 
         return $redirect;
     }

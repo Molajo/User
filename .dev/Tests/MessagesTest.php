@@ -43,7 +43,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
     {
         $flashmessage = new MockFlashmessage();
 
-        include __DIR__ . '/Files/messages.php';  // $messages variable
+        include __DIR__ . '/Files/messages.php'; // $messages variable
 
         $this->messages = new Messages($flashmessage, $messages);
 
@@ -62,7 +62,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
     public function testSetMessage()
     {
         $message_id = 111111111111;
-        $message = 'This is a message';
+        $message    = 'This is a message';
 
         $this->messages->setMessage($message_id, $message);
 
@@ -81,8 +81,8 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
     public function testFormatMessage()
     {
         $message_id = 9090909090;
-        $message = 'This is a {name}.';
-        $answer = 'This is a Test.';
+        $message    = 'This is a {name}.';
+        $answer     = 'This is a Test.';
 
         $this->messages->setMessage($message_id, $message);
 
@@ -103,8 +103,8 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
     public function testSetFlashMessage()
     {
         $message_id = 9090909090;
-        $message = 'This is a {name}.';
-        $answer = 'Type: Error  Message: This is a Test.';
+        $message    = 'This is a {name}.';
+        $answer     = 'Type: Error  Message: This is a Test.';
 
         $this->messages->setMessage($message_id, $message);
 

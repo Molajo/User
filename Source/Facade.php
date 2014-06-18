@@ -269,15 +269,15 @@ class Facade implements UserInterface
         $http_only = false
     ) {
         return $this->cookie->setCookie
-            (
-                $name,
-                $value,
-                $minutes,
-                $path,
-                $domain,
-                $secure,
-                $http_only
-            );
+        (
+            $name,
+            $value,
+            $minutes,
+            $path,
+            $domain,
+            $secure,
+            $http_only
+        );
     }
 
     /**

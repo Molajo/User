@@ -67,7 +67,7 @@ class Encrypt implements EncryptInterface
             $this->length = (int)$length;
         }
 
-        if ($characters === null || trim($characters) == '') {
+        if ($characters === null || trim($characters) === '') {
         } else {
             $this->characters = $characters;
         }

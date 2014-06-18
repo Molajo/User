@@ -122,8 +122,8 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
         switch ($action) {
 
             case 'login':
-echo 'yes';
-die;
+                echo 'yes';
+                die;
                 $results = $this->product_result->$action(
                     $this->options['session_id'],
                     $this->options['username'],

@@ -77,8 +77,8 @@ class Mailer implements MailerInterface
     /**
      * Set the Option Values, Initiate Rendering, Send
      *
-     * @param   string  $template
-     * @param   object  $input_data
+     * @param   string $template
+     * @param   object $input_data
      *
      * @return  $this
      * @since   1.0
@@ -93,8 +93,8 @@ class Mailer implements MailerInterface
     /**
      * Set the Option Values, Initiate Rendering, Send
      *
-     * @param   string  $template
-     * @param   object  $input_data
+     * @param   string $template
+     * @param   object $input_data
      *
      * @return  $this
      * @since   1.0

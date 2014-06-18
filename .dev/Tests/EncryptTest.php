@@ -43,7 +43,7 @@ class EncryptTest extends \PHPUnit_Framework_TestCase
         include __DIR__ . '/Files/messages.php'; // $messages variable
         $messages_instance = new Messages($flashmessage_instance, $messages);
 
-        $templates  = $this->getTemplates();
+        $templates = $this->getTemplates();
 
         $this->encrypt = new Encrypt($messages_instance);
 
@@ -60,7 +60,7 @@ class EncryptTest extends \PHPUnit_Framework_TestCase
     public function testCreateHashString()
     {
         $input = 'abcdefghijklmnopqrstuvwxyz';
-        $hash = $this->encrypt->createHashString($input);
+        $hash  = $this->encrypt->createHashString($input);
 
         $this->assertGreaterThan(14, strlen($hash));
     }
@@ -74,7 +74,7 @@ class EncryptTest extends \PHPUnit_Framework_TestCase
      */
     public function testVerifyHashString()
     {
-        $hash = '$2y$10$xXDeh0L9eyBkK1Ee9dv.g.Ry.NPmqnI7QiVxTdVUZ6uHqqtPUBr9K';
+        $hash  = '$2y$10$xXDeh0L9eyBkK1Ee9dv.g.Ry.NPmqnI7QiVxTdVUZ6uHqqtPUBr9K';
         $input = 'abc';
 
         $this->assertEquals(true, $this->encrypt->verifyHashString($input, $hash));

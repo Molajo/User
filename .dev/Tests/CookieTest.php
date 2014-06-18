@@ -76,14 +76,14 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetCookie()
     {
-        $name = 'Cookie name';
-        $value = '@covers  Molajo\User\Cookie::initializeHttpOnly';
-        $minutes = 1;
+        $name         = 'Cookie name';
+        $value        = '@covers  Molajo\User\Cookie::initializeHttpOnly';
+        $minutes      = 1;
         $minutes_test = time() + 1;
-        $path = '/';
-        $domain = '';
-        $secure = false;
-        $http_only = false;
+        $path         = '/';
+        $domain       = '';
+        $secure       = false;
+        $http_only    = false;
 
         $this->cookie->setCookie($name, $value, $minutes, $path, $domain, $secure, $http_only);
 
@@ -120,14 +120,14 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDeleteGetCookie()
     {
-        $name = 'Cookie name';
-        $value = '@covers  Molajo\User\Cookie::initializeHttpOnly';
-        $minutes = 1;
+        $name         = 'Cookie name';
+        $value        = '@covers  Molajo\User\Cookie::initializeHttpOnly';
+        $minutes      = 1;
         $minutes_test = time() + 1;
-        $path = '/';
-        $domain = '';
-        $secure = false;
-        $http_only = false;
+        $path         = '/';
+        $domain       = '';
+        $secure       = false;
+        $http_only    = false;
 
         $this->cookie->setCookie($name, $value, $minutes, $path, $domain, $secure, $http_only);
 
@@ -193,14 +193,14 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      */
     public function testDestroyCookie()
     {
-        $name = 'Cookie name';
-        $value = '@covers  Molajo\User\Cookie::initializeHttpOnly';
-        $minutes = 1;
+        $name         = 'Cookie name';
+        $value        = '@covers  Molajo\User\Cookie::initializeHttpOnly';
+        $minutes      = 1;
         $minutes_test = time() + 1;
-        $path = '/';
-        $domain = '';
-        $secure = false;
-        $http_only = false;
+        $path         = '/';
+        $domain       = '';
+        $secure       = false;
+        $http_only    = false;
 
         $this->cookie->setCookie($name, $value, $minutes, $path, $domain, $secure, $http_only);
 
@@ -231,18 +231,18 @@ class CookieTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendCookies()
     {
-        $name = 'Cookie';
-        $value = '@covers  Molajo\User\Cookie::initializeHttpOnly';
-        $minutes = 1;
-        $path = '/';
-        $domain = '';
-        $secure = false;
+        $name      = 'Cookie';
+        $value     = '@covers  Molajo\User\Cookie::initializeHttpOnly';
+        $minutes   = 1;
+        $path      = '/';
+        $domain    = '';
+        $secure    = false;
         $http_only = false;
 
         setcookie($name, $value, $minutes, $path, $domain, $secure, $http_only);
 
 //$this->cookie->sendCookies($name, $value, $minutes, $path, $domain, $secure, $http_only);
-        $cookie =  readJsonFile(__DIR__ . '/Files/testcookie.json');
+        $cookie = readJsonFile(__DIR__ . '/Files/testcookie.json');
 
         $this->assertEquals($name, $cookie['name']);
         $this->assertEquals($value, $cookie['value']);

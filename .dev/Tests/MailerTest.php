@@ -54,7 +54,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         include __DIR__ . '/Files/messages.php'; // $messages variable
         $messages_instance = new Messages($flashmessage_instance, $messages);
 
-        $templates  = $this->getTemplates();
+        $templates = $this->getTemplates();
 
         $template_instance = new TextTemplate($fieldhandler_instance, $messages_instance, $templates);
 
@@ -91,7 +91,8 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $row->body                = '<h2>Stuff goes here</h2>';
         $row->mailer_html_or_text = 'html';
 
-        $expected_results = 'On 12/31/2014, Jo Money requested a password reset. The link expires when the password is changed or the next time the account is logged in. Please click http://example.com/link to change the password now.';
+        $expected_results
+            = 'On 12/31/2014, Jo Money requested a password reset. The link expires when the password is changed or the next time the account is logged in. Please click http://example.com/link to change the password now.';
 
         $this->mailer->send('password_reset_request.template', $row);
 

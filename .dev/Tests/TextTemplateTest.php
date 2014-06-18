@@ -54,7 +54,7 @@ class TextTemplateTest extends \PHPUnit_Framework_TestCase
         include __DIR__ . '/Files/messages.php'; // $messages variable
         $messages_instance = new Messages($flashmessage_instance, $messages);
 
-        $templates  = $this->getTemplates();
+        $templates = $this->getTemplates();
 
         $this->text_template = new TextTemplate(
             $fieldhandler_instance,

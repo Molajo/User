@@ -84,7 +84,7 @@ class Flashmessage implements FlashMessageInterface
     {
         $list = array();
 
-        if ($type == null) {
+        if ($type === null) {
             $list = $this->flash_types;
         } else {
             $list[] = $type;
@@ -118,7 +118,9 @@ class Flashmessage implements FlashMessageInterface
         } else {
             // Cannot use messages instance due to messages instance requiring session
             throw new $this->flash_message_exception
-            ('Invalid Type: ' . $type . ' specified for setFlashmessage.');
+            (
+                'Invalid Type: ' . $type . ' specified for setFlashmessage.'
+            );
         }
 
         $type_messages = $this->session->getSession($type);
@@ -150,7 +152,7 @@ class Flashmessage implements FlashMessageInterface
     {
         $list = array();
 
-        if ($type == null) {
+        if ($type === null) {
             $list = $this->flash_types;
         } else {
             $list[] = $type;

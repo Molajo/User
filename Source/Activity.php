@@ -150,17 +150,18 @@ class Activity implements ActivityInterface
      * @var    object
      * @since  1.0
      */
-    protected $property_array = array(
-        'activity_id',
-        'id',
-        'user_id',
-        'action_id',
-        'catalog_id',
-        'session_id',
-        'activity_datetime',
-        'ip_address',
-        'activity'
-    );
+    protected $property_array
+        = array(
+            'activity_id',
+            'id',
+            'user_id',
+            'action_id',
+            'catalog_id',
+            'session_id',
+            'activity_datetime',
+            'ip_address',
+            'activity'
+        );
 
     /**
      * Construct

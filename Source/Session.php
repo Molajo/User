@@ -49,7 +49,7 @@ class Session implements SessionInterface
     {
         $key = (string)$key;
 
-        if ($key == 'session_id') {
+        if ($key === 'session_id') {
             return session_id();
         }
 

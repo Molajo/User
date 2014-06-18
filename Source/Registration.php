@@ -23,8 +23,8 @@ class Registration implements RegistrationInterface
 {
     /** Exception error code */
     const AUTHENTICATE_STATUS_SUCCESS = 1,
-        AUTHENTICATE_STATUS_CANCEL    = 2,
-        AUTHENTICATE_STATUS_FAILURE   = 3;
+        AUTHENTICATE_STATUS_CANCEL = 2,
+        AUTHENTICATE_STATUS_FAILURE = 3;
 
     /**
      * Activation Code

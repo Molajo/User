@@ -87,8 +87,10 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
             } else {
 
                 throw new RuntimeException
-                ('IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
-                . 'Template folder does not exist ' . $template_folder);
+                (
+                    'IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
+                    . 'Template folder does not exist ' . $template_folder
+                );
             }
         }
 
@@ -101,7 +103,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
             $temp = scandir($template_folder);
 
             foreach ($temp as $file) {
-                if ($file === '.' || $file == '..') {
+                if ($file === '.' || $file === '..') {
                 } else {
                     $template_files[] = $file;
                 }
@@ -111,8 +113,10 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
         if (count($template_files) > 0) {
         } else {
             throw new RuntimeException
-            ('IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
-            . 'Template folder does not contain templates: ' . $template_folder);
+            (
+                'IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
+                . 'Template folder does not contain templates: ' . $template_folder
+            );
         }
 
         $templates = array();
@@ -126,12 +130,15 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
                     $template_name,
                     0,
                     strlen($template_name) - 4
-                )] = $template; // $template is defined in the included file
+                )]
+                    = $template; // $template is defined in the included file
 
             } else {
                 throw new RuntimeException
-                ('IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
-                . ' Template File does not exist. (This should never happen.');
+                (
+                    'IoC Factory Method Adapter Instance Failed for Molajo\User\TextTemplate '
+                    . ' Template File does not exist. (This should never happen.'
+                );
             }
         }
 

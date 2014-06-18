@@ -78,7 +78,7 @@ class InstantiateuserFactoryMethod extends FactoryMethodBase implements FactoryI
      */
     public function scheduleFactories()
     {
-        $options = array();
+        $options                                = array();
         $this->schedule_factory_methods['Date'] = $options;
 
         return $this->schedule_factory_methods;

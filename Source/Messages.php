@@ -101,7 +101,7 @@ class Messages implements MessagesInterface
      */
     public function getMessage($message_id = 0, array $values = array())
     {
-        if ((int)$message_id == 0) {
+        if ((int)$message_id === 0) {
             return $this->messages;
         }
 

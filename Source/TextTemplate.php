@@ -284,7 +284,7 @@ class TextTemplate implements TemplateInterface
      */
     protected function replaceTokens()
     {
-        if (count($this->tokens) == 0) {
+        if (count($this->tokens) === 0) {
             return $this;
         }
 

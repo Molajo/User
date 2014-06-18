@@ -180,12 +180,12 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
 
         $this->options['session_id'] = $session_id;
 
-        if ($this->options['action'] == 'login'
-            || $this->options['action'] == 'changePassword'
-            || $this->options['action'] == 'requestPasswordReset'
-            || $this->options['action'] == 'logout'
-            || $this->options['action'] == 'register'
-            || $this->options['action'] == 'confirmRegistration'
+        if ($this->options['action'] === 'login'
+            || $this->options['action'] === 'changePassword'
+            || $this->options['action'] === 'requestPasswordReset'
+            || $this->options['action'] === 'logout'
+            || $this->options['action'] === 'register'
+            || $this->options['action'] === 'confirmRegistration'
         ) {
 
         } else {
@@ -196,8 +196,8 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
             $this->options['reset_password_code']            = '';
             $this->options['registration_confirmation_code'] = '';
             $this->options['username']
-                = $this->dependencies['Session']->getSession($session_id);
-            if ($this->options['username'] == false) {
+                                                             = $this->dependencies['Session']->getSession($session_id);
+            if ($this->options['username'] === false) {
                 $this->options['action']   = 'isGuest';
                 $this->options['username'] = '';
             } else {
@@ -221,14 +221,14 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
 
         $options = array();
         foreach ($x as $key => $value) {
-                $options[$key] = $value;
+            $options[$key] = $value;
         }
 
         foreach ($this->dependencies as $key => $value) {
             $options[$key] = $value;
         }
 
-        $options['registration_actions']            = $this->registration_actions;
+        $options['registration_actions'] = $this->registration_actions;
 
         $this->schedule_factory_methods['Userdata'] = $options;
 

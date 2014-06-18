@@ -66,7 +66,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['messages']           = $this->setMessages();
+        $this->dependencies['messages'] = $this->setMessages();
 
         return $this->dependencies;
     }

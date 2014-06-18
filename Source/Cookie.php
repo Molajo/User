@@ -183,7 +183,7 @@ class Cookie implements CookieInterface
      */
     protected function setCookieTime($minutes)
     {
-        if ($minutes == 0) {
+        if ($minutes === 0) {
             $minutes = $this->expire / 24;
         }
 
@@ -202,7 +202,7 @@ class Cookie implements CookieInterface
      */
     protected function setCookiePath($path)
     {
-        if ($path == '') {
+        if ($path === '') {
             $path = $this->path;
         }
 
@@ -219,7 +219,7 @@ class Cookie implements CookieInterface
      */
     protected function setCookieDomain($domain)
     {
-        if ($domain == '') {
+        if ($domain === '') {
             $domain = $this->domain;
         }
 
@@ -443,6 +443,7 @@ class Cookie implements CookieInterface
      *
      *
      * @param boolean $http_only
+     *
      * @return  $this
      * @since   1.0
      */

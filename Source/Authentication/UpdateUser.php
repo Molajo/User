@@ -25,7 +25,7 @@ use stdClass;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-abstract class UpdateUser extends Base implements AuthenticationInterface
+abstract class UpdateUser extends Encrypt implements AuthenticationInterface
 {
     /**
      * User Data Instance
@@ -60,14 +60,6 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
     protected $updates = array();
 
     /**
-     * Encrypt Instance
-     *
-     * @var    object  CommonApi\User\EncryptInterface
-     * @since  1.0
-     */
-    protected $encrypt;
-
-    /**
      * Construct
      *
      * @param  UserDataInterface     $userdata
@@ -94,11 +86,11 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
         $this->userdata = $userdata;
         $this->user     = $this->userdata->getUserdata();
         $this->today    = $this->user->today;
-        $this->encrypt  = $encrypt;
 
         parent::__construct(
             $mailer,
             $messages,
+            $encrypt,
             $fieldhandler,
             $configuration,
             $server,
@@ -200,7 +192,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
      */
     protected function updateUserPassword($new_password)
     {
-        $hash = $this->encrypt->createHashString($new_password);
+        $hash = $this->createHashString($new_password);
 
         $this->updates['#__users.password']                  = $hash;
         $this->updates['#__users.password_changed_datetime'] = $this->today;
@@ -232,7 +224,7 @@ abstract class UpdateUser extends Base implements AuthenticationInterface
      */
     protected function updateUserResetPasswordCode()
     {
-        $this->updates['#__users.reset_password_code'] = $this->encrypt->generateString();
+        $this->updates['#__users.reset_password_code'] = $this->generateString();
 
         return $this;
     }

@@ -279,7 +279,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
     protected function setFormToken()
     {
         if ($this->getSessionValue('form_token') === false) {
-            $token = $this->encryptGenerateString();
+            $token = $this->generateString();
             $this->setSessionValue('form_token', $token);
         }
 
@@ -399,30 +399,5 @@ abstract class Session extends Cookie implements AuthenticationInterface
     protected function destroySession()
     {
         return $this->session->destroySession();
-    }
-
-    /**
-     * Generate a Random String
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    protected function encryptGenerateString()
-    {
-        return $this->encrypt->generateString();
-    }
-
-
-    /**
-     * Verify Hash String
-     *
-     * @param   string  $password
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    protected function verifyHashString($password)
-    {
-        return $this->encrypt->verifyHashString($password, $this->user->password);
     }
 }

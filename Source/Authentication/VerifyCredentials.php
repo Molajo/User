@@ -37,9 +37,9 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
         $reset_password_code = ''
     ) {
         if ($this->configuration->password_email_address_as_username === true) {
-            $this->verifyUserProvidedKey('email', $username);
+            $this->verifyUserProvidedKey('email', $username, 1300);
         } else {
-            $this->verifyUserProvidedKey('username', $username);
+            $this->verifyUserProvidedKey('username', $username, 1310);
         }
 
         $this->verifyUserPassword($password, $reset_password_code);
@@ -50,19 +50,20 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
     /**
      * Verify User for Username or Email
      *
-     * @param   string $key
-     * @param   string $value
+     * @param   string  $key
+     * @param   string  $value
+     * @param   integer $message_id
      *
      * @return  $this
      * @since   1.0
      */
-    protected function verifyUserProvidedKey($key, $value)
+    protected function verifyUserProvidedKey($key, $value, $message_id)
     {
         if ($this->user->$key === $value) {
-            return true;
+            return $this;
         }
 
-        return false;
+        return $this->setUserPasswordError($message_id);
     }
 
     /**
@@ -132,7 +133,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
      */
     protected function verifyUserPasswordHash($password)
     {
-        if ($this->verifyHashString($password) === true) {
+        if ($this->verifyHashString($password, $this->user->password) === true) {
             return $this;
         }
 
@@ -193,15 +194,10 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
         $this->verifyPasswordChangeMaximum();
 
         $options = array();
-
         $options['from'] = $this->configuration->password_minimum_password_length;
         $options['to']   = $this->configuration->password_maximum_password_length;
 
-        if ($this->fieldhandler->validate('Password', $new_password, 'Stringlength', $options) === true) {
-            return true;
-        }
-
-        return false;
+        return $this->verifyPasswordChangeTest($new_password, 2100, 'Stringlength', $options);
     }
 
     /**
@@ -271,13 +267,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
         $options              = array();
         $options['not_equal'] = $this->user->username;
 
-
-        if ($this->fieldhandler->validate('Password', $new_password, 'Notequal', $options) === false) {
-            $this->error = true;
-            $this->messages->setFlashmessage(2200);
-        }
-
-        return $this;
+        return $this->verifyPasswordChangeTest($new_password, 2200, 'Notequal', $options);
     }
 
     /**
@@ -294,7 +284,7 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
             return $this;
         }
 
-        $test = $this->encrypt->verifyHashString($new_password, $this->user->password);
+        $test = $this->verifyHashString($new_password, $this->user->password);
 
         if ($test === 1) {
             $this->error = true;
@@ -396,7 +386,23 @@ abstract class VerifyCredentials extends VerifyUser implements AuthenticationInt
         $options          = array();
         $options['regex'] = $regex;
 
-        if ($this->fieldhandler->validate('Password', $new_password, 'Regex', $options) === false) {
+        return $this->verifyPasswordChangeTest($new_password, $message_id, 'Regex', $options);
+    }
+
+    /**
+     * Verify Password Change -- Mixed case character required
+     *
+     * @param   string  $new_password
+     * @param   integer $message_id
+     * @param   string  $test
+     * @param   array   $options
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function verifyPasswordChangeTest($new_password, $message_id, $test, $options)
+    {
+        if ($this->fieldhandler->validate('Password', $new_password, $test, $options) === false) {
             $this->error = true;
             $this->messages->setFlashmessage($message_id);
         }

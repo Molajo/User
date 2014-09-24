@@ -62,7 +62,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
 
         $this->verifySession($session_id, 'login');
         $this->verifyUser('login');
-        $this->verifySessionFormToken();
+        //$this->verifySessionFormToken();
         $this->verifyUsernamePassword($username, $password);
 
         if ($this->error === true) {
@@ -81,7 +81,6 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
 
         $this->updateUserClearLoginAttempts();
         $this->updateUserClearResetPasswordCode();
-        $this->updateUserLastVisit();
         $this->updateUser();
 
         return $this->user->id;
@@ -149,7 +148,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         $this->updateUserClearLoginAttempts();
         $this->updateUserClearResetPasswordCode();
 
-        $this->user = $this->updateUser();
+        $this->updateUser();
 
         if ((int)$this->remember === true) {
             //$this->saveRememberMeCookie();

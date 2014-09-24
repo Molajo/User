@@ -67,12 +67,13 @@ abstract class Base
      * @var    array
      * @since  1.0
      */
-    protected $base_properties = array(
-        'fieldhandler',
-        'configuration',
-        'server',
-        'post'
-    );
+    protected $base_properties
+        = array(
+            'fieldhandler',
+            'configuration',
+            'server',
+            'post'
+        );
 
     /**
      * Construct
@@ -90,8 +91,9 @@ abstract class Base
         $server,
         $post
     ) {
-        foreach ($this->base_properties as $key) {
-            $this->$key = $key;
-        }
+        $this->fieldhandler  = $fieldhandler;
+        $this->configuration = $configuration;
+        $this->server        = $server;
+        $this->post          = $post;
     }
 }

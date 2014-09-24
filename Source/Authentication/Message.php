@@ -39,7 +39,6 @@ abstract class Message extends Mailer implements AuthenticationInterface
      * Construct
      *
      * @param  UserDataInterface     $userdata
-     * @param  CookieInterface       $cookie
      * @param  MailerInterface       $mailer
      * @param  MessagesInterface     $messages
      * @param  EncryptInterface      $encrypt
@@ -52,7 +51,6 @@ abstract class Message extends Mailer implements AuthenticationInterface
      */
     public function __construct(
         UserDataInterface $userdata,
-        CookieInterface $cookie,
         MailerInterface $mailer,
         MessagesInterface $messages,
         EncryptInterface $encrypt,
@@ -61,7 +59,7 @@ abstract class Message extends Mailer implements AuthenticationInterface
         $server,
         $post
     ) {
-        $this->cookie = $cookie;
+        $this->messages = $messages;
 
         parent::__construct(
             $userdata,
@@ -77,7 +75,7 @@ abstract class Message extends Mailer implements AuthenticationInterface
     /**
      * Throw Exception and Format Message
      *
-     * @param   integer  $message_id
+     * @param   integer $message_id
      *
      * @return  object
      * @since   1.0
@@ -91,9 +89,9 @@ abstract class Message extends Mailer implements AuthenticationInterface
     /**
      * Throw Exception and Format Message
      *
-     * @param   integer  $message_id
-     * @param   array    $thing
-     * @param   string   $exception
+     * @param   integer $message_id
+     * @param   array   $thing
+     * @param   string  $exception
      *
      * @return  object
      * @since   1.0

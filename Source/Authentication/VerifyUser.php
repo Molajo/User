@@ -36,7 +36,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
 
         $this->verifyUserActivationDate();
 
-        if ($action == 'login' || $action == 'changePassword' || 'requestPasswordReset') {
+        if ($action === 'login' || $action === 'changePassword' || 'requestPasswordReset') {
             $this->verifyLoginAttempts($today_datetime);
         }
 
@@ -55,7 +55,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      */
     protected function verifyUserActivationDate()
     {
-        if ($this->user->activation_datetime == '0000-00-00 00:00:00') {
+        if ($this->user->activation_datetime === '0000-00-00 00:00:00') {
             $this->error = true;
             $this->setFlashmessage(600);
         }
@@ -73,18 +73,9 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      */
     protected function verifyLoginAttempts($today_datetime)
     {
-        if ($this->verifyLoginMaxAttemptsExceeded() === true) {
-            $this->updateUserBlock();
-            return $this;
-        }
-
-        if ($this->verifyLoginRemoveBlock($today_datetime) === true) {
-            $this->updateUserRemoveBlock();
-            return $this;
-        }
-
-        $this->error = true;
-        $this->setFlashmessage(800);
+        $this->verifyLoginMaxAttemptsExceeded();
+        $this->verifyLoginRemoveBlock($today_datetime);
+        $this->verifyUserBlock();
 
         return $this;
     }
@@ -98,6 +89,9 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
     protected function verifyLoginMaxAttemptsExceeded()
     {
         if ($this->user->login_attempts > $this->configuration->max_login_attempts) {
+            $this->error = true;
+            $this->setFlashmessage(800);
+            $this->updateUserBlock();
             return true;
         }
 
@@ -115,20 +109,17 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
     protected function verifyLoginRemoveBlock($today_datetime)
     {
         if ($this->configuration->password_lock_out_days === 0) {
-            return false;
+            return $this;
         }
 
         $last_activity_date = new DateTime($this->user->last_activity_datetime);
         $day_object         = $last_activity_date->diff($today_datetime);
 
         if ($day_object->days > $this->configuration->password_lock_out_days) {
-            return true;
+            $this->updateUserRemoveBlock();
         }
 
-        $this->error = true;
-        $this->setFlashmessage(800);
-
-        return false;
+        return $this;
     }
 
     /**
@@ -139,14 +130,12 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      */
     protected function verifyUserBlock()
     {
-        if ($this->user->block == 1) {
+        if ($this->user->block === 1) {
             $this->error = true;
             $this->setFlashmessage(1100);
-
-            return false;
         }
 
-        return true;
+        return $this;
     }
 
     /**

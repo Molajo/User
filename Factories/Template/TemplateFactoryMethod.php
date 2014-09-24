@@ -8,11 +8,12 @@
  */
 namespace Molajo\Factories\Template;
 
-use stdClass; // this is needed by required files in getTemplates() method below
 use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
+use Exception;
 use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
+use stdClass; // this is needed by required files in getTemplates() method below
 
 /**
  * User Template Factory Method
@@ -41,6 +42,24 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     }
 
     /**
+     * Retrieve a list of Interface dependencies and return the data ot the controller.
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function setDependencies(array $reflection = array())
+    {
+        parent::setDependencies(array());
+
+        $options                            = array();
+        $this->dependencies['Fieldhandler'] = $options;
+        $this->dependencies['Messages']     = $options;
+
+        return $this->dependencies;
+    }
+
+    /**
      * Set Dependencies for Instantiation
      *
      * @return  array
@@ -51,13 +70,36 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['templates']         = $this->getTemplates();
-        $this->dependencies['default_exception'] = 'CommonApi\\Exception\\RuntimeException';
-        $this->dependencies['data']              = array();
+        $this->dependencies['Templates']         = $this->getTemplates();
 
         return $this;
     }
 
+    /**
+     * Instantiate Class
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function instantiateClass()
+    {
+        $class = $this->product_namespace;
+
+        try {
+            $this->product_result = new $class (
+                $this->dependencies['Fieldhandler'],
+                $this->dependencies['Messages'],
+                $this->dependencies['Templates']
+            );
+        } catch (Exception $e) {
+            throw new RuntimeException
+            (
+                'Molajito: Could not instantiate Driver Class: ' . $class
+            );
+        }
+        return $this;
+    }
     /**
      * Retrieve requested template in the $options array or load all templates
      *

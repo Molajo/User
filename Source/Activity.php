@@ -22,7 +22,7 @@ use CommonApi\Exception\RuntimeException;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class UserActivity implements ActivityInterface
+class Activity implements ActivityInterface
 {
     /**
      * Guest

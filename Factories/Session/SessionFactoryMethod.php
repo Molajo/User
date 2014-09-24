@@ -38,10 +38,8 @@ class SessionFactoryMethod extends FactoryMethodBase implements FactoryInterface
         parent::__construct($options);
     }
 
-
     /**
-     * Process Authenticate: isGuest, login, isLoggedOn, changePassword,
-     *   requestPasswordReset, logout, register, confirmRegistration
+     * onAfterInstantiation - start the session
      *
      * @return  $this
      * @since   1.0

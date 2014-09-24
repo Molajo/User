@@ -11,7 +11,6 @@ namespace Molajo\User\Authentication;
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\EncryptInterface;
-use CommonApi\User\MessagesInterface;
 use CommonApi\User\UserDataInterface;
 use DateTime;
 use stdClass;
@@ -111,7 +110,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
             return $this;
         }
 
-        $this->updates['#__users.login_attempts'] = 0;
+        $this->updates['login_attempts'] = 0;
 
         $this->updateUserClearResetPasswordCode();
 
@@ -132,7 +131,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
             return $this;
         }
 
-        $this->updates['#__users.reset_password_code'] = null;
+        $this->updates['reset_password_code'] = '';
 
         return $this;
     }
@@ -145,7 +144,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     protected function updateUserRemoveBlock()
     {
-        $this->updates['#__users.block'] = 0;
+        $this->updates['block'] = 0;
 
         return $this->updateUser();
     }
@@ -159,7 +158,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     protected function updateUserBlock()
     {
-        $this->updates['#__users.block'] = 1;
+        $this->updates['block'] = 1;
 
         return $this->updateUser();
     }
@@ -172,10 +171,10 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     protected function updateUserFailedLoginAttempt()
     {
-        $this->updates['#__users.login_attempts'] = $this->user->login_attempts + 1;
+        $this->updates['login_attempts'] = $this->user->login_attempts + 1;
 
         if ((int)$this->user->login_attempts > (int)$this->configuration->max_login_attempts) {
-            $this->updates['#__users.block'] = 1;
+            $this->updates['block'] = 1;
         }
 
         $this->updateUser();
@@ -189,6 +188,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * $param   string  $new_password
      *
      * @param string $new_password
+     *
      * @return  $this
      * @since   1.0
      */
@@ -196,8 +196,8 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
     {
         $hash = $this->createHashString($new_password);
 
-        $this->updates['#__users.password']                  = $hash;
-        $this->updates['#__users.password_changed_datetime'] = $this->today;
+        $this->updates['password']                  = $hash;
+        $this->updates['password_changed_datetime'] = $this->today;
 
         return $this;
     }
@@ -208,12 +208,13 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * $param   string  $session_id
      *
      * @param Session $session_id
+     *
      * @return  $this
      * @since   1.0
      */
     protected function updateUserSessionId($session_id)
     {
-        $this->updates['#__users.session_id'] = $session_id;
+        $this->updates['session_id'] = $session_id;
 
         return $this;
     }
@@ -228,7 +229,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
     protected function updateUserResetPasswordCode()
     {
         if ($this->user->reset_password_code === '') {
-            $this->updates['#__users.reset_password_code'] = $this->generateString();
+            $this->updates['reset_password_code'] = $this->generateString();
         }
 
         return $this;
@@ -242,7 +243,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     protected function updateUserLoginDateTime()
     {
-        $this->updates['#__users.login_datetime'] = $this->today;
+        $this->updates['login_datetime'] = $this->today;
 
         return $this;
     }
@@ -255,7 +256,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     protected function updateUserLastVisit()
     {
-        $this->updates['#__users.last_visit_datetime'] = $this->today;
+        $this->updates['last_visit_datetime'] = $this->today;
 
         return $this;
     }
@@ -270,7 +271,11 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
     {
         $this->updateUserLastActivityDate();
 
-        $this->user = $this->userdata->updateUserdata($this->updates);
+        $this->userdata->updateUserdata($this->updates);
+
+        $this->updates = array();
+        $this->user    = $this->userdata->getUserdata();
+        $this->today   = $this->user->today;
 
         return $this;
     }
@@ -283,7 +288,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      */
     protected function updateUserLastActivityDate()
     {
-        $this->updates['#__users.last_activity_datetime'] = $this->today;
+        $this->updates['last_activity_datetime'] = $this->today;
 
         return $this;
     }

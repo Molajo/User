@@ -11,6 +11,7 @@ namespace Molajo\Factories\Mailer;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
+use Exception;
 use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
@@ -40,21 +41,45 @@ class MailerFactoryMethod extends FactoryMethodBase implements FactoryInterface,
     }
 
     /**
-     * Set Dependencies for Instantiation
+     * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function onBeforeInstantiation(array $dependency_values = null)
+    public function setDependencies(array $reflection = array())
     {
-        parent::onBeforeInstantiation($dependency_values);
+        parent::setDependencies(array());
 
-        $this->dependencies['default_exception']   = 'CommonApi\\Exception\\RuntimeException';
-        $this->dependencies['from']                = 'AmyStephen@Molajo.org,Amy Stephen';
-        $this->dependencies['reply_to']            = 'AmyStephen@Molajo.org,Amy Stephen';
-        $this->dependencies['mailer_html_or_text'] = 'text';
+        $options                        = array();
+        $this->dependencies['Email']    = $options;
+        $this->dependencies['Template'] = $options;
 
         return $this->dependencies;
+    }
+
+    /**
+     * Instantiate Class
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function instantiateClass()
+    {
+        $class = $this->product_namespace;
+
+        try {
+            $this->product_result = new $class (
+                $this->dependencies['Email'],
+                $this->dependencies['Template']
+            );
+        } catch (Exception $e) {
+            throw new RuntimeException
+            (
+                'Molajito: Could not instantiate Driver Class: ' . $class
+            );
+        }
+        return $this;
     }
 }

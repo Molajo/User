@@ -55,7 +55,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
         $this->verifyPasswordChangeMinimum();
         $this->verifyPasswordChangeMaximum();
 
-        $options = array();
+        $options         = array();
         $options['from'] = $this->configuration->password_minimum_password_length;
         $options['to']   = $this->configuration->password_maximum_password_length;
 

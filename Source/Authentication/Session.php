@@ -160,8 +160,8 @@ abstract class Session extends Cookie implements AuthenticationInterface
     protected function verifySessionCredentialAction($session_id, $action)
     {
         if ($this->verifySessionIdToExternal($session_id) === true) {
-        } else {
             $this->session_id = $session_id;
+            return $this;
         }
 
         $values           = array();
@@ -184,7 +184,6 @@ abstract class Session extends Cookie implements AuthenticationInterface
         $logged_on = true;
 
         if ($this->verifySessionIdToExternal($session_id) === true) {
-        } else {
             $logged_on = false;
         }
 
@@ -295,6 +294,8 @@ abstract class Session extends Cookie implements AuthenticationInterface
     {
         $this->destroySession();
 
+        $this->startSession();
+
         $this->session_id = $this->getSessionValue('session_id');
 
         $this->setSessionValue($this->session_id, $this->user->username);
@@ -387,6 +388,17 @@ abstract class Session extends Cookie implements AuthenticationInterface
     }
 
     /**
+     * Start the Session
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function startSession()
+    {
+        $this->session->startSession();
+    }
+
+    /**
      * Destroy the Session
      *
      *
@@ -395,6 +407,6 @@ abstract class Session extends Cookie implements AuthenticationInterface
      */
     protected function destroySession()
     {
-        return $this->session->destroySession();
+        $this->session->destroySession();
     }
 }

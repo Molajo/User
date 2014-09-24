@@ -23,11 +23,11 @@ abstract class Insert extends Update implements UserDataInterface
     /**
      * Insert User
      *
-     * @param   array  $data
+     * @param   array $data
      *
      * @return  $this
      */
-    public function insertUser(array $data =array())
+    public function insertUser(array $data = array())
     {
 
     }

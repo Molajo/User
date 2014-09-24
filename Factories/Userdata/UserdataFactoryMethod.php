@@ -87,7 +87,6 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
         return $this->dependencies;
     }
 
-
     /**
      * Instantiate Class
      *
@@ -112,7 +111,6 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
                 'Molajito: Could not instantiate Driver Class: ' . $class
             );
         }
-
         return $this;
     }
 

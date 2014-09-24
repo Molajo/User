@@ -57,6 +57,8 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
         $this->dependencies['Mailer']       = $options;
         $this->dependencies['Encrypt']      = $options;
         $this->dependencies['Fieldhandler'] = $options;
+        $this->dependencies['Flashmessage'] = $options;
+        $this->dependencies['Activity']     = $options;
 
         return $this->dependencies;
     }
@@ -72,8 +74,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception'] = 'CommonApi\\Exception\\RuntimeException';
-        $this->dependencies['Configuration']     = $this->getConfiguration();
+        $this->dependencies['Configuration'] = $this->getConfiguration();
 
         return $this->dependencies;
     }
@@ -100,8 +101,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
             $this->dependencies['Configuration'],
             $_SERVER,
             $_POST,
-            session_id(),
-            null
+            session_id()
         );
 
         return $this;
@@ -122,8 +122,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
         switch ($action) {
 
             case 'login':
-                echo 'yes';
-                die;
+
                 $results = $this->product_result->$action(
                     $this->options['session_id'],
                     $this->options['username'],
@@ -208,8 +207,15 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
         if (isset($this->schedule_factory_methods['redirect'])) {
 
         } else {
-            $options                                           = array();
-            $options['id']                                     = $this->options['id'];
+            $options                 = array();
+            $options['id']           = $this->options['id'];
+            $options['Userdata']     = $this->options['Userdata'];
+            $options['Session']      = $this->options['Session'];
+            $options['Flashmessage'] = $this->dependencies['Flashmessage'];
+            $options['Cookie']       = $this->options['Cookie'];
+            $options['Runtimedata']  = $this->dependencies['Runtimedata'];
+            $options['Activity']     = $this->dependencies['Activity'];
+
             $this->schedule_factory_methods['Instantiateuser'] = $options;
         }
 

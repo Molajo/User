@@ -50,7 +50,7 @@ abstract class Encrypt extends Base implements AuthenticationInterface
         $server,
         $post
     ) {
-        $this->encrypt  = $encrypt;
+        $this->encrypt = $encrypt;
 
         parent::__construct(
             $fieldhandler,
@@ -74,7 +74,7 @@ abstract class Encrypt extends Base implements AuthenticationInterface
     /**
      * Create Hash String
      *
-     * @param   string  $value
+     * @param   string $value
      *
      * @return  $this
      * @since   1.0
@@ -87,7 +87,7 @@ abstract class Encrypt extends Base implements AuthenticationInterface
     /**
      * Verify Hash String
      *
-     * @param   string  $value
+     * @param   string $value
      *
      * @return  $this
      * @since   1.0

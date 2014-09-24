@@ -40,6 +40,25 @@ class ActivityFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     }
 
     /**
+     * Retrieve a list of Interface dependencies and return the data ot the controller.
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function setDependencies(array $reflection = array())
+    {
+        parent::setDependencies(array());
+
+        $options                        = array();
+        $this->dependencies['Database'] = $options;
+        $this->dependencies['Query']    = $options;
+        $this->dependencies['Messages'] = $options;
+
+        return $this->dependencies;
+    }
+
+    /**
      * Set Dependencies for Instantiation
      *
      * @return  array
@@ -50,9 +69,29 @@ class ActivityFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['default_exception'] = 'CommonApi\\Exception\\RuntimeException';
         $this->dependencies['id']                = 0;
 
         return $this->dependencies;
+    }
+
+    /**
+     * Factory Method Controller triggers the Factory Method to create the Class for the Service
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function instantiateClass()
+    {
+        $class = $this->product_namespace;
+
+        $this->product_result = new $class(
+            $this->dependencies['Database'],
+            $this->dependencies['Query'],
+            $this->dependencies['Messages'],
+            $this->dependencies['id']
+        );
+
+        return $this;
     }
 }

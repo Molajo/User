@@ -32,8 +32,8 @@ class InstantiateuserFactoryMethod extends FactoryMethodBase implements FactoryI
      */
     public function __construct(array $options = array())
     {
-        $options['product_name']      = basename(__DIR__);
-        $options['product_namespace'] = 'Molajo\\User\\Facade';
+        $options['product_name']             = 'User';
+        $options['product_namespace']        = 'Molajo\\User\\Facade';
 
         parent::__construct($options);
     }
@@ -47,11 +47,44 @@ class InstantiateuserFactoryMethod extends FactoryMethodBase implements FactoryI
      */
     public function setDependencies(array $reflection = array())
     {
-        parent::setDependencies($reflection);
+        parent::setDependencies(array());
 
-        $this->dependencies['Runtimedata'] = array();
+        $this->dependencies = array();
 
         return $this->dependencies;
+
+        $options                 = array();
+        $options['id']           = $this->options['id'];
+        $options['Userdata']     = $this->options['Userdata'];
+        $options['Session']      = $this->options['Session'];
+        $options['Flashmessage'] = $this->dependencies['Flashmessage'];
+        $options['Cookie']       = $this->options['Cookie'];
+        $options['Runtimedata']  = $this->dependencies['Runtimedata'];
+
+        $this->schedule_factory_methods['Instantiateuser'] = $options;
+    }
+
+
+    /**
+     * Factory Method Controller triggers the Factory Method to create the Class for the Service
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function instantiateClass()
+    {
+        $class = $this->product_namespace;
+
+        $this->product_result = new $class(
+            $userdata = $this->options['Userdata'],
+            $session = $this->options['Session'],
+            $flashmessage = $this->options['Flashmessage'],
+            $cookie = $this->options['Cookie'],
+            $activity = $this->options['Activity']
+        );
+
+        return $this;
     }
 
     /**
@@ -62,10 +95,10 @@ class InstantiateuserFactoryMethod extends FactoryMethodBase implements FactoryI
      */
     public function setContainerEntries()
     {
-        $this->dependencies['Runtimedata']->user = $this->sortObject($this->product_result->getUserdata());
+        $this->options['Runtimedata']->user = $this->sortObject($this->product_result->getUserdata());
 
-        $this->set_container_entries['Runtimedata']           = $this->dependencies['Runtimedata'];
-        $this->set_container_entries['Molajo\Factories\User'] = $this->product_result;
+        $this->set_container_entries['Runtimedata'] = $this->options['Runtimedata'];
+        $this->set_container_entries['User']        = $this->product_result;
 
         return $this->set_container_entries;
     }

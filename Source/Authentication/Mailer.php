@@ -55,7 +55,7 @@ abstract class Mailer extends UpdateUser implements AuthenticationInterface
         $server,
         $post
     ) {
-        $this->mailer  = $mailer;
+        $this->mailer = $mailer;
 
         parent::__construct(
             $userdata,

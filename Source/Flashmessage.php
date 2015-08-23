@@ -25,7 +25,7 @@ class Flashmessage implements FlashMessageInterface
      * Session Instance
      *
      * @var    object  CommonApi\User\SessionInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $session;
 
@@ -33,7 +33,7 @@ class Flashmessage implements FlashMessageInterface
      * Default Messages Exception
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $flash_message_exception = 'CommonApi\\Exception\\RuntimeException';
 
@@ -41,7 +41,7 @@ class Flashmessage implements FlashMessageInterface
      * Valid Flash Types
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $flash_types = array('Success', 'Notice', 'Warning', 'Error');
 
@@ -52,7 +52,7 @@ class Flashmessage implements FlashMessageInterface
      * @param array            $flash_types
      * @param null|string      $flash_message_exception
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         SessionInterface $session,
@@ -77,7 +77,7 @@ class Flashmessage implements FlashMessageInterface
      * @param   string $type (Success, Notice, Warning, Error)
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getFlashmessage($type = null)
@@ -109,7 +109,7 @@ class Flashmessage implements FlashMessageInterface
      * @param   string $message
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setFlashmessage($type, $message)
@@ -145,7 +145,7 @@ class Flashmessage implements FlashMessageInterface
      * @param   null|string $type
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function deleteFlashmessage($type = null)

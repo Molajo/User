@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Authentication;
 
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\CookieInterface;
 use CommonApi\User\EncryptInterface;
@@ -31,7 +31,7 @@ abstract class Cookie extends Message implements AuthenticationInterface
      * Cookie Instance
      *
      * @var    object  CommonApi\User\CookieInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $cookie;
 
@@ -39,7 +39,7 @@ abstract class Cookie extends Message implements AuthenticationInterface
      * Remember
      *
      * @var    boolean
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $remember;
 
@@ -56,7 +56,7 @@ abstract class Cookie extends Message implements AuthenticationInterface
      * @param  object                $server
      * @param  object                $post
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         UserDataInterface $userdata,
@@ -87,7 +87,7 @@ abstract class Cookie extends Message implements AuthenticationInterface
      * Save Remember Me Cookie
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function saveRememberMeCookie()
     {
@@ -110,7 +110,7 @@ abstract class Cookie extends Message implements AuthenticationInterface
      * Forget Cookie
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function forgetCookie()
     {

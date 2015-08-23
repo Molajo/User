@@ -25,7 +25,7 @@ class Messages implements MessagesInterface
      * Flashmessage Instance
      *
      * @var    object  CommonApi\User\FlashMessageInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $flashmessage;
 
@@ -34,7 +34,7 @@ class Messages implements MessagesInterface
      *  Load with language specific messages via Constructor using IoCC
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $messages = array();
 
@@ -44,7 +44,7 @@ class Messages implements MessagesInterface
      * @param  FlashMessageInterface $flashmessage
      * @param  array                 $messages
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         FlashMessageInterface $flashmessage,
@@ -61,7 +61,7 @@ class Messages implements MessagesInterface
      * @param   int    $message_id
      * @param   string $message
      *
-     * @since   1.0
+     * @since   1.0.0
      * @return  $this
      */
     public function setMessage($message_id, $message)
@@ -79,7 +79,7 @@ class Messages implements MessagesInterface
      * @param   string $type (Success, Notice, Warning, Error)
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function setFlashmessage($message_id, array $values = array(), $type = 'Error')
     {
@@ -96,7 +96,7 @@ class Messages implements MessagesInterface
      * @param   int   $message_id
      * @param   array $values
      *
-     * @since   1.0
+     * @since   1.0.0
      * @return  string
      */
     public function getMessage($message_id = 0, array $values = array())
@@ -119,7 +119,7 @@ class Messages implements MessagesInterface
      * @param   array  $values
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function formatMessage($message, array $values = array())
     {
@@ -140,7 +140,7 @@ class Messages implements MessagesInterface
      * @param   null|string $exception
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  $exception
      */
     public function throwException($message_id, array $values = array(), $exception = null)
@@ -162,7 +162,7 @@ class Messages implements MessagesInterface
      * @param   array $messages
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function initialiseMessages(array $messages)
     {

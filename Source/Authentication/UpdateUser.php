@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Authentication;
 
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\UserDataInterface;
@@ -29,7 +29,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * User Data Instance
      *
      * @var    object  CommonApi\User\UserDataInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $userdata;
 
@@ -37,7 +37,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * User Data
      *
      * @var    object
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $user;
 
@@ -45,7 +45,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Guest
      *
      * @var    boolean
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $guest;
 
@@ -53,7 +53,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Today
      *
      * @var    DateTime
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $today;
 
@@ -61,7 +61,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Updates
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $updates = array();
 
@@ -75,7 +75,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * @param  object                $server
      * @param  object                $post
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         UserDataInterface $userdata,
@@ -86,7 +86,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
         $post
     ) {
         $this->userdata = $userdata;
-        $this->user     = $this->userdata->getUserdata();
+        $this->user     = $this->userdata->readUser();
         $this->today    = $this->user->today;
 
         parent::__construct(
@@ -102,7 +102,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Clear the number of login attempts after successful login
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserClearLoginAttempts()
     {
@@ -123,7 +123,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Clear the Reset Password Code
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserClearResetPasswordCode()
     {
@@ -140,7 +140,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Update User Remove Block
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserRemoveBlock()
     {
@@ -153,7 +153,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Update User Password Expired
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function updateUserBlock()
@@ -167,7 +167,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Set a failed login attempt
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserFailedLoginAttempt()
     {
@@ -190,7 +190,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * @param string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserPassword($new_password)
     {
@@ -210,7 +210,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * @param Session $session_id
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserSessionId($session_id)
     {
@@ -224,7 +224,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Set the Reset Password Code
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserResetPasswordCode()
     {
@@ -239,7 +239,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Set the Login Date Time
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserLoginDateTime()
     {
@@ -252,7 +252,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Set the Login Date Time
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserLastVisit()
     {
@@ -265,16 +265,16 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Update User
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUser()
     {
         $this->updateUserLastActivityDate();
 
-        $this->userdata->updateUserdata($this->updates);
+        $this->userdata->updateUser($this->updates);
 
         $this->updates = array();
-        $this->user    = $this->userdata->getUserdata();
+        $this->user    = $this->userdata->readUser();
         $this->today   = $this->user->today;
 
         return $this;
@@ -284,7 +284,7 @@ abstract class UpdateUser extends Encrypt implements AuthenticationInterface
      * Set the Login Date Time
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function updateUserLastActivityDate()
     {

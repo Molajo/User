@@ -27,7 +27,7 @@ class EncryptFactoryMethod extends FactoryMethodBase implements FactoryInterface
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -42,7 +42,7 @@ class EncryptFactoryMethod extends FactoryMethodBase implements FactoryInterface
      * Instantiate a new handler and inject it into the Adapter for the FactoryInterface
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
@@ -58,7 +58,7 @@ class EncryptFactoryMethod extends FactoryMethodBase implements FactoryInterface
      * Factory Method Controller triggers the Factory Method to create the Class for the Service
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()

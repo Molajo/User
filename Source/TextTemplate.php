@@ -11,7 +11,7 @@ namespace Molajo\User;
 use stdClass;
 use CommonApi\User\MessagesInterface;
 use CommonApi\User\TemplateInterface;
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 
 /**
  * Text Template Class
@@ -26,8 +26,8 @@ class TextTemplate implements TemplateInterface
     /**
      * Fieldhandler Instance
      *
-     * @var    object  CommonApi\Model\FieldhandlerInterface
-     * @since  1.0
+     * @var    object  CommonApi\Fieldhandler\FieldhandlerInterface
+     * @since  1.0.0
      */
     protected $fieldhandler;
 
@@ -35,7 +35,7 @@ class TextTemplate implements TemplateInterface
      * Messages Instance
      *
      * @var    object  CommonApi\User\MessagesInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $messages;
 
@@ -43,7 +43,7 @@ class TextTemplate implements TemplateInterface
      * Templates
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $templates = array();
 
@@ -51,7 +51,7 @@ class TextTemplate implements TemplateInterface
      * Data
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $data = array();
 
@@ -59,7 +59,7 @@ class TextTemplate implements TemplateInterface
      * Rendered Output
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $rendered_output = null;
 
@@ -67,7 +67,7 @@ class TextTemplate implements TemplateInterface
      * Rendered Output
      *
      * @var    stdClass
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $message = null;
 
@@ -75,7 +75,7 @@ class TextTemplate implements TemplateInterface
      * Tokens
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $tokens;
 
@@ -83,7 +83,7 @@ class TextTemplate implements TemplateInterface
      * Type
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $type;
 
@@ -91,7 +91,7 @@ class TextTemplate implements TemplateInterface
      * List of Properties
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $property_array
         = array(
@@ -111,7 +111,7 @@ class TextTemplate implements TemplateInterface
      * @param   MessagesInterface     $messages
      * @param   array                 $templates
      *
-     * @since   1.0
+     * @since   1.0.0
      */
     public function __construct(
         FieldhandlerInterface $fieldhandler,
@@ -130,7 +130,7 @@ class TextTemplate implements TemplateInterface
      * @param   mixed  $default
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function get($key, $default = null)
@@ -156,7 +156,7 @@ class TextTemplate implements TemplateInterface
      * @param   mixed  $value
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function set($key, $value = null)
@@ -179,7 +179,7 @@ class TextTemplate implements TemplateInterface
      * @param   stdClass $data
      *
      * @return  stdClass
-     * @since   1.0
+     * @since   1.0.0
      */
     public function render(stdClass $data)
     {
@@ -199,7 +199,7 @@ class TextTemplate implements TemplateInterface
      * Render Template Type
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function renderTemplateType()
     {
@@ -222,7 +222,7 @@ class TextTemplate implements TemplateInterface
      * @param   string $key
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
     public function renderSection($template, $key)
     {
@@ -240,7 +240,7 @@ class TextTemplate implements TemplateInterface
      * Iteratively process content, replacing tokens with data values
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function renderLoop()
     {
@@ -265,7 +265,7 @@ class TextTemplate implements TemplateInterface
      * Parses the rendered output, looking for {tokens}
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function parseTokens()
     {
@@ -280,7 +280,7 @@ class TextTemplate implements TemplateInterface
      * Locate all tags and replace with data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function replaceTokens()
     {
@@ -301,7 +301,7 @@ class TextTemplate implements TemplateInterface
      * Set Tokens to use for search and replacement
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setReplaceThisTokens()
     {
@@ -318,7 +318,7 @@ class TextTemplate implements TemplateInterface
      * Set Replace With Values
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setReplaceWithValues()
     {

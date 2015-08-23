@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Mocks;
 
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 
 class MockFieldHandler implements FieldhandlerInterface
 {

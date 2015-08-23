@@ -26,7 +26,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChange($new_password)
     {
@@ -48,7 +48,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  VerifyCredentials
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeLength($new_password)
     {
@@ -68,7 +68,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeValue($new_password)
     {
@@ -84,7 +84,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * Verify Password Change Length Minimum
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeMinimum()
     {
@@ -99,7 +99,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * Verify Password Change Length Maximum
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeMaximum()
     {
@@ -118,7 +118,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeNotMatchUsername($new_password)
     {
@@ -138,7 +138,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeNotMatchLastPassword($new_password)
     {
@@ -162,7 +162,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeAlphaCharacterRequired($new_password)
     {
@@ -181,7 +181,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeNumericCharacterRequired($new_password)
     {
@@ -200,7 +200,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeSpecialCharacterRequired($new_password)
     {
@@ -219,7 +219,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   string $new_password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeMixedCaseRequired($new_password)
     {
@@ -241,7 +241,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   integer $message_id
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeRegex($new_password, $regex, $message_id)
     {
@@ -260,7 +260,7 @@ abstract class VerifyNewPassword extends VerifyUser implements AuthenticationInt
      * @param   array   $options
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyPasswordChangeTest($new_password, $message_id, $test, $options)
     {

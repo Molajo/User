@@ -3,7 +3,11 @@
     "description": "Molajo User Services for PHP Applications",
     "version": "1.0.0",
     "type": "molajo-package",
-    "keywords": ["user", "commonapi", "molajo"],
+    "keywords": [
+        "user",
+        "commonapi",
+        "molajo"
+    ],
     "homepage": "http://github.com/Molajo/User",
     "license": "MIT",
     "authors": [
@@ -24,7 +28,6 @@
         "php": ">=5.4",
         "commonapi/email": "dev-master",
         "commonapi/user": "dev-master",
-        "ircmaxell/password-compat": "dev-master",
         "molajo/query": "dev-master"
     },
     "suggest": {

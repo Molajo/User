@@ -31,7 +31,7 @@ class Cookie implements CookieInterface
      * Cookies
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $cookies;
 
@@ -39,7 +39,7 @@ class Cookie implements CookieInterface
      * Expire
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $expire = 2628000;
 
@@ -47,7 +47,7 @@ class Cookie implements CookieInterface
      * Path
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $path = null;
 
@@ -55,7 +55,7 @@ class Cookie implements CookieInterface
      * Domain
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $domain = '';
 
@@ -63,7 +63,7 @@ class Cookie implements CookieInterface
      * Secure
      *
      * @var    bool
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $secure = false;
 
@@ -71,7 +71,7 @@ class Cookie implements CookieInterface
      * Http Only
      *
      * @var    bool
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $http_only = false;
 
@@ -79,7 +79,7 @@ class Cookie implements CookieInterface
      * Property Array
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $property_array
         = array(
@@ -100,7 +100,7 @@ class Cookie implements CookieInterface
      * @param   int     $secure
      * @param   boolean $http_only
      *
-     * @since   1.0
+     * @since   1.0.0
      */
     public function __construct(
         array $cookies = array(),
@@ -125,7 +125,7 @@ class Cookie implements CookieInterface
      *
      * @link    http://www.faqs.org/rfcs/rfc6265.html
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function getCookie($name)
     {
@@ -148,7 +148,7 @@ class Cookie implements CookieInterface
      * @param   boolean $http_only
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function setCookie(
         $name,
@@ -179,7 +179,7 @@ class Cookie implements CookieInterface
      * @param   integer $minutes
      *
      * @return  double
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setCookieTime($minutes)
     {
@@ -198,7 +198,7 @@ class Cookie implements CookieInterface
      * @param   string $path
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setCookiePath($path)
     {
@@ -215,7 +215,7 @@ class Cookie implements CookieInterface
      * @param   string $domain
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setCookieDomain($domain)
     {
@@ -232,7 +232,7 @@ class Cookie implements CookieInterface
      * @param   null|boolean $secure
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setCookieSecure($secure = null)
     {
@@ -249,7 +249,7 @@ class Cookie implements CookieInterface
      * @param   null|boolean $http_only
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setCookieHttpOnly($http_only = null)
     {
@@ -266,7 +266,7 @@ class Cookie implements CookieInterface
      * @param   string $name
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     public function deleteCookie($name)
     {
@@ -284,7 +284,7 @@ class Cookie implements CookieInterface
      * Destroy Cookies
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function destroyCookies()
     {
@@ -297,7 +297,7 @@ class Cookie implements CookieInterface
      * sendCookies
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RuntimeException
      */
     public function sendCookies()
@@ -319,7 +319,7 @@ class Cookie implements CookieInterface
      * @param   object $cookie
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RuntimeException
      */
     protected function sendCookie($cookie)
@@ -349,7 +349,7 @@ class Cookie implements CookieInterface
      * @param   array $cookies
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function initialiseCookies(array $cookies)
     {
@@ -368,7 +368,7 @@ class Cookie implements CookieInterface
      * @param   integer $expire
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function initialiseExpiration($expire)
     {
@@ -387,7 +387,7 @@ class Cookie implements CookieInterface
      * @param   string $path
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function initialisePath($path)
     {
@@ -406,7 +406,7 @@ class Cookie implements CookieInterface
      * @param   string $domain
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function initialiseDomain($domain)
     {
@@ -425,7 +425,7 @@ class Cookie implements CookieInterface
      * @param   null|boolean $secure
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function initialiseSecure($secure = null)
     {
@@ -445,7 +445,7 @@ class Cookie implements CookieInterface
      * @param boolean $http_only
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function initialiseHttpOnly($http_only)
     {

@@ -30,7 +30,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -45,7 +45,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
@@ -63,14 +63,14 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * Set Dependencies for Instantiation
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onBeforeInstantiation(array $dependency_values = null)
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $this->dependencies['Templates']         = $this->getTemplates();
+        $this->dependencies['Templates'] = $this->getTemplates();
 
         return $this;
     }
@@ -79,7 +79,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * Instantiate Class
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
@@ -100,6 +100,7 @@ class TemplateFactoryMethod extends FactoryMethodBase implements FactoryInterfac
         }
         return $this;
     }
+
     /**
      * Retrieve requested template in the $options array or load all templates
      *

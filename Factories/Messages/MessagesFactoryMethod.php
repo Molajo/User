@@ -28,7 +28,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -43,7 +43,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
@@ -59,7 +59,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * Set Dependencies for Instantiation
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onBeforeInstantiation(array $dependency_values = null)
@@ -75,7 +75,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * Factory Method Controller triggers the Factory Method to create the Class for the Service
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
@@ -94,7 +94,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * System Messages for User Subsystem
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setMessages()
     {
@@ -138,7 +138,7 @@ class MessagesFactoryMethod extends FactoryMethodBase implements FactoryInterfac
             3030 => 'System error: User Encrypt createHashString Exception: library failed to create a hash.',
             3035 => 'System error: User Encrypt verifyHashString Exception: Input not sent in.',
             3040 => 'System error: User Encrypt verifyHashString Exception: Hash value not sent in.',
-            3045 => 'System error: User Encrypt createRandomString Exception',
+            3045 => 'System error: User Encrypt createRandomstring Exception',
             3050 => 'System error: User Encrypt createHashString Exception: library failed to respond with a true or false.',
             3055 => 'System error: User Encrypt getRandomToken Exception',
             3060 => 'System error: User Encrypt getRandomToken Exception: library failed to create a token.',

@@ -27,7 +27,7 @@ class RegistrationFactoryMethod extends FactoryMethodBase implements FactoryInte
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {

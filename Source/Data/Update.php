@@ -8,12 +8,6 @@
  */
 namespace Molajo\User\Data;
 
-use CommonApi\Database\DatabaseInterface;
-use CommonApi\Exception\RuntimeException;
-use CommonApi\Query\QueryInterface;
-use CommonApi\User\UserDataInterface;
-use Exception;
-
 /**
  * Update User Data
  *
@@ -22,70 +16,42 @@ use Exception;
  * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-abstract class Update extends Delete implements UserDataInterface
+abstract class Update extends Delete
 {
-
-    /**
-     * Fields
-     *
-     * @var    array()
-     * @since  1.0
-     */
-    protected $fields = array();
-
-    /**
-     * Construct
-     *
-     * @param DatabaseInterface $database
-     * @param QueryInterface    $query
-     * @param                   $model_registry
-     * @param                   $child_model_registries
-     *
-     * @since  1.0
-     */
-    public function __construct(
-        DatabaseInterface $database,
-        QueryInterface $query,
-        $model_registry,
-        $child_model_registries
-    ) {
-        parent::__construct($database, $query, $model_registry, $child_model_registries);
-
-        $this->fields = array();
-        foreach ($this->model_registry['fields'] as $field) {
-            $this->fields[$field['name']] = $field;
-        }
-    }
-
     /**
      * Update User
      *
      * @param   array $data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function updateUser(array $data = array())
+    protected function updateUserData(array $data = array())
     {
-        try {
-            $this->query->clearQuery();
+        $this->setQueryController('Molajo//Model//Datasource//User.xml', 'Update');
 
-            $this->query->setType('update');
-            $this->query->from('#__users');
-            $this->query->where('column', 'id', '=', 'integer', $this->user->id);
+        $this->setQueryControllerDefaults(
+            $process_events = 1,
+            $query_object = 'item',
+            $get_customfields = 1,
+            $use_special_joins = 0,
+            $use_pagination = 0,
+            $check_view_level_access = 1,
+            $get_item_children = 0
+        );
 
-            foreach ($data as $key => $value) {
-                if (isset($this->fields[$key])) {
-                    $this->query->select($key, null, $value, $this->fields[$key]['type']);
-                }
+        $this->setModelRegistry();
+
+        foreach ($data as $key => $value) {
+            if (isset($this->model_registry['fields'][$key])) {
+                $this->query->select($key, null, $value, $this->model_registry['fields'][$key]['type']);
             }
-
-            $this->database->execute($this->query->getSQL());
-
-        } catch (Exception $e) {
-            throw new RuntimeException('Userdata::updateUser Failed: ' . $e->getMessage());
         }
+
+        $this->query->where('column', 'id', '=', 'integer', (int)$this->user->id);
+
+        $this->runQuery('updateData');
 
         return $this;
     }

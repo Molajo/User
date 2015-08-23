@@ -27,7 +27,7 @@ class FlashmessageFactoryMethod extends FactoryMethodBase implements FactoryInte
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -42,12 +42,12 @@ class FlashmessageFactoryMethod extends FactoryMethodBase implements FactoryInte
      * Define Service Dependencies
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
     {
-        // Intentionally not instantiating the class in this service provider
+        // Intentionally not instantiating the class in this factory
         // Will be created in Instantiateuser
         parent::setDependencies(array());
 
@@ -61,7 +61,7 @@ class FlashmessageFactoryMethod extends FactoryMethodBase implements FactoryInte
      * Factory Method Controller triggers the Factory Method to create the Class for the Service
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
@@ -79,7 +79,7 @@ class FlashmessageFactoryMethod extends FactoryMethodBase implements FactoryInte
      * Types for Flash Messages
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setFlashTypes()
     {

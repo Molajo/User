@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Authentication;
 
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\MessagesInterface;
@@ -28,7 +28,7 @@ abstract class Encrypt extends Base implements AuthenticationInterface
      * Encrypt Instance
      *
      * @var    object  CommonApi\User\EncryptInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $encrypt;
 
@@ -41,7 +41,7 @@ abstract class Encrypt extends Base implements AuthenticationInterface
      * @param  object                $server
      * @param  object                $post
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         EncryptInterface $encrypt,
@@ -64,7 +64,7 @@ abstract class Encrypt extends Base implements AuthenticationInterface
      * Generate a Random String
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function generateString()
     {
@@ -77,7 +77,7 @@ abstract class Encrypt extends Base implements AuthenticationInterface
      * @param   string $value
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function createHashString($value)
     {
@@ -90,7 +90,7 @@ abstract class Encrypt extends Base implements AuthenticationInterface
      * @param   string $value
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyHashString($value, $existing)
     {

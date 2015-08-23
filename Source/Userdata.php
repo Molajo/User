@@ -22,52 +22,73 @@ use Molajo\User\Data\Load;
 class Userdata extends Load implements UserDataInterface
 {
     /**
-     * Get user data using a value for id, username, email or initialise new user
+     * Set User Data for id, username, email or Initialise User
      *
-     * @param   null|string $value
      * @param   null|string $key
+     * @param   null|string $value
      *
      * @return  $this
      */
-    public function load($value = null, $key = 'username')
+    public function load($key = 'username', $value = null)
     {
-        return $this->loadUser($value, $key);
+        $this->loadUser($key, $value);
+
+        return $this;
     }
 
     /**
-     * Insert User
+     * Create User
      *
      * @param   array $data
      *
-     * @return  object
-     * @since   1.0
+     * @return  $this
+     * @since   1.0.0
      */
-    public function insertUserData(array $data = array())
+    public function createUser(array $data = array())
     {
-        return $this->insertUser($data);
+        $this->insertUser($data);
+
+        return $this;
     }
 
     /**
-     * Update User Data for loaded User
-     *
-     * @param   array $updates
+     * Return data for current user
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
-    public function updateUserData(array $data = array())
+    public function readUser()
     {
-        return $this->updateUser($data);
+        return $this->user;
     }
 
     /**
-     * Delete User Data for loaded User
+     * Update Current User
+     *
+     * @param   array $data
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    public function updateUser(array $data = array())
+    {
+        $this->updateUserData($data);
+
+        $this->loadUser('id', $this->user->id);
+
+        return $this;
+    }
+
+    /**
+     * Delete Current User
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
-    public function deleteUserData()
+    public function deleteUser()
     {
-        return $this->deleteUser();
+        $this->deleteUser();
+
+        return $this;
     }
 }

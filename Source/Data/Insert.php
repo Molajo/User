@@ -27,7 +27,7 @@ abstract class Insert extends Update implements UserDataInterface
      *
      * @return  $this
      */
-    public function insertUser(array $data = array())
+    protected function insertUser(array $data = array())
     {
 
     }

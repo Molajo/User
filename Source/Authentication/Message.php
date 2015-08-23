@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Authentication;
 
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\CookieInterface;
 use CommonApi\User\EncryptInterface;
@@ -31,7 +31,7 @@ abstract class Message extends Mailer implements AuthenticationInterface
      * Messages Instance
      *
      * @var    object  CommonApi\User\MessagesInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $messages;
 
@@ -47,7 +47,7 @@ abstract class Message extends Mailer implements AuthenticationInterface
      * @param  object                $server
      * @param  object                $post
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         UserDataInterface $userdata,
@@ -78,7 +78,7 @@ abstract class Message extends Mailer implements AuthenticationInterface
      * @param   integer $message_id
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setFlashMessage(
         $message_id
@@ -94,7 +94,7 @@ abstract class Message extends Mailer implements AuthenticationInterface
      * @param   string  $exception
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function throwExceptionMessage(
         $message_id,

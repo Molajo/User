@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Authentication;
 
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\EncryptInterface;
 use CommonApi\User\MailerInterface;
@@ -29,7 +29,7 @@ abstract class Mailer extends UpdateUser implements AuthenticationInterface
      * Mailer Instance
      *
      * @var    object  CommonApi\User\MailerInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $mailer;
 
@@ -44,7 +44,7 @@ abstract class Mailer extends UpdateUser implements AuthenticationInterface
      * @param  object                $server
      * @param  object                $post
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         UserDataInterface $userdata,
@@ -71,7 +71,7 @@ abstract class Mailer extends UpdateUser implements AuthenticationInterface
      * Email Password Reset
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function emailPasswordReset()
     {

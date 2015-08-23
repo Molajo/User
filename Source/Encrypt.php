@@ -27,7 +27,7 @@ class Encrypt implements EncryptInterface
      * Messages Instance
      *
      * @var    object  CommonApi\User\MessagesInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $messages;
 
@@ -35,7 +35,7 @@ class Encrypt implements EncryptInterface
      * Length of String
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $length;
 
@@ -43,7 +43,7 @@ class Encrypt implements EncryptInterface
      * Length of String
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $characters;
 
@@ -52,7 +52,7 @@ class Encrypt implements EncryptInterface
      *
      * @param   MessagesInterface $messages
      *
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RuntimeException
      */
     public function __construct(
@@ -81,7 +81,7 @@ class Encrypt implements EncryptInterface
      * @param   string $input
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function createHashString($input)
@@ -111,7 +111,7 @@ class Encrypt implements EncryptInterface
      * @param   string $hash
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function verifyHashString($input, $hash)
@@ -139,7 +139,7 @@ class Encrypt implements EncryptInterface
      * @param   null|string $characters
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
     public function generateString($length = null, $characters = null)
     {
@@ -160,7 +160,7 @@ class Encrypt implements EncryptInterface
      * Generate Random String Operation
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function generateStringOperation()
     {

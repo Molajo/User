@@ -26,7 +26,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * Actions Array
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $actions
         = array(
@@ -44,7 +44,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * Request Variables
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $request_variables
         = array(
@@ -63,7 +63,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * Actions Array
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $registration_actions
         = array(
@@ -75,7 +75,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * Session Variables
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $session_variables
         = array('session_id');
@@ -85,7 +85,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      *
      * @param  $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -99,13 +99,13 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * Define Service Dependencies
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
     {
-        // Intentionally not instantiating the class in this service provider
-        // Will be created in Instantiateuser
+        // Intentionally not instantiating the class in this factory
+        // It will be created later in Instantiateuser
         parent::setDependencies(array());
 
         $this->dependencies                 = array();
@@ -116,8 +116,6 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
         $this->dependencies['Flashmessage'] = $options;
         $this->dependencies['Runtimedata']  = $options;
         $this->dependencies['Resource']     = $options;
-        $this->dependencies['Database']     = $options;
-        $this->dependencies['Query']        = $options;
         $this->dependencies['Messages']     = $options;
         $this->dependencies['Mailer']       = $options;
 
@@ -128,7 +126,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * Set Dependencies
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onBeforeInstantiation(array $dependency_values = null)
@@ -149,6 +147,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
 
         // TEST DATA BEGIN
         $this->dependencies['Flashmessage']->deleteFlashmessage();
+
         $this->dependencies['Session']->setSession(session_id(), 'admin');
         $this->dependencies['Session']->setSession('session_id', session_id());
         $this->dependencies['Session']->setSession('admin', '12345');
@@ -171,7 +170,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * Get Session Data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getSessionInput()
@@ -210,7 +209,7 @@ class UserFactoryMethod extends FactoryMethodBase implements FactoryInterface, F
      * Request for array of Factory Methods to be Scheduled
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function scheduleFactories()
     {

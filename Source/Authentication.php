@@ -28,7 +28,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
      * @param   string $session_id
      *
      * @return  integer
-     * @since   1.0
+     * @since   1.0.0
      */
     public function isGuest($session_id)
     {
@@ -54,7 +54,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
      * @param   boolean $remember
      *
      * @return  int
-     * @since   1.0
+     * @since   1.0.0
      */
     public function login($session_id, $username, $password, $remember = false)
     {
@@ -62,7 +62,8 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
 
         $this->verifySession($session_id, 'login');
         $this->verifyUser('login');
-        //$this->verifySessionFormToken();
+
+        $this->verifySessionFormToken();
         $this->verifyUsernamePassword($username, $password);
 
         if ($this->error === true) {
@@ -93,7 +94,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
      * @param   string $username
      *
      * @return  int
-     * @since   1.0
+     * @since   1.0.0
      */
     public function isLoggedOn($session_id, $username)
     {
@@ -122,7 +123,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
      * @param   bool   $remember
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function changePassword(
         $session_id,
@@ -139,6 +140,8 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
         $this->verifyUsernamePassword($username, $password, $reset_password_code);
 
         if ($this->error === true) {
+            echo 'error';
+            die;
             return $this->redirect401();
         }
 
@@ -164,7 +167,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
      * @param   string $username
      *
      * @return  $this|void
-     * @since   1.0
+     * @since   1.0.0
      */
     public function requestPasswordReset($session_id, $username)
     {
@@ -190,7 +193,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
      * @param   string $username
      *
      * @return  stdClass
-     * @since   1.0
+     * @since   1.0.0
      */
     public function logout($session_id, $username)
     {
@@ -214,7 +217,7 @@ class Authentication extends VerifyCredentials implements AuthenticationInterfac
      * Redirect 401
      *
      * @return  stdClass
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function redirect401()
     {

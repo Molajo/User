@@ -8,10 +8,7 @@
  */
 namespace Molajo\User\Data;
 
-use Exception;
 use stdClass;
-use CommonApi\Exception\RuntimeException;
-use CommonApi\User\UserDataInterface;
 
 /**
  * User Data
@@ -21,74 +18,40 @@ use CommonApi\User\UserDataInterface;
  * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-abstract class Load extends Insert implements UserDataInterface
+abstract class Load extends Insert
 {
+    /**
+     * User Type: id, username, or email
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    protected $user_type = null;
+
+    /**
+     * User Type: id, username, or email
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    protected $column_name = null;
+
     /**
      * Get user data using a value for id, username, email or initialise new user
      *
-     * @param   null|string $value
      * @param   null|string $key
+     * @param   null|string $value
      *
      * @return  $this
+     * @since   1.0.0
      */
-    public function loadUser($value = null, $key = 'username')
+    protected function loadUser($key = 'username', $value = null)
     {
-        $this->user           = new stdClass();
-        $this->user->guest    = 1;
-        $this->user->id       = null;
-        $this->user->username = null;
-        $this->user->email    = null;
-        $column               = '';
-        $data_type            = '';
-        $data                 = new stdClass();
+        $this->user = new stdClass();
 
-        if ($value === null) {
+        $this->setUserBase($key, $value);
 
-        } elseif ($key === 'id') {
-            $column            = 'id';
-            $data_type         = 'userid';
-            $this->user->guest = 0;
-
-        } elseif ($key === 'email') {
-            $column            = 'email';
-            $data_type         = 'email';
-            $this->user->guest = 0;
-
-        } elseif ($key === 'username') {
-            $column            = 'username';
-            $data_type         = 'username';
-            $this->user->guest = 0;
-        }
-
-        if ($this->user->guest === 0) {
-            $data = $this->getUser($column, $data_type, $value);
-        }
-
-        $this->setStandardFields($data);
-
-        $this->setCustomFields();
-
-        if (count($this->model_registry['children']) > 0) {
-
-            foreach ($this->model_registry['children'] as $child) {
-
-                $name = (string)$child['name'];
-                $join = (string)$child['join'];
-
-                if (isset($this->child_model_registries[$name])) {
-
-                    $model_registry = $this->child_model_registries[$name];
-
-                    if ($this->user->id === 0) {
-                        $data = null;
-                    } else {
-                        $entry = substr((string)$model_registry['table_name'], 8, 9999);
-                        $this->user->$entry
-                               = $this->getChildData($this->user->id, $join, $model_registry);
-                    }
-                }
-            }
-        }
+        $this->setUserChildObjects();
 
         $this->setPermissions();
 
@@ -98,107 +61,137 @@ abstract class Load extends Insert implements UserDataInterface
     }
 
     /**
-     * Get User Data
+     * Get User Data for Guest or Authorised User
      *
-     * @return  object
-     * @since   1.0
-     */
-    public function getUserdata()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Query Database for User
-     *
-     * @param   string $column
-     * @param   string $data_type
+     * @param   string $key
      * @param   string $value
      *
-     * @return  object
-     * @since   1.0
+     * @return  $this
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function getUser($column, $data_type, $value)
+    protected function setUserBase($key, $value = null)
     {
-        try {
+        $this->setRequestType($key);
 
-            $this->query->clearQuery();
+        $this->setQueryController('Molajo//Model//Datasource//User.xml', 'Read');
 
-            $this->query->select('*');
-            $this->query->from('#__users');
-            $this->query->where('column', $column, '=', $data_type, $value);
+        $this->setModelRegistry();
 
-            $results = $this->database->loadObjectList($this->query->getSQL());
+        if ($value === null) {
+            $data          = $this->setGuestObject();
+            $this->user_id = 0;
+        } else {
 
-            if (is_array($results) && count($results) > 0) {
-                $data = $results[0];
-            } else {
-                $data = new stdClass();
-            }
-
-        } catch (Exception $e) {
-            throw new RuntimeException
-            (
-                'Userdata::getUser Failed: ' . $e->getMessage()
+            $this->setQueryControllerDefaults(
+                $process_events = 0,
+                $query_object = 'item',
+                $get_customfields = 0,
+                $use_special_joins = 0,
+                $use_pagination = 0,
+                $check_view_level_access = 0,
+                $get_item_children = 0
             );
+
+            $data = $this->getUserQueryData($value);
         }
 
-        return $data;
+        $user = $this->setStandardFields($data, $this->model_registry);
+
+        $this->user = $this->setCustomFields($user, $data, $this->model_registry);
+
+        return $this;
     }
 
     /**
-     * Set Child Data
-     *
-     * @param   int    $id
-     * @param   string $join
-     * @param   object $model_registry
+     * Set Empty User Data Object for Guest
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
-    public function getChildData($id, $join, $model_registry)
+    protected function setGuestObject()
     {
-        $this->query->clearQuery();
+        return new stdClass();
+    }
 
-        $count  = 0;
-        $fields = $model_registry['fields'];
+    /**
+     * Set Child Objects for User Object
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function setUserChildObjects()
+    {
+        $this->child_objects = array();
 
-        if (count($fields) > 0) {
-            foreach ($fields as $field) {
-                if ($field['name'] === $join) {
+        if (count($this->model_registry['children']) === 0) {
+            return $this;
+        }
+
+        foreach ($this->model_registry['children'] as $child) {
+            $name = ucfirst(strtolower((string)$child['name']));
+            $data = $this->setUserChildObject($name);
+            if (in_array($name, array('Userapplications', 'Usergroups', 'Usersites', 'Userviewgroups'))) {
+                $data = $this->stripUserIdColumn($data);
+            }
+            $this->user->$name = $data;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set Child Object for User Object
+     *
+     * @param   string $name
+     *
+     * @return  array
+     * @since   1.0.0
+     */
+    protected function setUserChildObject($name)
+    {
+        $this->setQueryController('Molajo//Model//Datasource//' . $name . '.xml', 'Read');
+        $this->setQueryControllerDefaults();
+        $this->query->setModelRegistry('query_object', 'list');
+        $this->column_name = 'user_id';
+        $this->user_type   = 'integer';
+
+        return $this->getUserQueryData($this->user->id);
+    }
+
+    /**
+     * Strip out the User Id Column
+     *
+     * @param   array $data
+     *
+     * @return  array
+     * @since   1.0.0
+     */
+    protected function stripUserIdColumn(array $data = array())
+    {
+        if (count($data) === 0) {
+            return $data;
+        }
+
+        $new_data = array();
+
+        foreach ($data as $row) {
+            foreach ($row as $key => $value) {
+                if ($key === 'user_id') {
                 } else {
-                    $count++;
-                    $hold_field = $field['name'];
-                    $this->query->select($field['name']);
+                    $new_data[] = $value;
                 }
             }
         }
 
-        $this->query->from($model_registry['table_name']);
-        $this->query->where('column', $join, '=', 'integer', $id);
-
-        $results = $this->database->loadObjectList($this->query->getSQL());
-
-        $value = array();
-        if ($count === 1) {
-            if (count($results) > 0) {
-                foreach ($results as $result) {
-                    $value[] = $result->$hold_field;
-                }
-            }
-        } else {
-            $value = $results;
-        }
-
-        return $value;
+        return $new_data;
     }
 
     /**
      * Set Permission Data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setPermissions()
     {
@@ -208,10 +201,16 @@ abstract class Load extends Insert implements UserDataInterface
 
         $this->user->public = 1;
 
-        if (in_array(self::GROUP_ADMINISTRATOR, $this->user->groups)) {
+        if (in_array(self::GROUP_ADMINISTRATOR, $this->user->Usergroups)) {
             $this->user->administrator = 1;
         } else {
             $this->user->administrator = 0;
+        }
+
+        if ($this->user->id === null) {
+            $this->user->guest = 1;
+        } else {
+            $this->user->guest = 0;
         }
 
         if ($this->user->guest === 1) {
@@ -227,6 +226,58 @@ abstract class Load extends Insert implements UserDataInterface
             $this->user->html_filtering_required       = 1;
             $this->user->authorised_for_offline_access = 0;
         }
+
+        return $this;
+    }
+
+    /**
+     * Query Database for User Data
+     *
+     * @param   string $value
+     *
+     * @return  $this
+     * @since   1.0.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function getUserQueryData($value)
+    {
+        $this->query->where('column', $this->column_name, '=', $this->user_type, $value);
+
+        return $this->runQuery();
+    }
+
+    /**
+     * Set User Request Type: id, email, or username
+     *
+     * @param   string $key
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function setRequestType($key)
+    {
+        if ($key === 'id') {
+            return $this->setRequestTypeId();
+        }
+
+        $this->column_name = $key;
+        $this->user_type   = $key;
+        $this->user->guest = 0;
+
+        return $this;
+    }
+
+    /**
+     * Set User Request Type for Id Request
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function setRequestTypeId()
+    {
+        $this->column_name = 'id';
+        $this->user_type   = 'userid';
+        $this->user->guest = 0;
 
         return $this;
     }

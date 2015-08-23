@@ -28,7 +28,7 @@ abstract class VerifyCredentials extends VerifyNewPassword implements Authentica
      * @param   string $reset_password_code
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function verifyUsernamePassword(
@@ -55,10 +55,10 @@ abstract class VerifyCredentials extends VerifyNewPassword implements Authentica
      * @param   integer $message_id
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyUserProvidedKey($key, $value, $message_id)
-    {
+    {;
         if ($this->user->$key === $value) {
             return $this;
         }
@@ -73,7 +73,7 @@ abstract class VerifyCredentials extends VerifyNewPassword implements Authentica
      * @param   string $reset_password_code
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyUserPassword($password, $reset_password_code)
     {
@@ -95,7 +95,7 @@ abstract class VerifyCredentials extends VerifyNewPassword implements Authentica
      * @param   string $reset_password_code
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyUserPasswordNeither($password, $reset_password_code)
     {
@@ -112,7 +112,7 @@ abstract class VerifyCredentials extends VerifyNewPassword implements Authentica
      * @param   string $reset_password_code
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyUserPasswordReset($reset_password_code)
     {
@@ -129,7 +129,7 @@ abstract class VerifyCredentials extends VerifyNewPassword implements Authentica
      * @param   string $password
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyUserPasswordHash($password)
     {
@@ -146,7 +146,7 @@ abstract class VerifyCredentials extends VerifyNewPassword implements Authentica
      * @param   integer $message_id
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setUserPasswordError($message_id)
     {

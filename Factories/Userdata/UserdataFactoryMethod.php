@@ -29,7 +29,7 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -41,48 +41,19 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the FactoryInterface
+     * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
     {
-        parent::setDependencies(array());
+        parent::setDependencies($reflection);
 
-        $this->dependencies = array();
-
-        return $this->dependencies;
-    }
-
-    /**
-     * Set Dependencies for Instantiation
-     *
-     * @return  array
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    public function onBeforeInstantiation(array $dependency_values = null)
-    {
-        parent::onBeforeInstantiation($dependency_values);
-
-        $this->options['model_registry']
-            = $this->options['Resource']->get('xml:///Molajo//Model//Datasource//User.xml');
-
-        $xml = $this->options['model_registry']['children'];
-
-        $children = array();
-        if (is_array($xml) && count($xml) > 0) {
-            foreach ($xml as $child) {
-                $name                 = (string)$child['name'];
-                $name                 = ucfirst(strtolower($name));
-                $child_model_registry = 'xml:///Molajo//Model//Datasource//' . $name . '.xml';
-                $children[$name]      = $this->options['Resource']->get($child_model_registry);
-            }
-        }
-
-        $this->options['child_model_registries'] = $children;
+        $this->dependencies['Resource']     = array();
+        $this->dependencies['Runtimedata']  = array();
+        $this->dependencies['Fieldhandler'] = array();
 
         return $this->dependencies;
     }
@@ -90,27 +61,27 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
     /**
      * Instantiate Class
      *
-     * @return  $this
-     * @since   1.0
+     * @return  object
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
     {
-        $class = $this->product_namespace;
-
         try {
-            $this->product_result = new $class (
-                $this->options['Database'],
-                $this->options['Query'],
-                $this->options['model_registry'],
-                $this->options['child_model_registries']
+            $this->product_result = new $this->product_namespace(
+                $this->dependencies['Resource'],
+                $this->dependencies['Fieldhandler'],
+                $this->dependencies['Runtimedata']
             );
+
         } catch (Exception $e) {
-            throw new RuntimeException
-            (
-                'Molajito: Could not instantiate Driver Class: ' . $class
+
+            throw new RuntimeException (
+                'IoC Factory Method Adapter Instance Failed for ' . $this->product_namespace
+                . ' failed.' . $e->getMessage()
             );
         }
+
         return $this;
     }
 
@@ -119,7 +90,7 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      *   requestPasswordReset, logout, register, confirmRegistration
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onAfterInstantiation()
@@ -140,9 +111,7 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
             $value = $this->options['username'];
         }
 
-        $this->product_result->load($value, $key);
-
-        $this->options['Userdata'] = $this->product_result;
+        $this->product_result->load($key, $value);
 
         return $this;
     }
@@ -151,11 +120,12 @@ class UserdataFactoryMethod extends FactoryMethodBase implements FactoryInterfac
      * Request for array of Factory Methods to be Scheduled
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function scheduleFactories()
     {
         $x = $this->options;
+
         unset($x['ioc_id']);
         unset($x['factory_method_namespace']);
         unset($x['product_namespace']);

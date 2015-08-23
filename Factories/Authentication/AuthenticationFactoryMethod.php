@@ -8,8 +8,6 @@
  */
 namespace Molajo\Factories\Authentication;
 
-use Exception;
-use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
 use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
@@ -30,7 +28,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -45,7 +43,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
@@ -58,7 +56,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
         $this->dependencies['Encrypt']      = $options;
         $this->dependencies['Fieldhandler'] = $options;
         $this->dependencies['Flashmessage'] = $options;
-        $this->dependencies['Activity']     = $options;
+        $this->dependencies['Userdata']     = $options;
 
         return $this->dependencies;
     }
@@ -67,7 +65,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      * Set Dependencies for Instantiation
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onBeforeInstantiation(array $dependency_values = null)
@@ -83,7 +81,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      * Factory Method Controller triggers the Factory Method to create the Class for the Service
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
@@ -91,7 +89,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
         $class = $this->product_namespace;
 
         $this->product_result = new $class(
-            $this->options['Userdata'],
+            $this->dependencies['Userdata'],
             $this->options['Session'],
             $this->options['Cookie'],
             $this->dependencies['Mailer'],
@@ -108,83 +106,24 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
     }
 
     /**
-     * Process Authenticate: isGuest, login, isLoggedOn, changePassword,
-     *   requestPasswordReset, logout, register, confirmRegistration
+     * Process Authenticate:
+     *
+     *  isGuest
+     *  login
+     *  isLoggedOn
+     *  changePassword,
+     *  requestPasswordReset
+     *  logout
+     *  register
+     *  confirmRegistration
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function onAfterInstantiation()
     {
-        $action = $this->options['action'];
-
-        switch ($action) {
-
-            case 'login':
-
-                $results = $this->product_result->$action(
-                    $this->options['session_id'],
-                    $this->options['username'],
-                    $this->options['password'],
-                    $this->options['remember']
-                );
-
-                break;
-
-            case 'isLoggedOn':
-
-                $results = $this->product_result->$action(
-                    $this->options['session_id'],
-                    $this->options['username']
-                );
-
-                break;
-
-            case 'changePassword':
-
-                $results = $this->product_result->$action(
-                    $this->options['session_id'],
-                    $this->options['username'],
-                    $this->options['password'],
-                    $this->options['new_password'],
-                    $this->options['reset_password_code'],
-                    $this->options['remember']
-                );
-
-                break;
-
-            case 'requestPasswordReset':
-
-                $results = $this->product_result->$action(
-                    $this->options['session_id'],
-                    $this->options['username']
-                );
-
-                break;
-
-            case 'logout':
-
-                $results = $this->product_result->$action(
-                    $this->options['session_id'],
-                    $this->options['username']
-                );
-
-                break;
-
-            /**
-             * case 'register':
-             * echo "i equals 1";
-             * break;
-             * case 'confirmRegistration':
-             * echo "i equals 2";
-             * break;
-             */
-            default:
-                //'isGuest':
-                $results = $this->product_result->$action($this->options['session_id']);
-                break;
-        }
+        $results = $this->{$this->options['action']}();
 
         if (is_object($results)) {
             $this->redirect($results);
@@ -200,7 +139,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      * Request for array of Factory Methods to be Scheduled
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function scheduleFactories()
     {
@@ -209,12 +148,11 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
         } else {
             $options                 = array();
             $options['id']           = $this->options['id'];
-            $options['Userdata']     = $this->options['Userdata'];
+            $options['Userdata']     = $this->dependencies['Userdata'];
             $options['Session']      = $this->options['Session'];
             $options['Flashmessage'] = $this->dependencies['Flashmessage'];
             $options['Cookie']       = $this->options['Cookie'];
             $options['Runtimedata']  = $this->dependencies['Runtimedata'];
-            $options['Activity']     = $this->dependencies['Activity'];
 
             $this->schedule_factory_methods['Instantiateuser'] = $options;
         }
@@ -226,7 +164,7 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
      * Get Configuration
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function getConfiguration()
     {
@@ -261,10 +199,112 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
     }
 
     /**
+     * Login
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function login()
+    {
+        return $this->product_result->login(
+            $this->options['session_id'],
+            $this->options['username'],
+            $this->options['password'],
+            $this->options['remember']
+        );
+    }
+
+    /**
+     * Is Logged On
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function isLoggedOn()
+    {
+        return $this->product_result->isLoggedOn(
+            $this->options['session_id'],
+            $this->options['username']
+        );
+    }
+
+    /**
+     * Change Password
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function changePassword()
+    {
+        return $this->product_result->changePassword(
+            $this->options['session_id'],
+            $this->options['username'],
+            $this->options['password'],
+            $this->options['new_password'],
+            $this->options['reset_password_code'],
+            $this->options['remember']
+        );
+    }
+
+    /**
+     * Request Password Reset
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function requestPasswordReset()
+    {
+        return $this->product_result->requestPasswordReset(
+            $this->options['session_id'],
+            $this->options['username']
+        );
+    }
+
+    /**
+     * Logout
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function logout()
+    {
+        return $this->product_result->requestPasswordReset(
+            $this->options['session_id'],
+            $this->options['username']
+        );
+    }
+
+    /**
+     * Register
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function register()
+    {
+        return $this->product_result->register(
+            $this->options['session_id']
+        );
+    }
+
+    /**
+     * Confirm Registration
+     *
+     * @return  $this
+     * @since   1.0.0
+     */
+    protected function confirmRegistration()
+    {
+        return $this->product_result->confirmRegistration(
+            $this->options['session_id']
+        );
+    }
+
+    /**
      * Request for array of Factory Methods to be Scheduled
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function redirect($redirect_object)
     {
@@ -276,4 +316,5 @@ class AuthenticationFactoryMethod extends FactoryMethodBase implements FactoryIn
 
         return $this;
     }
+
 }

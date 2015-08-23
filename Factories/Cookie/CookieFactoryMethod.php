@@ -8,7 +8,6 @@
  */
 namespace Molajo\Factories\Cookie;
 
-use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
 use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
@@ -28,7 +27,7 @@ class CookieFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -43,7 +42,7 @@ class CookieFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * Factory Method Controller triggers the Factory Method to create the Class for the Service
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()

@@ -20,30 +20,25 @@ use CommonApi\User\UserDataInterface;
  * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-abstract class Delete extends Base implements UserDataInterface
+abstract class Delete extends Query implements UserDataInterface
 {
     /**
      * Delete User Data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function deleteUserdata()
+    protected function deleteUserdata()
     {
         try {
 
-            $this->query->clearQuery();
-
-            $this->query->setType('delete');
-            $this->query->from('#__users');
             $this->query->where('column', 'id', '=', 'integer', (int)$this->user->id);
 
-            $this->database->execute($this->query->getSQL());
+            $this->query->execute($this->query->getSQL());
 
         } catch (Exception $e) {
-            throw new RuntimeException
-            (
+            throw new RuntimeException(
                 'Userdata::deleteUserdata Failed: ' . $e->getMessage()
             );
         }

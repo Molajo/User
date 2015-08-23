@@ -24,7 +24,7 @@ class Session implements SessionInterface
      * Start the Session
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
     public function startSession()
     {
@@ -43,7 +43,7 @@ class Session implements SessionInterface
      * @param   string $key
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      */
     public function getSession($key)
     {
@@ -57,7 +57,7 @@ class Session implements SessionInterface
             return unserialize($_SESSION[$key]);
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -67,7 +67,7 @@ class Session implements SessionInterface
      * @param   mixed  $value
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function setSession($key, $value)
     {
@@ -84,8 +84,8 @@ class Session implements SessionInterface
      *
      * @param   string $key
      *
-     * @return  Session
-     * @since   1.0
+     * @return  $this
+     * @since   1.0.0
      */
     public function deleteSession($key)
     {
@@ -101,8 +101,8 @@ class Session implements SessionInterface
     /**
      * Destroy Session, including all key values and session id
      *
-     * @return  object
-     * @since   1.0
+     * @return  $this
+     * @since   1.0.0
      */
     public function destroySession()
     {
@@ -112,5 +112,7 @@ class Session implements SessionInterface
             $_SESSION = null;
             session_write_close();
         }
+
+        return $this;
     }
 }

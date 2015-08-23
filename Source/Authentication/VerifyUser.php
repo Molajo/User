@@ -27,7 +27,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      * @param   string $action
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function verifyUser($action)
@@ -51,7 +51,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      * Verify User Activation Date
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyUserActivationDate()
     {
@@ -69,7 +69,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      * @param   DateTime $today_datetime
      *
      * @return  VerifyUser
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyLoginAttempts($today_datetime)
     {
@@ -84,11 +84,11 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      * Verify User Login Attempts -- count of failures
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyLoginMaxAttemptsExceeded()
     {
-        if ($this->user->login_attempts > $this->configuration->max_login_attempts) {
+        if ((int) $this->user->login_attempts > $this->configuration->max_login_attempts) {
             $this->error = true;
             $this->setFlashmessage(800);
             $this->updateUserBlock();
@@ -104,18 +104,18 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      * @param   DateTime $today_datetime
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyLoginRemoveBlock($today_datetime)
     {
-        if ($this->configuration->password_lock_out_days === 0) {
+        if ((int) $this->configuration->password_lock_out_days === 0) {
             return $this;
         }
 
         $last_activity_date = new DateTime($this->user->last_activity_datetime);
         $day_object         = $last_activity_date->diff($today_datetime);
 
-        if ($day_object->days > $this->configuration->password_lock_out_days) {
+        if ($day_object->days > (int) $this->configuration->password_lock_out_days) {
             $this->updateUserRemoveBlock();
         }
 
@@ -126,7 +126,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      * Verify whether or not the user is blocked
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyUserBlock()
     {
@@ -144,7 +144,7 @@ abstract class VerifyUser extends Session implements AuthenticationInterface
      * @param   DateTime $today_datetime
      *
      * @return  VerifyUser
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifyUserPasswordExpiration($today_datetime)
     {

@@ -29,7 +29,7 @@ class Facade implements UserInterface
      * User Data
      *
      * @var     object  CommonApi\User\UserDataInterface
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $data;
 
@@ -37,7 +37,7 @@ class Facade implements UserInterface
      * Session
      *
      * @var     object  CommonApi\User\SessionInterface
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $session;
 
@@ -45,7 +45,7 @@ class Facade implements UserInterface
      * Flash Message
      *
      * @var     object  CommonApi\User\FlashMessageInterface
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $flashmessage;
 
@@ -53,17 +53,9 @@ class Facade implements UserInterface
      * Cookie
      *
      * @var     object  CommonApi\User\CookieInterface
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $cookie;
-
-    /**
-     * Activity
-     *
-     * @var     object  CommonApi\User\ActivityInterface
-     * @since   1.0
-     */
-    protected $activity;
 
     /**
      * Constructor
@@ -72,22 +64,19 @@ class Facade implements UserInterface
      * @param  SessionInterface      $session
      * @param  FlashMessageInterface $flashmessage
      * @param  CookieInterface       $cookie
-     * @param  ActivityInterface     $activity
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         UserDataInterface $userdata,
         SessionInterface $session,
         FlashMessageInterface $flashmessage,
-        CookieInterface $cookie = null,
-        ActivityInterface $activity = null
+        CookieInterface $cookie = null
     ) {
         $this->userdata     = $userdata;
         $this->session      = $session;
         $this->flashmessage = $flashmessage;
         $this->cookie       = $cookie;
-        $this->activity     = $activity;
     }
 
     /**
@@ -107,11 +96,11 @@ class Facade implements UserInterface
      * Get User Data
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
     public function getUserdata()
     {
-        return $this->userdata->getUserdata();
+        return $this->userdata->readUser();
     }
 
     /**
@@ -120,11 +109,11 @@ class Facade implements UserInterface
      * @param   array $data
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
     public function insertUserdata(array $data = array())
     {
-        return $this->userdata->insertUserdata($data);
+        return $this->userdata->createUser($data);
     }
 
     /**
@@ -133,22 +122,22 @@ class Facade implements UserInterface
      * @param   array $updates
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      */
     public function updateUserdata(array $updates = array())
     {
-        return $this->userdata->updateUserdata($updates);
+        return $this->userdata->updateUser($updates);
     }
 
     /**
      * Delete User Data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function deleteUserdata()
     {
-        return $this->userdata->deleteUserdata();
+        return $this->userdata->deleteUser();
     }
 
     /**
@@ -157,7 +146,7 @@ class Facade implements UserInterface
      * @param   string $key
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      */
     public function getSession($key)
     {
@@ -171,7 +160,7 @@ class Facade implements UserInterface
      * @param   mixed  $value
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      */
     public function setSession($key, $value)
     {
@@ -184,7 +173,7 @@ class Facade implements UserInterface
      * @param   null|string $key
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      */
     public function deleteSession($key)
     {
@@ -197,7 +186,7 @@ class Facade implements UserInterface
      * @param   null|string $type (Success, Notice, Warning, Error)
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      */
     public function getFlashmessage($type = null)
     {
@@ -211,7 +200,7 @@ class Facade implements UserInterface
      * @param   string $message
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function setFlashmessage($type, $message)
     {
@@ -224,7 +213,7 @@ class Facade implements UserInterface
      * @param   null|string $type
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function deleteFlashmessage($type = null)
     {
@@ -238,7 +227,7 @@ class Facade implements UserInterface
      *
      * @link    http://www.faqs.org/rfcs/rfc6265.html
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function getCookie($name)
     {
@@ -257,7 +246,7 @@ class Facade implements UserInterface
      * @param   boolean $http_only
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function setCookie(
         $name,
@@ -268,8 +257,7 @@ class Facade implements UserInterface
         $secure = false,
         $http_only = false
     ) {
-        return $this->cookie->setCookie
-        (
+        return $this->cookie->setCookie(
             $name,
             $value,
             $minutes,
@@ -286,7 +274,7 @@ class Facade implements UserInterface
      * @param   string $name
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function deleteCookie($name)
     {
@@ -297,7 +285,7 @@ class Facade implements UserInterface
      * sendCookies
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function sendCookies()
     {
@@ -310,7 +298,7 @@ class Facade implements UserInterface
      * @param   object $cookie
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function sendCookie($cookie)
     {

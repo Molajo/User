@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Authentication;
 
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 use CommonApi\User\AuthenticationInterface;
 use CommonApi\User\CookieInterface;
 use CommonApi\User\EncryptInterface;
@@ -32,7 +32,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * Session Instance
      *
      * @var    object  CommonApi\User\SessionInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $session;
 
@@ -40,7 +40,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * Session ID
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $session_id;
 
@@ -48,7 +48,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * External Session ID
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $external_session_id;
 
@@ -67,7 +67,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param  object                $post
      * @param  string                $external_session_id
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         UserDataInterface $userdata,
@@ -105,7 +105,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   string $action
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifySession($session_id, $action)
     {
@@ -134,7 +134,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   string $session_id
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifySessionGuest($session_id)
     {
@@ -155,12 +155,13 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   string $action
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifySessionCredentialAction($session_id, $action)
     {
         if ($this->verifySessionIdToExternal($session_id) === true) {
             $this->session_id = $session_id;
+
             return $this;
         }
 
@@ -177,7 +178,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   string $session_id
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifySessionLoggedOn($session_id)
     {
@@ -208,7 +209,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * Verifies whether or not the Session has timed out
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifySessionNotTimedOut()
     {
@@ -233,7 +234,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * Verify Form Action
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function verifyFormAction()
@@ -250,7 +251,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      *
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function verifySessionFormToken()
@@ -260,6 +261,9 @@ abstract class Session extends Cookie implements AuthenticationInterface
         if (isset($this->post[$key])) {
             return true;
         }
+
+//todo session token
+        return true;
 
         $this->destroySession();
         $this->forgetCookie();
@@ -272,11 +276,11 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * Set the Form Token in the Session Object
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setSessionFormToken()
     {
-        if ($this->getSessionValue('form_token') === false) {
+        if ($this->getSessionValue('form_token') === null) {
             $token = $this->generateString();
             $this->setSessionValue('form_token', $token);
         }
@@ -288,7 +292,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * Sets the session for a successful login
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setSessionLogin()
     {
@@ -315,7 +319,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   string $session_id
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifySessionIdToExternal($session_id)
     {
@@ -332,7 +336,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   string $type
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifySessionIdToUser($key, $type)
     {
@@ -349,7 +353,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   string $session_id
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function verifySessionNotEmpty($session_id)
     {
@@ -364,7 +368,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   string $key
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function getSessionValue($key)
     {
@@ -378,7 +382,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * @param   mixed  $value
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setSessionValue($key, $value)
     {
@@ -391,7 +395,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      * Start the Session
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function startSession()
     {
@@ -403,7 +407,7 @@ abstract class Session extends Cookie implements AuthenticationInterface
      *
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function destroySession()
     {

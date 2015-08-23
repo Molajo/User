@@ -29,7 +29,7 @@ class MailerFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      *
      * @param  array $options
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(array $options = array())
     {
@@ -44,7 +44,7 @@ class MailerFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
@@ -62,7 +62,7 @@ class MailerFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * Instantiate Class
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
@@ -75,8 +75,7 @@ class MailerFactoryMethod extends FactoryMethodBase implements FactoryInterface,
                 $this->dependencies['Template']
             );
         } catch (Exception $e) {
-            throw new RuntimeException
-            (
+            throw new RuntimeException(
                 'Molajito: Could not instantiate Driver Class: ' . $class
             );
         }

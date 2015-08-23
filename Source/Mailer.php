@@ -26,7 +26,7 @@ class Mailer implements MailerInterface
      * Email Instance
      *
      * @var    object  CommonApi\Email\EmailInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $email;
 
@@ -34,7 +34,7 @@ class Mailer implements MailerInterface
      * Template Instance
      *
      * @var    object  CommonApi\User\TemplateInterface
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $template;
 
@@ -42,7 +42,7 @@ class Mailer implements MailerInterface
      * List of Properties that will be sent via email
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $property_array
         = array(
@@ -63,7 +63,7 @@ class Mailer implements MailerInterface
      * @param  EmailInterface    $email
      * @param  TemplateInterface $template
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         EmailInterface $email,
@@ -80,7 +80,7 @@ class Mailer implements MailerInterface
      * @param   object $input_data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function send($template, $input_data)
     {
@@ -96,7 +96,7 @@ class Mailer implements MailerInterface
      * @param   object $input_data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function processTemplate($template, $input_data)
     {
@@ -116,7 +116,7 @@ class Mailer implements MailerInterface
      * @param   Mailer $data
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function processMail($data)
     {

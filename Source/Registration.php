@@ -30,7 +30,7 @@ class Registration implements RegistrationInterface
      * Activation Code
      *
      * @var    string
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $activation_code;
 
@@ -40,14 +40,14 @@ class Registration implements RegistrationInterface
      * @param   array $options
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RegistrationException
      */
     public function register($options)
     {
         //edit and filter
         //getActivationCode and send activation code
-        $this->activation_code = $this->getRandomString();
+        $this->activation_code = $this->getRandomstring();
 
         $this->save();
 
@@ -59,7 +59,7 @@ class Registration implements RegistrationInterface
      * Determine if this user is registered
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RegistrationException
      */
     public function isRegistered()
@@ -72,7 +72,7 @@ class Registration implements RegistrationInterface
      * @param   array $options
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RegistrationException
      */
     public function activateRegistration($options)
@@ -83,7 +83,7 @@ class Registration implements RegistrationInterface
      * Determine if this user registration has been activated
      *
      * @return  boolean
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RegistrationException
      */
     public function isActivated()
@@ -96,7 +96,7 @@ class Registration implements RegistrationInterface
      * @param   array $options
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RegistrationException
      */
     public function deactivateRegistration($options = array())
@@ -109,7 +109,7 @@ class Registration implements RegistrationInterface
      * @param   array $options
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RegistrationException
      */
     public function suspendUser($options)
@@ -120,7 +120,7 @@ class Registration implements RegistrationInterface
      * Determine if this user was suspended
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RegistrationException
      */
     public function isSuspended()
@@ -133,7 +133,7 @@ class Registration implements RegistrationInterface
      * @param   array $options
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  RegistrationException
      */
     public function removeSuspension($options)

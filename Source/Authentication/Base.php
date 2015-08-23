@@ -8,7 +8,7 @@
  */
 namespace Molajo\User\Authentication;
 
-use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Fieldhandler\FieldhandlerInterface;
 use stdClass;
 
 /**
@@ -24,8 +24,8 @@ abstract class Base
     /**
      * Fieldhandler Instance
      *
-     * @var    object  CommonApi\Model\FieldhandlerInterface
-     * @since  1.0
+     * @var    object  CommonApi\Fieldhandler\FieldhandlerInterface
+     * @since  1.0.0
      */
     protected $fieldhandler;
 
@@ -33,7 +33,7 @@ abstract class Base
      * Configuration Settings
      *
      * @var    object
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $configuration;
 
@@ -41,7 +41,7 @@ abstract class Base
      * $_SERVER OBJECT
      *
      * @var    object
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $server;
 
@@ -49,7 +49,7 @@ abstract class Base
      * $_POST OBJECT
      *
      * @var    object
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $post;
 
@@ -57,7 +57,7 @@ abstract class Base
      * Error
      *
      * @var    boolean
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $error = false;
 
@@ -65,7 +65,7 @@ abstract class Base
      * Properties
      *
      * @var    array
-     * @since  1.0
+     * @since  1.0.0
      */
     protected $base_properties
         = array(
@@ -83,7 +83,7 @@ abstract class Base
      * @param  object                $server
      * @param  object                $post
      *
-     * @since  1.0
+     * @since  1.0.0
      */
     public function __construct(
         FieldhandlerInterface $fieldhandler,

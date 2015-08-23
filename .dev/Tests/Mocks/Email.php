@@ -24,7 +24,7 @@ class MockEmail implements EmailInterface
      * Email Adapter Adapter
      *
      * @var     object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $adapter;
 
@@ -32,7 +32,7 @@ class MockEmail implements EmailInterface
      * To
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $to = array();
 
@@ -40,7 +40,7 @@ class MockEmail implements EmailInterface
      * From
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $from = array();
 
@@ -48,7 +48,7 @@ class MockEmail implements EmailInterface
      * Reply To
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $reply_to = array();
 
@@ -56,7 +56,7 @@ class MockEmail implements EmailInterface
      * Copy
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $cc = array();
 
@@ -64,7 +64,7 @@ class MockEmail implements EmailInterface
      * Blind Copy
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $bcc = array();
 
@@ -72,7 +72,7 @@ class MockEmail implements EmailInterface
      * Subject
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $subject = '';
 
@@ -80,7 +80,7 @@ class MockEmail implements EmailInterface
      * Body
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $body = '';
 
@@ -88,7 +88,7 @@ class MockEmail implements EmailInterface
      * HTML or Text
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $mailer_html_or_text = '';
 
@@ -96,7 +96,7 @@ class MockEmail implements EmailInterface
      * Attachment
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $attachment = '';
 
@@ -107,7 +107,7 @@ class MockEmail implements EmailInterface
      * @param   string $default
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      */
     public function get($key, $default = null)
     {
@@ -121,7 +121,7 @@ class MockEmail implements EmailInterface
      * @param   mixed  $value
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function set($key, $value = null)
     {
@@ -134,7 +134,7 @@ class MockEmail implements EmailInterface
      * Send Email
      *
      * @return  $tgus
-     * @since   1.0
+     * @since   1.0.0
      */
     public function send()
     {
